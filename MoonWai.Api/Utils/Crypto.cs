@@ -1,6 +1,6 @@
 using System.Security.Cryptography;
 
-namespace  MoonWai.Api.Utils
+namespace MoonWai.Api.Utils
 {
     public static class Crypto
     {

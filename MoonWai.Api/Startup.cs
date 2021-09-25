@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
@@ -28,7 +29,9 @@ namespace MoonWai.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddAuthentication();
+            services
+                .AddAuthentication()
+                .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme);
             services.AddAuthorization();
         }
 
