@@ -1,16 +1,16 @@
 using System;
 using System.Linq;
 
-using MoonWai.Dal.DataModels;
-
 using LinqToDB;
+
+using MoonWai.Dal.DataModels;
 
 namespace MoonWai.Dal
 {
     public partial class Dc : LinqToDB.Data.DataConnection
 	{
-		public ITable<Board>        Boards        { get { return this.GetTable<Board>(); } }
-		public ITable<Media>        Media         { get { return this.GetTable<Media>(); } }
+        public ITable<Board>        Boards        { get { return this.GetTable<Board>(); } }
+        public ITable<Media>        Media         { get { return this.GetTable<Media>(); } }
         public ITable<Post>         Posts         { get { return this.GetTable<Post>(); } }
         public ITable<PostResponse> PostResponses { get { return this.GetTable<PostResponse>(); } }
         public ITable<Thread>       Threads       { get { return this.GetTable<Thread>(); } }
@@ -32,7 +32,7 @@ namespace MoonWai.Dal
 
         public Dc() : base(defaultConfigurationStr) { }
 
-		public Dc(string configurationStr) : base(configurationStr) { }
+        public Dc(string configurationStr) : base(configurationStr) { }
 
         public void CreateTables()
         {

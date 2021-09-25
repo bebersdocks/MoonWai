@@ -17,11 +17,11 @@ namespace MoonWai.Dal.DataModels
         #region Associations
 
         [Association(ThisKey="BoardId", OtherKey="BoardId", CanBeNull=false)]
-		public Board Board { get; set; }
+        public Board Board { get; set; }
 
-		[Association(ThisKey="UserId", OtherKey="UserId", CanBeNull=false)]
-		public User User { get; set; }
+        [Association(ThisKey="UserId", OtherKey="UserId", CanBeNull=false)]
+        public User User { get; set; }
 
-		#endregion
+        #endregion
     }
 }
