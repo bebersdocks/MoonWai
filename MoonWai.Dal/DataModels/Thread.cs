@@ -1,6 +1,5 @@
 using System;
 
-using LinqToDB;
 using LinqToDB.Mapping;
 
 namespace MoonWai.Dal.DataModels
