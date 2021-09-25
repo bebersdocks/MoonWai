@@ -11,7 +11,6 @@ namespace MoonWai.Dal.DataModels
         Post = 2
     }
 
-    [Table(Schema="dbo", Name="Media")]
     public class Media
     {
         [PrimaryKey, Identity] public int             MediaId    { get; set; }

@@ -4,7 +4,6 @@ using LinqToDB.Mapping;
 
 namespace MoonWai.Dal.DataModels
 {
-    [Table(Schema="dbo", Name="Thread")]
     public class Thread
     {
         [PrimaryKey, Identity] public int       ThreadId   { get; set; }

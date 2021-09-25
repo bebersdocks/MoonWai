@@ -2,7 +2,6 @@ using LinqToDB.Mapping;
 
 namespace MoonWai.Dal.DataModels
 {
-    [Table(Schema="dbo", Name="Board")]
     public class Board
     {
         [PrimaryKey, Identity] public int    BoardId { get; set; }
