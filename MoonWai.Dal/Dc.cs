@@ -15,7 +15,7 @@ namespace MoonWai.Dal
         public ITable<PostResponse> PostResponses { get { return this.GetTable<PostResponse>(); } }
         public ITable<Thread>       Threads       { get { return this.GetTable<Thread>(); } }
         public ITable<User>         Users         { get { return this.GetTable<User>(); } }
-
+   
         private const string defaultConfigurationStr = "MoonWai";
 
         public static void CreateDefaultConfiguration(DbSettings dbSettings)
