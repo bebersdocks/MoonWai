@@ -1,7 +1,10 @@
+using System.IO;
+
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Configuration;
 
@@ -48,7 +51,20 @@ namespace MoonWai.Api
             }
 
             app.UseHttpsRedirection();
-            app.UseStaticFiles();
+
+            var elmPath = Path.Combine(env.ContentRootPath, "Resources/Elm");
+            if (Directory.Exists(elmPath))
+            {
+                var fileProvider = new PhysicalFileProvider(elmPath);
+                app.UseDefaultFiles(new DefaultFilesOptions
+                {
+                    FileProvider = fileProvider
+                });
+                app.UseStaticFiles(new StaticFileOptions
+                {
+                    FileProvider = fileProvider
+                });
+            }
 
             app.UseAuthentication();
             app.UseRouting();
