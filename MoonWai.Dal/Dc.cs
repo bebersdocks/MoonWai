@@ -8,13 +8,14 @@ using MoonWai.Dal.DataModels;
 namespace MoonWai.Dal
 {
     public partial class Dc : LinqToDB.Data.DataConnection
-	{
+    {
         public ITable<Board>        Boards        { get { return this.GetTable<Board>(); } }
         public ITable<Media>        Media         { get { return this.GetTable<Media>(); } }
         public ITable<Post>         Posts         { get { return this.GetTable<Post>(); } }
         public ITable<PostResponse> PostResponses { get { return this.GetTable<PostResponse>(); } }
         public ITable<Thread>       Threads       { get { return this.GetTable<Thread>(); } }
         public ITable<User>         Users         { get { return this.GetTable<User>(); } }
+        public ITable<UserSettings> UserSettings  { get { return this.GetTable<UserSettings>(); } }
    
         private const string defaultConfigurationStr = "MoonWai";
 
@@ -53,6 +54,7 @@ namespace MoonWai.Dal
             createTable(PostResponses);
             createTable(Threads);
             createTable(Users);
+            createTable(UserSettings);
         }
     }
 }
