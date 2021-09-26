@@ -8,7 +8,7 @@ clean_elm:
 
 build_elm:
 	make clean_elm
-	cd $(ELM_DIR); elm make src/Main.elm --output=$(ELM_MAKE_OUTPUT)
+	cd $(ELM_DIR); elm make src/Main.elm --output=$(ELM_MAKE_OUTPUT) --debug
 	mkdir $(ELM_TARGET_DIR)
 	mv $(ELM_DIR)/$(ELM_MAKE_OUTPUT) $(ELM_TARGET_DIR)/$(ELM_MAKE_OUTPUT)
 
