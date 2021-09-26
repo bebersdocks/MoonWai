@@ -1,3 +1,6 @@
-obj/
+elm-stuff/
+Elm/
 bin/
+index.html
+obj/
 paket.restore.cached
