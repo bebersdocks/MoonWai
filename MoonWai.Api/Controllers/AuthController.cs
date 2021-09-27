@@ -88,15 +88,29 @@ namespace MoonWai.Api.Controllers
             newUser.Username = username;
             newUser.PasswordSalt = salt;
             newUser.PasswordHash = hash;
-            newUser.LanguageId = languageId ?? LanguageId.English;
 
             var utcNow = DateTime.UtcNow;
 
             newUser.CreateDt = utcNow;
             newUser.LastAccessDt = utcNow;
+            
+            var userSettings = new UserSettings();
 
-            if (dc.Insert(newUser) < 1)
+            userSettings.LanguageId = languageId ?? LanguageId.English;
+
+            await dc.BeginTransactionAsync();
+
+            var userId = await dc.InsertWithInt32IdentityAsync(newUser);
+
+            if (userId <= 0)
                 return BadRequest(TranslationId.FailedToCreateNewUser);
+
+            userSettings.UserId = userId;
+
+            if (await dc.InsertAsync(userSettings) <= 0)
+                return BadRequest(TranslationId.FailedToCreateUserSettings);
+   
+            await dc.CommitTransactionAsync();
 
             await Login(newUser);
 

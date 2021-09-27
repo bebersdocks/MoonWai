@@ -3,6 +3,10 @@
         <translation languageId="en">Failed to create new user</translation>
         <translation languageId="ru">Не получилось создать пользователя</translation>
     </string>
+    <string id="FailedToCreateUserSettings">
+        <translation languageId="en">Failed to create user settings</translation>
+        <translation languageId="ru">Не получилось создать настройки пользователя</translation>
+    </string>
     <string id="PasswordCantBeEmpty">
         <translation languageId="en">Password can't be empty</translation>
         <translation languageId="ru">Пароль не может быть пустым</translation>
