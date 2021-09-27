@@ -20,9 +20,14 @@ namespace MoonWai.Api.Controllers
         public AuthController(ILogger<AuthController> logger) : base(logger) { }
 
         [NonAction]
-        public async Task Login(string username, bool trusted = false)
+        public Task Login(User user, bool trusted = false)
         {
-            var claims = new Claim[] { new(ClaimTypes.Name, username) };
+            var claims = new Claim[] 
+            {   
+                new("UserId", user.UserId.ToString()),
+                new(ClaimTypes.Name, user.Username) 
+            };
+
             var claimsIdentity = new ClaimsIdentity(claims, Program.defaultAuthenticationScheme);
             var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
             var authProperties = new AuthenticationProperties
@@ -31,7 +36,7 @@ namespace MoonWai.Api.Controllers
                 ExpiresUtc = DateTimeOffset.UtcNow.Add(trusted ? TimeSpan.FromDays(30) : TimeSpan.FromHours(72)),
             };
 
-            await HttpContext.SignInAsync(Program.defaultAuthenticationScheme, claimsPrincipal, authProperties);
+            return HttpContext.SignInAsync(Program.defaultAuthenticationScheme, claimsPrincipal, authProperties);
         }
 
         [HttpPost]
@@ -50,7 +55,11 @@ namespace MoonWai.Api.Controllers
             if (!Crypto.ValidatePassword(password, user.PasswordSalt, user.PasswordHash))
                 return BadRequest(TranslationId.WrongPassword);
 
-            await Login(username, trusted: trusted);
+            user.LastAccessDt = DateTime.UtcNow;
+
+            await dc.UpdateAsync(user);
+
+            await Login(user, trusted: trusted);
 
             return Ok();
         }
@@ -85,11 +94,11 @@ namespace MoonWai.Api.Controllers
 
             newUser.CreateDt = utcNow;
             newUser.LastAccessDt = utcNow;
-            
+
             if (dc.Insert(newUser) < 1)
                 return BadRequest(TranslationId.FailedToCreateNewUser);
 
-            await Login(newUser.Username);
+            await Login(newUser);
 
             return Ok();
         }
