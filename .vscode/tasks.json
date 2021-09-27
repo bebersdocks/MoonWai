@@ -2,11 +2,6 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "buildElm",
-            "command": "make build_elm",
-            "type": "shell"
-        },
-        {
             "label": "build",
             "command": "dotnet",
             "type": "process",
@@ -17,7 +12,6 @@
                 "/consoleloggerparameters:NoSummary"
             ],
             "problemMatcher": "$msCompile",
-            "dependsOn":["buildElm"]
         },
         {
             "label": "publish",
