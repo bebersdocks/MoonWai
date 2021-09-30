@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -36,6 +37,10 @@ namespace MoonWai.Api
                 .AddAuthentication()
                 .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme);
             services.AddAuthorization();
+            services.AddSpaStaticFiles(configuration =>
+            {
+                configuration.RootPath = "wwwroot/dist";
+            });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -52,19 +57,17 @@ namespace MoonWai.Api
 
             app.UseHttpsRedirection();
 
-            var elmPath = Path.Combine(env.ContentRootPath, "Resources/Elm");
-            if (Directory.Exists(elmPath))
+            var fileProvider = new PhysicalFileProvider(Path.Combine(env.ContentRootPath, "wwwroot", "dist"));
+            app.UseDefaultFiles(new DefaultFilesOptions
             {
-                var fileProvider = new PhysicalFileProvider(elmPath);
-                app.UseDefaultFiles(new DefaultFilesOptions
-                {
-                    FileProvider = fileProvider
-                });
-                app.UseStaticFiles(new StaticFileOptions
-                {
-                    FileProvider = fileProvider
-                });
-            }
+                FileProvider = fileProvider,
+                RequestPath = ""
+            });
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = fileProvider,
+                RequestPath = ""
+            });
 
             app.UseAuthentication();
             app.UseRouting();
@@ -73,6 +76,17 @@ namespace MoonWai.Api
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+            });
+
+            app.UseSpa(spa =>
+            {
+#if DEBUG
+                if (env.IsDevelopment())
+                {
+                    spa.Options.SourcePath = "../MoonWai.Elmish/public";
+                    spa.Options.StartupTimeout = TimeSpan.FromSeconds(5);
+                }
+#endif
             });
         }
     }
