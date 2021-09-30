@@ -1,6 +1,9 @@
-elm-stuff/
-Elm/
+*.fs.js
+.fable/
 bin/
+bundle.js
 index.html
+node_modules/
 obj/
 paket.restore.cached
+wwwroot
