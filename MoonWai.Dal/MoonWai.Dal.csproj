@@ -3,5 +3,8 @@
     <PropertyGroup>
         <TargetFramework>netstandard2.0</TargetFramework>
     </PropertyGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\MoonWai.Shared\MoonWai.Shared.fsproj" />
+    </ItemGroup>
     <Import Project="..\.paket\Paket.Restore.targets" />
 </Project>

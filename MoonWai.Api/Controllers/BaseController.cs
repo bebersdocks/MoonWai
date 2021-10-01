@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
 using MoonWai.Api.Resources.Translations;
-using MoonWai.Dal.DataModels;
+using MoonWai.Shared.Definitions;
 
 namespace MoonWai.Api.Controllers
 {

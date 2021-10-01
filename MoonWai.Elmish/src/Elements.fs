@@ -6,12 +6,9 @@ open Fable.React.Props
 let button onClick s disabled = 
     button [
         ClassName "btn btn-primary"
-        OnClick (fun _ -> onClick) 
+        OnClick onClick
         Disabled disabled
     ] [ str s ]
-
-let buttonDiv onClick s disabled = 
-    div [] [ button onClick s disabled ]
 
 open Elmish.Navigation
 open Fable.Core.JsInterop
@@ -32,23 +29,21 @@ let viewLink route s =
         OnClick goToUrl
     ] [ str s ]
 
-let label parentId s = 
-    label [
-        HtmlFor parentId
-    ] [ str s ]
-
 let input id inputType placeholder defaultValue onChangeEvent autoFocus = 
-    input [
+    Standard.input [
         Id id
         HTMLAttr.Type inputType
         Placeholder placeholder
         DefaultValue defaultValue
         OnChange (fun ev -> onChangeEvent ev.Value)
+        AutoComplete "off"
         AutoFocus autoFocus
     ]
 
-let inputDiv id inputType placeholder labelText defaultValue onChangeEvent autoFocus =
-    div [ ClassName "input-div" ] [
-        label id labelText
-        input id inputType placeholder defaultValue onChangeEvent autoFocus
+let checkbox id onChangeEvent isChecked = 
+    Standard.input [
+        Id id
+        HTMLAttr.Type "checkbox"
+        OnChange (fun ev -> onChangeEvent (unbox<bool> ev?target?``checked``))
+        Checked isChecked
     ]

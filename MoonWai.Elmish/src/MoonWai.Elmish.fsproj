@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
-  </PropertyGroup>
-  <ItemGroup>
-    <Compile Include="Router.fs" />
-    <Compile Include="Elements.fs" />
-    <Compile Include="Pages/Home.fs" />
-    <Compile Include="Pages/Login.fs" />
-    <Compile Include="Main.fs" />
-  </ItemGroup>
-  <Import Project="..\..\.paket\Paket.Restore.targets" />
+    <PropertyGroup>
+        <TargetFramework>net5.0</TargetFramework>
+    </PropertyGroup>
+    <ItemGroup>
+        <Compile Include="Router.fs" />
+        <Compile Include="Elements.fs" />
+        <Compile Include="Pages/Home.fs" />
+        <Compile Include="Pages/Login.fs" />
+        <Compile Include="Main.fs" />
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\..\MoonWai.Shared\MoonWai.Shared.fsproj" />
+    </ItemGroup>
+    <Import Project="..\..\.paket\Paket.Restore.targets" />
 </Project>

@@ -5,6 +5,9 @@
     </PropertyGroup>
     <ItemGroup>
         <ProjectReference Include="..\MoonWai.Dal\MoonWai.Dal.csproj" />
+        <ProjectReference Include="..\MoonWai.Shared\MoonWai.Shared.fsproj" />
+    </ItemGroup>
+    <ItemGroup>
         <EmbeddedResource Include="Resources\Translations\Translations.xml" />
     </ItemGroup>
     <Import Project="..\.paket\Paket.Restore.targets" />

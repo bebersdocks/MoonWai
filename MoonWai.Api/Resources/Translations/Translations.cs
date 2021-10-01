@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
 
-using MoonWai.Dal.DataModels;
+using MoonWai.Shared.Definitions;
 
 namespace MoonWai.Api.Resources.Translations
 {
