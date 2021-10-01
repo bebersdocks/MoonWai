@@ -10,4 +10,11 @@ build_elmish:
 	make clean_elm
 	cd $(ELMISH_DIR); npm run build
 	mkdir $(ELMISH_TARGET_DIR) -p
-	cp $(ELMISH_OUTPUT_DIR)/* $(ELMISH_TARGET_DIR)
+	cp $(ELMISH_OUTPUT_DIR)/* $(ELMISH_TARGET_DIR) -r
+
+run_elmish:
+	cd $(ELMISH_DIR); npm run start
+
+build:
+	make build_elmish
+	dotnet build
