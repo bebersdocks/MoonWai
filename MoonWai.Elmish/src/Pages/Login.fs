@@ -5,7 +5,7 @@ open MoonWai.Shared.Auth
 type Model = {
     LoginDto: LoginDto
     Waiting: bool
-    ErrorMessage: string option
+    ErrorMsg: string option
 }
     
 type Msg = 
@@ -14,48 +14,50 @@ type Msg =
     | ChangeTrusted of bool
     | Login
     | LoginSuccess
-    | LoginFailed of string option
+    | LoginFailed of string
 
 let login (model: Model) = 
-    Http.post "/auth/login" model.LoginDto (fun _ -> LoginSuccess) (Some >> LoginFailed)
+    Http.post "/auth/login" model.LoginDto (fun _ -> LoginSuccess) LoginFailed
 
 open Elmish
 
 let init () = 
     { LoginDto = { Username = ""; Password = ""; Trusted = false };
       Waiting = false;
-      ErrorMessage = None }, Cmd.none
+      ErrorMsg = None }, Cmd.none
 
 let update (msg: Msg) model : Model * Cmd<Msg> = 
     match msg with
     | ChangeUsername username ->
-        { model with LoginDto = { model.LoginDto with Username = username } }, Cmd.none
+        { model with LoginDto = { model.LoginDto with Username = username }; ErrorMsg = None }, Cmd.none
 
     | ChangePassword password ->
-        { model with LoginDto = { model.LoginDto with Password = password } }, Cmd.none
+        { model with LoginDto = { model.LoginDto with Password = password }; ErrorMsg = None }, Cmd.none
 
     | ChangeTrusted trusted -> 
-        { model with LoginDto = { model.LoginDto with Trusted = trusted } }, Cmd.none
+        { model with LoginDto = { model.LoginDto with Trusted = trusted }; ErrorMsg = None }, Cmd.none
 
     | Login _ ->
-        { model with Waiting = true }, Cmd.OfPromise.result (login model)
+        { model with Waiting = true; ErrorMsg = None }, Cmd.OfPromise.result (login model)
 
     | LoginSuccess ->
-        { model with Waiting = false}, Cmd.none
+        { model with Waiting = false; ErrorMsg = None }, Cmd.none
 
     | LoginFailed s -> 
-        { model with Waiting = false; ErrorMessage = s }, Cmd.none
+        { model with Waiting = false; ErrorMsg = Some s }, Cmd.none
 
+open System
 open Elements
 open Fable.React
 open Fable.React.Props
-open System
 
 let view (model: Model) (dispatch: Msg -> unit) = 
     let loginDisabled = String.IsNullOrEmpty(model.LoginDto.Username) || String.IsNullOrEmpty(model.LoginDto.Password) || model.Waiting
 
     div [] [
         h3 [] [ str "Welcome back!" ]
+           
+        errorBox model.ErrorMsg
 
         div [] [
             label [ HtmlFor "username" ] [ str "Username" ]

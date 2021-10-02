@@ -47,3 +47,17 @@ let checkbox id onChangeEvent isChecked =
         OnChange (fun ev -> onChangeEvent (unbox<bool> ev?target?``checked``))
         Checked isChecked
     ]
+
+type MsgLevel = 
+    | Info 
+    | Warning
+    | Error 
+
+let msgBox (msg: string option) msgLevel =
+    div [ 
+        ClassName "msg-box"
+        Style [ Visibility (if Option.isSome msg then "visible" else "collapse")  ]
+    ] [ str (Option.defaultValue "" msg) ]
+
+let errorBox msg = 
+    msgBox msg MsgLevel.Error
