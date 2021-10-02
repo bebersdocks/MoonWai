@@ -45,19 +45,25 @@ namespace MoonWai.Api
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            string clientPath = null;
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+
+                clientPath = Path.GetFullPath(Path.Combine(env.ContentRootPath, "..", "MoonWai.Elmish", "public"));
             }
             else
             {
                 app.UseExceptionHandler("/Error/Exception");
                 app.UseHsts();
+
+                clientPath = Path.Combine(env.ContentRootPath, "wwwroot", "dist");
             }
 
             app.UseHttpsRedirection();
 
-            var fileProvider = new PhysicalFileProvider(Path.Combine(env.ContentRootPath, "wwwroot", "dist"));
+            var fileProvider = new PhysicalFileProvider(clientPath);
             app.UseDefaultFiles(new DefaultFilesOptions
             {
                 FileProvider = fileProvider,
