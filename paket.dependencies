@@ -1,7 +1,7 @@
 source https://api.nuget.org/v3/index.json
 
 storage: none
-framework: net5.0, netstandard2.0, netstandard2.1
+framework: net5.0, netstandard2.0
 
 nuget Fable.Browser.Dom
 nuget Fable.Core
@@ -13,5 +13,4 @@ nuget Fable.React
 nuget linq2db
 nuget Microsoft.AspNetCore.SpaServices.Extensions
 nuget Npgsql
-nuget Thoth.Fetch
 nuget Thoth.Json
