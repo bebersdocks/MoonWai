@@ -80,8 +80,8 @@ namespace MoonWai.Api.Controllers
             if (string.IsNullOrEmpty(registerDto.Password))
                 return BadRequest(TranslationId.PasswordCantBeEmpty);
 
-            if (registerDto.Password.Length < 8)
-                return BadRequest(TranslationId.PasswordLengthCantBeLessThan, 8);
+            if (registerDto.Password.Length < Constants.MIN_PASSWORD_LENGTH)
+                return BadRequest(TranslationId.PasswordLengthCantBeLessThan, Constants.MIN_PASSWORD_LENGTH);
             
             (var salt, var hash) = Crypto.GenerateSaltHash(registerDto.Password);
 
@@ -98,7 +98,7 @@ namespace MoonWai.Api.Controllers
             
             var userSettings = new UserSettings();
 
-            userSettings.LanguageId = registerDto.LanguageId ?? LanguageId.English;
+            userSettings.LanguageId = registerDto.LanguageId;
 
             await dc.BeginTransactionAsync();
 

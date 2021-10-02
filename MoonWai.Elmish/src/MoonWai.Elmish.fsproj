@@ -8,6 +8,7 @@
         <Compile Include="Router.fs" />
         <Compile Include="Elements.fs" />
         <Compile Include="Pages/Home.fs" />
+        <Compile Include="Pages/Register.fs" />
         <Compile Include="Pages/Login.fs" />
         <Compile Include="Main.fs" />
     </ItemGroup>

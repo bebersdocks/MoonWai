@@ -6,11 +6,10 @@ type LoginDto = {
     Trusted: bool
 }
 
-open System
 open MoonWai.Shared.Definitions
 
 type RegisterDto = {
     Username: string 
     Password: string
-    LanguageId: Nullable<LanguageId>
+    LanguageId: LanguageId
 }

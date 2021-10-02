@@ -23,7 +23,7 @@ let inline post<'a, 'b> url (obj: 'a) (ofSuccess: string -> 'b) (ofFailure: stri
             else if resp.Status = 400 || resp.Status = 404 then 
                 return ofFailure txt
             else 
-                return ofFailure (sprintf "Request to API failed with status code %i " resp.Status)
+                return ofFailure (sprintf "Request to API failed with status code %i" resp.Status)
         with 
         | exn -> return ofFailure exn.Message
     }
