@@ -4,6 +4,7 @@
         <TargetFramework>net5.0</TargetFramework>
     </PropertyGroup>
     <ItemGroup>
+        <Compile Include="Http.fs" />
         <Compile Include="Router.fs" />
         <Compile Include="Elements.fs" />
         <Compile Include="Pages/Home.fs" />

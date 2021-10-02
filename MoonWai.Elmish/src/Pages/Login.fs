@@ -16,25 +16,8 @@ type Msg =
     | LoginSuccess
     | LoginFailed of exn
 
-open Fable.Core.JsInterop
-open Fetch.Types
-open System
-open Thoth.Json
-
 let login (model: Model) = 
-    promise { 
-        let body = Encode.Auto.toString<LoginDto>(0, model.LoginDto)
-
-        let props = [ 
-            Method HttpMethod.POST
-            Fetch.requestHeaders [ ContentType "application/json" ]
-            Body !^body 
-        ]
-
-        let! _ = Fetch.fetch "/auth/login" props   
-         
-        return LoginSuccess
-    }
+    Http.post "/auth/login" model.LoginDto (fun _ -> LoginSuccess)
 
 open Elmish
 
@@ -67,6 +50,7 @@ let update (msg: Msg) model : Model * Cmd<Msg> =
 open Elements
 open Fable.React
 open Fable.React.Props
+open System
 
 let view (model: Model) (dispatch: Msg -> unit) = 
     let loginDisabled = String.IsNullOrEmpty(model.LoginDto.Username) || String.IsNullOrEmpty(model.LoginDto.Password) || model.Waiting
@@ -76,17 +60,17 @@ let view (model: Model) (dispatch: Msg -> unit) =
 
         div [] [
             label [ HtmlFor "username" ] [ str "Username" ]
-            Elements.input "username" "text" "Username" model.LoginDto.Username (fun x -> dispatch (ChangeUsername x)) true
+            Elements.input "username" "text" "Username" model.LoginDto.Username (ChangeUsername >> dispatch) true
         ]
 
         div [] [
             label [ HtmlFor "password" ] [ str "Password" ]
-            Elements.input "password" "password" "Password" model.LoginDto.Password (fun x -> dispatch (ChangePassword x)) false
+            Elements.input "password" "password" "Password" model.LoginDto.Password (ChangePassword >> dispatch) false
         ]
 
         div [] [
             label [ HtmlFor "trusted" ] [ str "Trusted Computer" ]
-            checkbox "trusted" (fun x -> dispatch (ChangeTrusted x)) model.LoginDto.Trusted
+            checkbox "trusted" (ChangeTrusted >> dispatch) model.LoginDto.Trusted
         ]
 
         Elements.button (fun _ -> dispatch Login) "Log In" loginDisabled
