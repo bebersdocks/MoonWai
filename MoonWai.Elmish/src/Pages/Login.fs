@@ -5,7 +5,7 @@ open MoonWai.Shared.Auth
 type Model = {
     LoginDto: LoginDto
     Waiting: bool
-    ErrMsg: string
+    ErrorMessage: string option
 }
     
 type Msg = 
@@ -14,17 +14,17 @@ type Msg =
     | ChangeTrusted of bool
     | Login
     | LoginSuccess
-    | LoginFailed of exn
+    | LoginFailed of string option
 
 let login (model: Model) = 
-    Http.post "/auth/login" model.LoginDto (fun _ -> LoginSuccess)
+    Http.post "/auth/login" model.LoginDto (fun _ -> LoginSuccess) (Some >> LoginFailed)
 
 open Elmish
 
 let init () = 
     { LoginDto = { Username = ""; Password = ""; Trusted = false };
       Waiting = false;
-      ErrMsg = "" }, Cmd.none
+      ErrorMessage = None }, Cmd.none
 
 let update (msg: Msg) model : Model * Cmd<Msg> = 
     match msg with
@@ -38,14 +38,13 @@ let update (msg: Msg) model : Model * Cmd<Msg> =
         { model with LoginDto = { model.LoginDto with Trusted = trusted } }, Cmd.none
 
     | Login _ ->
-        Browser.Dom.console.log "promise"
-        { model with Waiting = true }, Cmd.OfPromise.either login model (fun _ -> LoginSuccess) LoginFailed
+        { model with Waiting = true }, Cmd.OfPromise.result (login model)
 
     | LoginSuccess ->
         { model with Waiting = false}, Cmd.none
 
-    | LoginFailed exn -> 
-        { model with Waiting = false; ErrMsg = exn.Message }, Cmd.none
+    | LoginFailed s -> 
+        { model with Waiting = false; ErrorMessage = s }, Cmd.none
 
 open Elements
 open Fable.React

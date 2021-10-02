@@ -12,6 +12,7 @@
         <Compile Include="Main.fs" />
     </ItemGroup>
     <ItemGroup>
+        <ProjectReference Include="..\..\..\fable-fetch\src\Fable.Fetch.fsproj" />
         <ProjectReference Include="..\..\MoonWai.Shared\MoonWai.Shared.fsproj" />
     </ItemGroup>
     <Import Project="..\..\.paket\Paket.Restore.targets" />
