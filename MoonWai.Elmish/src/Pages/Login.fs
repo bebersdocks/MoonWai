@@ -2,10 +2,12 @@ module Pages.Login
 
 open MoonWai.Shared.Auth
 
+open Elements
+
 type Model = {
     LoginDto: LoginDto
     Waiting: bool
-    ErrorMsg: string option
+    InfoMsg: InfoMsg
 }
     
 type Msg = 
@@ -24,30 +26,29 @@ open Elmish
 let init () = 
     { LoginDto = { Username = ""; Password = ""; Trusted = false };
       Waiting = false;
-      ErrorMsg = None }, Cmd.none
+      InfoMsg = Empty }, Cmd.none
 
 let update (msg: Msg) model : Model * Cmd<Msg> = 
     match msg with
     | ChangeUsername username ->
-        { model with LoginDto = { model.LoginDto with Username = username }; ErrorMsg = None }, Cmd.none
+        { model with LoginDto = { model.LoginDto with Username = username }; InfoMsg = Empty }, Cmd.none
 
     | ChangePassword password ->
-        { model with LoginDto = { model.LoginDto with Password = password }; ErrorMsg = None }, Cmd.none
+        { model with LoginDto = { model.LoginDto with Password = password }; InfoMsg = Empty }, Cmd.none
 
     | ChangeTrusted trusted -> 
-        { model with LoginDto = { model.LoginDto with Trusted = trusted }; ErrorMsg = None }, Cmd.none
+        { model with LoginDto = { model.LoginDto with Trusted = trusted }; InfoMsg = Empty }, Cmd.none
 
     | Login _ ->
-        { model with Waiting = true; ErrorMsg = None }, Cmd.OfPromise.result (login model)
+        { model with Waiting = true; InfoMsg = Empty }, Cmd.OfPromise.result (login model)
 
     | LoginSuccess ->
-        { model with Waiting = false; ErrorMsg = None }, Cmd.none
+        { model with Waiting = false; InfoMsg = Empty }, Cmd.none
 
     | LoginFailed s -> 
-        { model with Waiting = false; ErrorMsg = Some s }, Cmd.none
+        { model with Waiting = false; InfoMsg = Error s }, Cmd.none
 
 open System
-open Elements
 open Fable.React
 open Fable.React.Props
 
@@ -56,8 +57,8 @@ let view (model: Model) (dispatch: Msg -> unit) =
 
     div [] [
         h3 [] [ str "Welcome back!" ]
-           
-        errorBox model.ErrorMsg
+        
+        msgBox model.InfoMsg
 
         div [] [
             label [ HtmlFor "username" ] [ str "Username" ]

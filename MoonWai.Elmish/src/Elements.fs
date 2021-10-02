@@ -48,16 +48,21 @@ let checkbox id onChangeEvent isChecked =
         Checked isChecked
     ]
 
-type MsgLevel = 
-    | Info 
-    | Warning
-    | Error 
+type InfoMsg =
+    | Empty
+    | Info of string
+    | Warning of string
+    | Error of string
 
-let msgBox (msg: string option) msgLevel =
-    div [ 
+let getInfoMsgStr =
+    function
+    | Empty -> None
+    | Info s -> Some s
+    | Warning s -> Some s
+    | Error s -> Some s
+
+let msgBox (infoMsg: InfoMsg) =
+    div [
         ClassName "msg-box"
-        Style [ Visibility (if Option.isSome msg then "visible" else "collapse")  ]
-    ] [ str (Option.defaultValue "" msg) ]
-
-let errorBox msg = 
-    msgBox msg MsgLevel.Error
+        Style [ Visibility (if infoMsg <> Empty then "visible" else "collapse") ]
+    ] [ str (Option.defaultValue "" (getInfoMsgStr infoMsg)) ]
