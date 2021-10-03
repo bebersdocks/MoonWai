@@ -8,7 +8,9 @@ type Model = {
     InfoMsg: InfoMsg
     Waiting: bool
 }
-    
+
+open Router
+
 type Msg =
     | ChangeUsername of string
     | ChangePassword of string
@@ -16,6 +18,7 @@ type Msg =
     | Login
     | LoginSuccess
     | LoginFailed of string
+    | GoTo of Route
 
 let login (model: Model) =
     Http.post "/auth/login" model.LoginDto (fun _ -> LoginSuccess) LoginFailed
@@ -42,10 +45,14 @@ let update (msg: Msg) model : Model * Cmd<Msg> =
         { model with Waiting = true; InfoMsg = Empty }, Cmd.OfPromise.result (login model)
 
     | LoginSuccess ->
-        { model with Waiting = false; InfoMsg = Empty }, Cmd.none
+        { model with Waiting = false; InfoMsg = Empty }, Cmd.ofMsg (GoTo Home)
 
     | LoginFailed s ->
         { model with Waiting = false; InfoMsg = Error s }, Cmd.none
+
+    | GoTo route ->
+        setRoute route
+        model, Cmd.none
 
 open System
 open Fable.React
@@ -74,5 +81,8 @@ let view (model: Model) (dispatch: Msg -> unit) =
             checkbox "trusted" (ChangeTrusted >> dispatch) model.LoginDto.Trusted
         ]
 
-        Elements.button (fun _ -> dispatch Login) "Log In" loginDisabled
+        div [] [
+            Elements.button (fun _ -> dispatch Login) "Log In" loginDisabled
+            Elements.button (fun _ -> dispatch (GoTo Register)) "Register" model.Waiting
+        ]
     ]

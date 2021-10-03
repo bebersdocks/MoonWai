@@ -10,17 +10,12 @@ let button onClick s disabled =
         Disabled disabled
     ] [ str s ]
 
-open Elmish.Navigation
 open Fable.Core.JsInterop
 
 let goToUrl (e: Browser.Types.MouseEvent) =
     e.preventDefault()
-
     let href = !!e.target?href
-
-    Navigation.newUrl href 
-    |> List.map (fun f -> f ignore) 
-    |> ignore
+    Router.newUrl href
 
 let viewLink route s =
     a [ 

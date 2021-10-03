@@ -18,10 +18,10 @@ type Msg =
 open Elmish
 open Elmish.Navigation
 
-let private setRoute (optRoute: Router.Route option) model =
-    let model = { model with CurrentRoute = optRoute }
+let private initPage (route: Router.Route option) model =
+    let model = { model with CurrentRoute = route }
 
-    match optRoute with
+    match route with
     | None ->
         { model with ActivePage = NotFound }, Cmd.none
 
@@ -37,10 +37,9 @@ let private setRoute (optRoute: Router.Route option) model =
         let (loginModel, loginCmd) = Pages.Login.init ()
         { model with ActivePage = Login loginModel }, Cmd.map LoginMsg loginCmd
 
-
-let init (location : Router.Route option) =
-    setRoute location
-        { ActivePage = Home (Pages.Home.init () |> (fun (model, msg) -> model))
+let init (route : Router.Route option) =
+    initPage route
+        { ActivePage = Home (Pages.Home.init () |> (fun (model, _) -> model))
           CurrentRoute = Some Router.Route.Home }
 
 let update (msg : Msg) (model : Model) =
@@ -62,7 +61,7 @@ let update (msg : Msg) (model : Model) =
 
     | _, msg ->
         model, Cmd.none
-
+        
 open Elements
 open Fable.React
 
@@ -70,7 +69,9 @@ let view (model : Model) (dispatch : Dispatch<Msg>) =
     let pageView = 
         match model.ActivePage with
         | NotFound ->
-            str "404 Page not found"
+            div [] [
+                str "404 Page not found"
+            ]
 
         | Home homeModel ->
             Pages.Home.view homeModel (HomeMsg >> dispatch)
@@ -93,7 +94,7 @@ open Elmish.React
 open Elmish.UrlParser
 
 Program.mkProgram init update view
-|> Program.toNavigable (parsePath Router.route) setRoute
+|> Program.toNavigable (parsePath Router.route) initPage
 |> Program.withReactHydrate "elmish-app"
 |> Program.withDebugger
 |> Program.run

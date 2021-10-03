@@ -22,3 +22,13 @@ let route : Parser<Route -> Route, Route> =
         map Register (s "register")
         map Login (s "login") 
     ]
+
+open Elmish.Navigation
+
+let newUrl newUrl =     
+    Navigation.newUrl newUrl 
+    |> List.map (fun f -> f ignore) 
+    |> ignore
+
+let setRoute (route: Route) = 
+    newUrl (toPath route)

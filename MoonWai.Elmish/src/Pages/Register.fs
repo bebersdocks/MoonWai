@@ -9,7 +9,9 @@ type Model = {
     InfoMsg: InfoMsg
     Waiting: bool
 }
-    
+
+open Router
+
 type Msg =
     | ChangeUsername of string
     | ChangePassword of string
@@ -17,6 +19,7 @@ type Msg =
     | Register
     | RegisterSuccess
     | RegisterFailed of string
+    | GoTo of Route
 
 let register (model: Model) =
     Http.post "/auth/register" model.RegisterDto (fun _ -> RegisterSuccess) RegisterFailed
@@ -53,17 +56,21 @@ let update (msg: Msg) model : Model * Cmd<Msg> =
         { model with Waiting = true; InfoMsg = Empty }, Cmd.OfPromise.result (register model)
 
     | RegisterSuccess ->
-        { model with Waiting = false; InfoMsg = Empty }, Cmd.none
+        { model with Waiting = false; InfoMsg = Empty }, Cmd.ofMsg (GoTo Home)
 
     | RegisterFailed s ->
         { model with Waiting = false; InfoMsg = Error s }, Cmd.none
+
+    | GoTo route ->
+        setRoute route
+        model, Cmd.none
 
 open System
 open Fable.React
 open Fable.React.Props
 
 let view (model: Model) (dispatch: Msg -> unit) =
-    let registerDisabled = 
+    let registerDisabled =
         String.IsNullOrEmpty(model.RegisterDto.Username) || 
         String.IsNullOrEmpty(model.RegisterDto.Password) || 
         model.RegisterDto.Password.Length < Constants.MIN_PASSWORD_LENGTH ||
