@@ -11,19 +11,16 @@
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
-            "problemMatcher": "$msCompile",
+            "problemMatcher": "$msCompile"
         },
         {
-            "label": "publish",
-            "command": "dotnet",
-            "type": "process",
-            "args": [
-                "publish",
-                "${workspaceFolder}/MoonWai.Api/MoonWai.Api.csproj",
-                "/property:GenerateFullPaths=true",
-                "/consoleloggerparameters:NoSummary"
-            ],
-            "problemMatcher": "$msCompile"
+            "label": "buildElmish",
+            "command": "npm",
+            "type": "shell",
+            "args": [ "run", "build"],
+            "options": {
+                "cwd": "${workspaceFolder}/MoonWai.Elmish"
+            },
         },
         {
             "label": "watch",
@@ -39,7 +36,7 @@
             "problemMatcher": "$msCompile"
         },
         {
-            "label": "Watch Client",
+            "label": "watchElmish",
             "command": "npm",
             "args": [ "run", "start" ],
             "type": "shell",

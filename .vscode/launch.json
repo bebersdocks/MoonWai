@@ -1,23 +1,8 @@
 {
-    // Use IntelliSense to learn about possible attributes.
-    // Hover to view descriptions of existing attributes.
-    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Elmish",
-            "type": "chrome",
-            "request": "launch",
-            "preLaunchTask": "Watch Client",
-            "url": "http://localhost:5000",
-            "webRoot": "${workspaceFolder}/src/Client",
-            "sourceMaps": true,
-            "sourceMapPathOverrides": {
-                "webpack:///*": "${workspaceFolder}/MoonWai.Elmish/src/*",
-            }
-        },
-        {
-            "name": ".NET Core Launch (web)",
+            "name": ".NETCore Launch",
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
@@ -37,9 +22,16 @@
             }
         },
         {
-            "name": ".NET Core Attach",
-            "type": "coreclr",
-            "request": "attach"
-        }
+            "name": "Elmish Launch",
+            "type": "chrome",
+            "request": "launch",
+            "preLaunchTask": "watchElmish",
+            "url": "http://localhost:5000",
+            "webRoot": "${workspaceFolder}/MoonWai.Elmish/public",
+            "sourceMaps": true,
+            "sourceMapPathOverrides": {
+                "webpack:///*": "${workspaceFolder}/MoonWai.Elmish/src/*",
+            }
+        },
     ]
 }
