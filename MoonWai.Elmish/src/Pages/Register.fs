@@ -33,8 +33,15 @@ let init () =
       InfoMsg = Empty;
       Waiting = false }, Cmd.none
 
+open System
+
 let update (msg: Msg) model : Model * Cmd<Msg> =
     match msg with
+    | ChangeUsername username when String.IsNullOrEmpty(username) ->
+        { model with 
+            RegisterDto = { model.RegisterDto with Username = username }; 
+            InfoMsg = Info "Username can't be empty" }, Cmd.none
+
     | ChangeUsername username ->
         { model with RegisterDto = { model.RegisterDto with Username = username }; InfoMsg = Empty }, Cmd.none
 
@@ -42,6 +49,9 @@ let update (msg: Msg) model : Model * Cmd<Msg> =
         { model with
             RegisterDto = { model.RegisterDto with Password = password };
             InfoMsg = Info (sprintf "Password length can't be less than %i" Constants.MIN_PASSWORD_LENGTH) }, Cmd.none
+
+    | ChangePassword password when not (model.RegisterDto.Password.Equals(password)) ->
+        { model with RegisterDto = { model.RegisterDto with Password = password }; InfoMsg = Info "Passwords don't match" }, Cmd.none
 
     | ChangePassword password ->
         { model with RegisterDto = { model.RegisterDto with Password = password }; InfoMsg = Empty }, Cmd.none
@@ -65,7 +75,6 @@ let update (msg: Msg) model : Model * Cmd<Msg> =
         setRoute route
         model, Cmd.none
 
-open System
 open Fable.React
 open Fable.React.Props
 
