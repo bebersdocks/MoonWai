@@ -6,6 +6,6 @@
     </PropertyGroup>
     <ItemGroup>
         <Compile Include="Definitions.fs" />
-        <Compile Include="Auth.fs" />
+        <Compile Include="Models.fs" />
     </ItemGroup>
 </Project>

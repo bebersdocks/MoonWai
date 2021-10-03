@@ -1,7 +1,7 @@
 module Pages.Register
 
 open Elements
-open MoonWai.Shared.Auth
+open MoonWai.Shared.Models
 
 type Model = {
     RegisterDto: RegisterDto

@@ -1,7 +1,7 @@
 module Pages.Login
 
 open Elements
-open MoonWai.Shared.Auth
+open MoonWai.Shared.Models
 
 type Model = {
     LoginDto: LoginDto

@@ -1,4 +1,4 @@
-namespace MoonWai.Shared.Auth
+namespace MoonWai.Shared.Models
 
 type LoginDto = {
     Username: string
@@ -12,4 +12,9 @@ type RegisterDto = {
     Username: string 
     Password: string
     LanguageId: LanguageId
+}
+
+type UserSettingsDto = {
+    LangugeId: LanguageId
+    DefaultBoardId: int
 }

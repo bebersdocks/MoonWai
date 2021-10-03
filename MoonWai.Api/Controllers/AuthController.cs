@@ -12,8 +12,8 @@ using MoonWai.Api.Resources.Translations;
 using MoonWai.Api.Utils;
 using MoonWai.Dal;
 using MoonWai.Dal.DataModels;
-using MoonWai.Shared.Auth;
 using MoonWai.Shared.Definitions;
+using MoonWai.Shared.Models;
 
 namespace MoonWai.Api.Controllers
 {
