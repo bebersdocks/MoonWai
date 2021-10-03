@@ -67,13 +67,13 @@ let view (model: Model) (dispatch: Msg -> unit) =
         msgBox model.InfoMsg
 
         div [] [
-            label [ HtmlFor "usernameLog" ] [ str "Username" ]
-            Elements.input "usernameLog" "text" "Username" model.LoginDto.Username (ChangeUsername >> dispatch) true
+            label [ HtmlFor "username" ] [ str "Username" ]
+            Elements.input "username" "text" "Username" model.LoginDto.Username (ChangeUsername >> dispatch) true
         ]
 
         div [] [
-            label [ HtmlFor "passwordLog" ] [ str "Password" ]
-            Elements.input "passwordLog" "password" "Password" model.LoginDto.Password (ChangePassword >> dispatch) false
+            label [ HtmlFor "password" ] [ str "Password" ]
+            Elements.input "password" "password" "Password" model.LoginDto.Password (ChangePassword >> dispatch) false
         ]
 
         div [] [

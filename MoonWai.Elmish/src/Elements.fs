@@ -24,12 +24,12 @@ let viewLink route s =
         OnClick goToUrl
     ] [ str s ]
 
-let input id inputType placeholder defaultValue onChangeEvent autoFocus = 
+let input id inputType placeholder value onChangeEvent autoFocus = 
     Standard.input [
         Id id
-        HTMLAttr.Type inputType
+        Type inputType
         Placeholder placeholder
-        DefaultValue defaultValue
+        Value value
         OnChange (fun ev -> onChangeEvent ev.Value)
         AutoComplete "off"
         AutoFocus autoFocus
@@ -38,7 +38,7 @@ let input id inputType placeholder defaultValue onChangeEvent autoFocus =
 let checkbox id onChangeEvent isChecked = 
     Standard.input [
         Id id
-        HTMLAttr.Type "checkbox"
+        Type "checkbox"
         OnChange (fun ev -> onChangeEvent (unbox<bool> ev?target?``checked``))
         Checked isChecked
     ]

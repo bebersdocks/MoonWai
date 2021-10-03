@@ -92,18 +92,18 @@ let view (model: Model) (dispatch: Msg -> unit) =
         msgBox model.InfoMsg
 
         div [] [
-            label [ HtmlFor "usernameReg" ] [ str "Username" ]
-            Elements.input "usernameReg" "text" "Username" model.RegisterDto.Username (ChangeUsername >> dispatch) true
+            label [ HtmlFor "username" ] [ str "Username" ]
+            Elements.input "username" "text" "Username" model.RegisterDto.Username (ChangeUsername >> dispatch) true
         ]
 
         div [] [
-            label [ HtmlFor "passwordReg" ] [ str "Password" ]
-            Elements.input "passwordReg" "password" "Password" model.RegisterDto.Password (ChangePassword >> dispatch) false
+            label [ HtmlFor "password" ] [ str "Password" ]
+            Elements.input "password" "password" "Password" model.RegisterDto.Password (ChangePassword >> dispatch) false
         ]
 
         div [] [
-            label [ HtmlFor "passwordAgainReg" ] [ str "Repeat Password" ]
-            Elements.input "passwordAgainReg" "passwordAgain" "Repeat password" model.PasswordAgain (ChangePasswordAgain >> dispatch) false
+            label [ HtmlFor "passwordAgain" ] [ str "Repeat Password" ]
+            Elements.input "passwordAgain" "passwordAgain" "Repeat password" model.PasswordAgain (ChangePasswordAgain >> dispatch) false
         ]
 
         Elements.button (fun _ -> dispatch Register) "Register" registerDisabled
