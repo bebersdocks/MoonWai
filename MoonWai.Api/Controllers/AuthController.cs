@@ -17,6 +17,8 @@ using MoonWai.Shared.Models;
 
 namespace MoonWai.Api.Controllers
 {
+    [ApiController]
+    [Route("[controller]/[action]")]
     public class AuthController : BaseController
     {
         public AuthController(ILogger<AuthController> logger) : base(logger) { }

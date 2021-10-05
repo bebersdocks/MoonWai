@@ -6,8 +6,6 @@ using MoonWai.Shared.Definitions;
 
 namespace MoonWai.Api.Controllers
 {
-    [ApiController]
-    [Route("[controller]/[action]")]
     public class BaseController : Controller
     {
         protected readonly ILogger<BaseController> logger;
