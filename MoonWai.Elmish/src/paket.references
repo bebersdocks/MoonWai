@@ -4,5 +4,6 @@ Fable.Elmish
 Fable.Elmish.Browser
 Fable.Elmish.Debugger
 Fable.Elmish.React
+Fable.Fetch
 Fable.React
 Thoth.Json

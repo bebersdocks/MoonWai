@@ -9,6 +9,7 @@ nuget Fable.Elmish
 nuget Fable.Elmish.Browser
 nuget Fable.Elmish.Debugger
 nuget Fable.Elmish.React
+nuget Fable.Fetch
 nuget Fable.React
 nuget linq2db
 nuget Microsoft.AspNetCore.SpaServices.Extensions

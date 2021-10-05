@@ -15,7 +15,7 @@ let inline post<'a, 'b> url (obj: 'a) (ofSuccess: string -> 'b) (ofFailure: stri
         ]
 
         try
-            let! resp = fetch url props
+            let! resp = fetchUnsafe url props
             let! txt = resp.text()
 
             if resp.Ok then 
