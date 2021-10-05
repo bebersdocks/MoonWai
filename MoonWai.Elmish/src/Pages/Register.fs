@@ -19,7 +19,6 @@ type Msg =
     | Register
     | RegisterSuccess
     | RegisterFailed of string
-    | GoTo of Route
 
 let register (model: Model) =
     Http.post "/auth/register" model.RegisterDto (fun _ -> RegisterSuccess) RegisterFailed
@@ -66,14 +65,11 @@ let update (msg: Msg) model : Model * Cmd<Msg> =
         { model with Waiting = true; InfoMsg = Empty }, Cmd.OfPromise.result (register model)
 
     | RegisterSuccess ->
-        { model with Waiting = false; InfoMsg = Empty }, Cmd.ofMsg (GoTo Home)
+        setRoute Home
+        { model with Waiting = false; InfoMsg = Empty }, Cmd.none
 
     | RegisterFailed s ->
         { model with Waiting = false; InfoMsg = Error s }, Cmd.none
-
-    | GoTo route ->
-        setRoute route
-        model, Cmd.none
 
 open Fable.React
 open Fable.React.Props
