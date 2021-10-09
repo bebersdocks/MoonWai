@@ -44,10 +44,10 @@ let update (msg: Msg) model : Model * Cmd<Msg> =
     | ChangeUsername username ->
         { model with RegisterDto = { model.RegisterDto with Username = username }; InfoMsg = Empty }, Cmd.none
 
-    | ChangePassword password when password.Length < Constants.MIN_PASSWORD_LENGTH ->
+    | ChangePassword password when password.Length < Common.minPasswordLength ->
         { model with
             RegisterDto = { model.RegisterDto with Password = password };
-            InfoMsg = Info (sprintf "Password length can't be less than %i" Constants.MIN_PASSWORD_LENGTH) }, Cmd.none
+            InfoMsg = Info (sprintf "Password length can't be less than %i" Common.minPasswordLength) }, Cmd.none
 
     | ChangePassword password when not (model.RegisterDto.Password.Equals(password)) ->
         { model with RegisterDto = { model.RegisterDto with Password = password }; InfoMsg = Info "Passwords don't match" }, Cmd.none
@@ -78,7 +78,7 @@ let view (model: Model) (dispatch: Msg -> unit) =
     let registerDisabled =
         String.IsNullOrEmpty(model.RegisterDto.Username) || 
         String.IsNullOrEmpty(model.RegisterDto.Password) || 
-        model.RegisterDto.Password.Length < Constants.MIN_PASSWORD_LENGTH ||
+        model.RegisterDto.Password.Length < Common.minPasswordLength ||
         not (model.RegisterDto.Password.Equals(model.PasswordAgain)) ||
         model.Waiting
 
