@@ -99,7 +99,7 @@ let view (model: Model) (dispatch: Msg -> unit) =
 
         div [] [
             label [ HtmlFor "passwordAgain" ] [ str "Repeat Password" ]
-            Elements.input "passwordAgain" "passwordAgain" "Repeat password" model.PasswordAgain (ChangePasswordAgain >> dispatch) false
+            Elements.input "passwordAgain" "password" "Repeat password" model.PasswordAgain (ChangePasswordAgain >> dispatch) false
         ]
 
         Elements.button (fun _ -> dispatch Register) "Register" registerDisabled
