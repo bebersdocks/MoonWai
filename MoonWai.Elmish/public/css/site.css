@@ -1,0 +1,50 @@
+@font-face {
+    font-family: "IBMPlexMono-Light";
+    src: url("../fonts/IBMPlexMono-Light.woff2") format('woff2');
+}
+
+body {
+    background: linear-gradient(
+        100deg, 
+        rgb(244, 254, 255) 0%, 
+        white);
+    font-family: "IBMPlexMono-Light";
+    font-size: 15px;
+}
+
+label {
+    height: 20px;
+    width: 150px;
+    margin-top: 10px;
+    margin-left: 10px;
+    text-align: left;
+    margin-right: 7px;
+    float: left;
+}
+
+input {
+    height: 20px;
+    width: 250px;
+    border: 1px solid rgb(184, 197, 233);
+    margin-top: 10px;
+    border-radius: 4px;
+}
+
+input:focus {
+    outline-color: rgb(176, 196, 252);
+}
+
+div.registerBox,
+div.loginBox {
+    border: 1px solid rgb(184, 197, 233);
+    border-radius: 5px;
+    padding: 25px;
+    text-align: center;
+    width: fit-content; 
+    margin: 0;
+    position: absolute;
+    top: 35%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
