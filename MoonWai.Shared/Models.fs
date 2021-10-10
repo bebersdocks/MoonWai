@@ -14,7 +14,7 @@ type RegisterDto = {
     LanguageId: LanguageId
 }
 
-type UserSettingsDto = {
-    LanguageId: LanguageId
-    DefaultBoardId: int
-}
+type UserSettingsDto(languageId: LanguageId, defaultBoardPath: string) = class
+    member x.LanguageId = languageId
+    member x.DefaultBoardPath = defaultBoardPath
+end

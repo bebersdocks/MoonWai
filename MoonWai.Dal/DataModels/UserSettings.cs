@@ -18,6 +18,9 @@ namespace MoonWai.Dal.DataModels
         [Association(ThisKey="UserId", OtherKey="UserId", CanBeNull=false)]
         public User User { get; set; }
 
+        [Association(ThisKey="DefaultBoardId", OtherKey="BoardId", CanBeNull=false)]
+        public Board DefaultBoard { get; set; }
+
         #endregion
     }
 }

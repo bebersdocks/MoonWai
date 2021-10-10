@@ -53,7 +53,7 @@ namespace MoonWai.Api.Controllers
 
             var user = await
                 dc.Users
-                    .LoadWith(i => i.Settings)
+                    .LoadWith(i => i.Settings.DefaultBoard)
                     .FirstOrDefaultAsync(i => i.Username == loginDto.Username);
 
             if (user == null)
@@ -68,7 +68,7 @@ namespace MoonWai.Api.Controllers
 
             await Login(user, trusted: loginDto.Trusted);
 
-            return Ok(user.Settings);
+            return Ok(new UserSettingsDto(user.Settings.LanguageId, user.Settings.DefaultBoard.Path));
         }
 
         [HttpPost]
@@ -113,6 +113,7 @@ namespace MoonWai.Api.Controllers
                 return BadRequest(TranslationId.FailedToCreateNewUser);
 
             userSettings.UserId = userId;
+            userSettings.DefaultBoardId = Common.defaultBoardId;
 
             if (await dc.InsertAsync(userSettings) <= 0)
                 return BadRequest(TranslationId.FailedToCreateUserSettings);
@@ -121,7 +122,9 @@ namespace MoonWai.Api.Controllers
 
             await Login(newUser);
 
-            return Ok(userSettings);
+            var defaultBoard = await dc.Boards.FirstAsync(i => i.BoardId == Common.defaultBoardId);
+
+            return Ok(new UserSettingsDto(userSettings.LanguageId, defaultBoard.Path));
         }
 
         [HttpPost]
