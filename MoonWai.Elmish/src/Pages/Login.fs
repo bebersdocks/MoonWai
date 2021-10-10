@@ -5,6 +5,7 @@ open MoonWai.Shared.Models
 
 type Model = {
     LoginDto: LoginDto
+    UserSettings: UserSettingsDto option
     InfoMsg: InfoMsg
     Waiting: bool
 }
@@ -16,18 +17,26 @@ type Msg =
     | ChangePassword of string
     | ChangeTrusted of bool
     | Login
-    | LoginSuccess
+    | LoginSuccess of UserSettingsDto
     | LoginFailed of string
 
+open Thoth.Json
+
 let login (model: Model) =
-    Http.post "/auth/login" model.LoginDto (fun _ -> LoginSuccess) LoginFailed
+    let ofSuccess json =
+        match Decode.Auto.fromString<UserSettingsDto>(json, caseStrategy=CamelCase) with
+        | Ok userSettings -> LoginSuccess userSettings
+        | Result.Error e -> LoginFailed e
+
+    Http.post "/auth/login" model.LoginDto ofSuccess LoginFailed
 
 open Elmish
 
-let init () =
+let init userSettings =
     { LoginDto = { Username = ""; Password = ""; Trusted = false };
-      Waiting = false;
-      InfoMsg = Empty }, Cmd.none
+      UserSettings = userSettings
+      InfoMsg = Empty;
+      Waiting = false; }, Cmd.none
 
 let update (msg: Msg) model : Model * Cmd<Msg> =
     match msg with
@@ -43,9 +52,9 @@ let update (msg: Msg) model : Model * Cmd<Msg> =
     | Login _ ->
         { model with Waiting = true; InfoMsg = Empty }, Cmd.OfPromise.result (login model)
 
-    | LoginSuccess ->
+    | LoginSuccess userSettings ->
         setRoute Home
-        { model with Waiting = false; InfoMsg = Empty }, Cmd.none
+        { model with UserSettings = Some userSettings; Waiting = false; InfoMsg = Empty }, Cmd.none
 
     | LoginFailed s ->
         { model with Waiting = false; InfoMsg = Error s }, Cmd.none

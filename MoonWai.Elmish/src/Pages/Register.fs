@@ -5,6 +5,7 @@ open MoonWai.Shared.Models
 
 type Model = {
     RegisterDto: RegisterDto
+    UserSettings: UserSettingsDto option
     PasswordAgain: string option
     InfoMsg: InfoMsg
     Waiting: bool
@@ -17,17 +18,25 @@ type Msg =
     | ChangePassword of string
     | ChangePasswordAgain of string
     | Register
-    | RegisterSuccess
+    | RegisterSuccess of UserSettingsDto
     | RegisterFailed of string
 
+open Thoth.Json
+
 let register (model: Model) =
-    Http.post "/auth/register" model.RegisterDto (fun _ -> RegisterSuccess) RegisterFailed
+    let ofSuccess json =
+        match Decode.Auto.fromString<UserSettingsDto>(json, caseStrategy=CamelCase) with
+        | Ok userSettings -> RegisterSuccess userSettings
+        | Result.Error e -> RegisterFailed e
+
+    Http.post "/auth/register" model.RegisterDto ofSuccess RegisterFailed
 
 open Elmish
 open MoonWai.Shared.Definitions
 
-let init () =
+let init userSettings =
     { RegisterDto = { Username = ""; Password = ""; LanguageId = LanguageId.English };
+      UserSettings = userSettings;
       PasswordAgain = None;
       InfoMsg = Empty;
       Waiting = false }, Cmd.none
@@ -64,9 +73,9 @@ let update (msg: Msg) model : Model * Cmd<Msg> =
     | Register ->
         { model with Waiting = true; InfoMsg = Empty }, Cmd.OfPromise.result (register model)
 
-    | RegisterSuccess ->
+    | RegisterSuccess userSettings ->
         setRoute Home
-        { model with Waiting = false; InfoMsg = Empty }, Cmd.none
+        { model with UserSettings = Some userSettings; Waiting = false; InfoMsg = Empty }, Cmd.none
 
     | RegisterFailed s ->
         { model with Waiting = false; InfoMsg = Error s }, Cmd.none
