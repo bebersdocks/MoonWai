@@ -1,7 +1,7 @@
 module Main
 
 type Page =
-    | Home of Pages.Home.Model
+    | Board of Pages.Board.Model
     | Register of Pages.Register.Model
     | Login of Pages.Login.Model
     | NotFound
@@ -11,7 +11,7 @@ type Model =
       CurrentRoute : Router.Route option }
 
 type Msg =
-    | HomeMsg of Pages.Home.Msg
+    | BoardMsg of Pages.Board.Msg
     | RegisterMsg of Pages.Register.Msg
     | LoginMsg of Pages.Login.Msg
 
@@ -25,31 +25,33 @@ let private initPage (route: Router.Route option) model =
     | None ->
         { model with ActivePage = NotFound }, Cmd.none
 
-    | Some Router.Route.Home ->
-        let (homeModel, homeCmd) = Pages.Home.init ()
-        { model with ActivePage = Home homeModel }, Cmd.map HomeMsg homeCmd
+    | Some (Router.Route.Board boardPath) ->
+        let (boardModel, boardCmd) = Pages.Board.initByPath boardPath
+        { model with ActivePage = Board boardModel }, Cmd.map BoardMsg boardCmd
 
     | Some Router.Route.Register -> 
-        let (registerModel, registerCmd) = Pages.Register.init () 
+        let (registerModel, registerCmd) = Pages.Register.init None
         { model with ActivePage = Register registerModel }, Cmd.map RegisterMsg registerCmd
 
     | Some (Router.Route.Login ) ->
-        let (loginModel, loginCmd) = Pages.Login.init ()
+        let (loginModel, loginCmd) = Pages.Login.init None
         { model with ActivePage = Login loginModel }, Cmd.map LoginMsg loginCmd
+
+open MoonWai.Shared.Definitions
 
 let init (route : Router.Route option) =
     initPage route
-        { ActivePage = Home (Pages.Home.init () |> (fun (model, _) -> model))
-          CurrentRoute = Some Router.Route.Home }
+        { ActivePage = Board (Pages.Board.initById Common.defaultBoardId  |> (fun (model, _) -> model))
+          CurrentRoute = Some (Router.Route.Board "") }
 
 let update (msg : Msg) (model : Model) =
     match model.ActivePage, msg with
     | NotFound, _ ->
         model, Cmd.none
 
-    | Home homeModel, HomeMsg homeMsg ->
-        let (homeModel, homeCmd) = Pages.Home.update homeMsg homeModel
-        { model with ActivePage = Home homeModel }, Cmd.map HomeMsg homeCmd
+    | Board boardModel, BoardMsg boardMsg ->
+        let (boardModel, boardCmd) = Pages.Board.update boardMsg boardModel
+        { model with ActivePage = Board boardModel }, Cmd.map BoardMsg boardCmd
 
     | Register registerModel, RegisterMsg registerMsg -> 
         let (registerModel, registerCmd) = Pages.Register.update registerMsg registerModel
@@ -73,8 +75,8 @@ let view (model : Model) (dispatch : Dispatch<Msg>) =
                 str "404 Page not found"
             ]
 
-        | Home homeModel ->
-            Pages.Home.view homeModel (HomeMsg >> dispatch)
+        | Board boardModel ->
+            Pages.Board.view boardModel (BoardMsg >> dispatch)
 
         | Register registerModel -> 
             Pages.Register.view registerModel (RegisterMsg >> dispatch)
@@ -85,7 +87,6 @@ let view (model : Model) (dispatch : Dispatch<Msg>) =
     div [] [ 
         viewLink Router.Route.Login "Login"
         viewLink Router.Route.Register "Register"
-        viewLink Router.Route.Home "Home"
         pageView 
     ]
 

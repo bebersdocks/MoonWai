@@ -1,4 +1,8 @@
 <translations>
+    <string id="BoardNotFound">
+        <translation languageId="en">Board not found</translation>
+        <translation languageId="ru">Доска не найдена</translation>
+    </string>
     <string id="FailedToCreateNewUser">
         <translation languageId="en">Failed to create new user</translation>
         <translation languageId="ru">Не получилось создать пользователя</translation>

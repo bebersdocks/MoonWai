@@ -74,7 +74,7 @@ let update (msg: Msg) model : Model * Cmd<Msg> =
         { model with Waiting = true; InfoMsg = Empty }, Cmd.OfPromise.result (register model)
 
     | RegisterSuccess userSettings ->
-        setRoute Home
+        setRoute (Board userSettings.DefaultBoardPath)
         { model with UserSettings = Some userSettings; Waiting = false; InfoMsg = Empty }, Cmd.none
 
     | RegisterFailed s ->

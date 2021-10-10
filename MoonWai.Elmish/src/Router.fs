@@ -3,24 +3,23 @@ module Router
 let inline (</>) a b = a + "/" + string b
 
 type Route =
-    | Home
     | Register
     | Login
+    | Board of string
 
 let toPath =
     function
-    | Home -> "/home"
     | Register -> "/register"
     | Login -> "/login"
+    | Board boardPath -> "/" + boardPath
 
 open Elmish.UrlParser
 
 let route : Parser<Route -> Route, Route> =
     oneOf [ 
-        map Home top
-        map Home (s "home")
         map Register (s "register")
         map Login (s "login") 
+        map Board str
     ]
 
 open Elmish.Navigation

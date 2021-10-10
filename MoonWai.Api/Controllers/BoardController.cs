@@ -6,7 +6,9 @@ using Microsoft.Extensions.Logging;
 
 using LinqToDB;
 
+using MoonWai.Api.Resources.Translations;
 using MoonWai.Dal;
+using MoonWai.Shared.Definitions;
 
 namespace MoonWai.Api.Controllers
 {
@@ -24,6 +26,36 @@ namespace MoonWai.Api.Controllers
             var boards = await dc.Boards.ToListAsync();
 
             return Ok(boards);
+        }
+
+        [HttpGet]
+        [Route("board/{boardId:int}/path")]
+        public async Task<IActionResult> GetBoardPath(int boardId)
+        {
+            using var dc = new Dc();
+      
+            var board = await dc.Boards.FirstOrDefaultAsync(i => i.BoardId == boardId);
+
+            if (board == null)
+                return NotFound(TranslationId.BoardNotFound);
+
+            return Ok(board.Path);
+        }
+
+        [HttpGet]
+        [Route("board/{boardPath}")]
+        public async Task<IActionResult> GetBoardThreads(string boardPath)
+        {
+            using var dc = new Dc();
+
+            var board = await dc.Boards.FirstOrDefaultAsync(i => i.Path.Equals(boardPath));
+
+            if (board == null)
+                return NotFound(TranslationId.BoardNotFound);
+
+            var threads = await dc.Threads.Where(i => i.BoardId == board.BoardId).ToListAsync();
+
+            return Ok(threads);
         }
 
         [HttpGet]

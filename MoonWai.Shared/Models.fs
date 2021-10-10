@@ -18,3 +18,11 @@ type UserSettingsDto(languageId: LanguageId, defaultBoardPath: string) = class
     member x.LanguageId = languageId
     member x.DefaultBoardPath = defaultBoardPath
 end
+
+open System
+
+type ThreadDto = {
+    Title: string 
+    Message: string
+    CreateDt: DateTime
+}
