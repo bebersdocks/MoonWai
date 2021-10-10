@@ -12,5 +12,12 @@ namespace MoonWai.Dal.DataModels
         [Column,      NotNull] public byte[]    PasswordHash { get; set; }
         [Column,      NotNull] public DateTime  CreateDt     { get; set; }
         [Column,     Nullable] public DateTime? LastAccessDt { get; set; }
+
+        #region Associations
+
+        [Association(ThisKey="UserId", OtherKey="UserId", CanBeNull=false)]
+        public UserSettings Settings { get; set; }
+
+        #endregion
     }
 }

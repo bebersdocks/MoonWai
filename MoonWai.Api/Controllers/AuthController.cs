@@ -51,7 +51,10 @@ namespace MoonWai.Api.Controllers
 
             using var dc = new Dc();
 
-            var user = await dc.Users.FirstOrDefaultAsync(i => i.Username == loginDto.Username);
+            var user = await
+                dc.Users
+                    .LoadWith(i => i.Settings)
+                    .FirstOrDefaultAsync(i => i.Username == loginDto.Username);
 
             if (user == null)
                 return NotFound(TranslationId.UserNotFound);
@@ -65,7 +68,7 @@ namespace MoonWai.Api.Controllers
 
             await Login(user, trusted: loginDto.Trusted);
 
-            return Ok();
+            return Ok(user.Settings);
         }
 
         [HttpPost]
@@ -118,7 +121,7 @@ namespace MoonWai.Api.Controllers
 
             await Login(newUser);
 
-            return Ok();
+            return Ok(userSettings);
         }
 
         [HttpPost]
