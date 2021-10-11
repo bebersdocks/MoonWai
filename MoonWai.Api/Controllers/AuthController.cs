@@ -60,7 +60,7 @@ namespace MoonWai.Api.Controllers
                 return NotFound(TranslationId.UserNotFound);
 
             if (!Crypto.ValidatePassword(loginDto.Password, user.PasswordSalt, user.PasswordHash))
-                return BadRequest(TranslationId.WrongPassword);
+                return LogonFailed(TranslationId.WrongPassword);
 
             user.LastAccessDt = DateTime.UtcNow;
 
@@ -80,7 +80,7 @@ namespace MoonWai.Api.Controllers
             using var dc = new Dc();
             
             if (await dc.Users.AnyAsync(i => i.Username == registerDto.Username))
-                return BadRequest(TranslationId.UserIsAlreadyRegistered);
+                return Conflict(TranslationId.UserIsAlreadyRegistered);
 
             if (string.IsNullOrEmpty(registerDto.Password))
                 return BadRequest(TranslationId.PasswordCantBeEmpty);
@@ -110,13 +110,13 @@ namespace MoonWai.Api.Controllers
             var userId = await dc.InsertWithInt32IdentityAsync(newUser);
 
             if (userId <= 0)
-                return BadRequest(TranslationId.FailedToCreateNewUser);
+                return ServerError(TranslationId.FailedToCreateNewUser);
 
             userSettings.UserId = userId;
             userSettings.DefaultBoardId = Common.defaultBoardId;
 
             if (await dc.InsertAsync(userSettings) <= 0)
-                return BadRequest(TranslationId.FailedToCreateUserSettings);
+                return ServerError(TranslationId.FailedToCreateUserSettings);
    
             await dc.CommitTransactionAsync();
 
