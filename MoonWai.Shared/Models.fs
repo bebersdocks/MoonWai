@@ -14,10 +14,10 @@ type RegisterDto = {
     LanguageId: LanguageId
 }
 
-type UserSettingsDto(languageId: LanguageId, defaultBoardPath: string) = class
-    member x.LanguageId = languageId
-    member x.DefaultBoardPath = defaultBoardPath
-end
+type UserSettingsDto = {
+    LanguageId: LanguageId
+    DefaultBoardPath: string
+}
 
 open System
 
