@@ -9,13 +9,13 @@ open MoonWai.Shared.Models
 
 type Model = {
     BoardIdentifier: BoardIdentifier
-    Threads: ThreadDto seq
+    Threads: ThreadDto list
     InfoMsg: InfoMsg
 }
     
 type Msg =
     | GetThreads
-    | RetrievedThreads of ThreadDto seq
+    | RetrievedThreads of ThreadDto list
     | FailedToRetrieveThreads of string
 
 open Elmish
@@ -26,10 +26,10 @@ let getThreads (model: Model) =
     let url = 
         match model.BoardIdentifier with 
         | Id id -> "board" </> id </> "threads"
-        | Path path -> path
+        | Path path -> "board" </> path </> "threads"
 
     let ofSuccess json =
-        match Decode.Auto.fromString<ThreadDto seq>(json, caseStrategy=CamelCase) with 
+        match Decode.Auto.fromString<ThreadDto list>(json, caseStrategy=CamelCase) with
         | Ok threads -> RetrievedThreads threads
         | Result.Error e -> FailedToRetrieveThreads e
 
@@ -54,14 +54,16 @@ let update (msg: Msg) model : Model * Cmd<Msg> =
 
 open Fable.React
 
-let threadView (thread: ThreadDto) = 
+let threadView (thread: ThreadDto) =
     li [] [ 
         div [] [ 
             str thread.Message 
-        ] 
+        ]
     ]
     
 let view (model: Model) (dispatch: Msg -> unit) =
     div [] [ 
+        msgBox model.InfoMsg
+    
         ul [] (model.Threads |> Seq.map threadView)
     ]

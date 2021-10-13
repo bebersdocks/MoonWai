@@ -43,7 +43,7 @@ namespace MoonWai.Api.Controllers
         }
 
         [HttpGet]
-        [Route("board/{boardPath}")]
+        [Route("board/{boardPath}/threads")]
         public async Task<IActionResult> GetBoardThreads(string boardPath)
         {
             using var dc = new Dc();
