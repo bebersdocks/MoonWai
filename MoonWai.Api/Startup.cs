@@ -11,6 +11,8 @@ using Microsoft.Extensions.Configuration;
 
 using MoonWai.Dal;
 
+using Serilog;
+
 namespace MoonWai.Api
 {
     public class Startup
@@ -61,6 +63,8 @@ namespace MoonWai.Api
                 clientPath = Path.Combine(env.ContentRootPath, "wwwroot", "dist");
             }
 
+            app.UseSerilogRequestLogging();
+            
             app.UseHttpsRedirection();
 
             var fileProvider = new PhysicalFileProvider(clientPath);

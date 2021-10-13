@@ -14,4 +14,9 @@ nuget Fable.React
 nuget linq2db
 nuget Microsoft.AspNetCore.SpaServices.Extensions
 nuget Npgsql
+nuget Serilog.AspNetCore
+nuget Serilog.Enrichers.Thread
+nuget Serilog.Sinks.Async
+nuget Serilog.Sinks.Console
+nuget Serilog.Sinks.File
 nuget Thoth.Json

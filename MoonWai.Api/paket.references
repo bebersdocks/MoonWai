@@ -1,2 +1,7 @@
 linq2db
 Microsoft.AspNetCore.SpaServices.Extensions
+Serilog.AspNetCore
+Serilog.Enrichers.Thread
+Serilog.Sinks.Async
+Serilog.Sinks.Console
+Serilog.Sinks.File
