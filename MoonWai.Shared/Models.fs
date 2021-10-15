@@ -21,8 +21,21 @@ type UserSettingsDto = {
 
 open System
 
+[<CLIMutable>]
+type PostDto = {
+    PostId: int
+    Message: string 
+    CreateDt: DateTime
+}
+
+open System.Collections.Generic
+
+[<CLIMutable>]
 type ThreadDto = {
-    Title: string 
+    ThreadId: int
+    Title: string
     Message: string
+    Posts: List<PostDto>
+    PostsCount: int
     CreateDt: DateTime
 }

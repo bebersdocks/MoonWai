@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 using LinqToDB.Mapping;
 
@@ -21,6 +22,9 @@ namespace MoonWai.Dal.DataModels
 
         [Association(ThisKey="UserId", OtherKey="UserId", CanBeNull=true)]
         public User User { get; set; }
+
+        [Association(ThisKey="ThreadId", OtherKey="ThreadId", CanBeNull=false)]
+        public IEnumerable<Post> Posts { get; set; }
 
         #endregion
     }

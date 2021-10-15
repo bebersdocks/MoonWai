@@ -2,6 +2,8 @@
     "BoardNotFound": "Доска не найдена",
     "FailedToCreateNewUser": "Не получилось создать пользователя",
     "FailedToCreateUserSettings": "Не получилось создать настройки пользователя",
+    "PageCantBeSmallerThanOne": "Номер страницы не может быть меньше единицы",
+    "PageSizeCantZeroOrNegative": "Размер страницы не может быть нулем или отрицательным значением",
     "PasswordCantBeEmpty": "Пароль не может быть пустым",
     "PasswordlengthCantBeLessThan": "Длина пароля не может быть меньше {0} символов",
     "UserIsAlreadyRegistered": "Пользователь уже зарегистрирован",

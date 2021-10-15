@@ -2,6 +2,8 @@
     "BoardNotFound": "Board not found",
     "FailedToCreateNewUser": "Failed to create new user",
     "FailedToCreateUserSettings": "Failed to create user settings",
+    "PageCantBeSmallerThanOne": "Page can't be smaller than one",
+    "PageSizeCantZeroOrNegative": "Page size can't be zero or negative",
     "PasswordCantBeEmpty": "Password can't be empty",
     "PasswordlengthCantBeLessThan": "Password length can't be less than {0} symbols",
     "UserIsAlreadyRegistered": "User is already registered",
