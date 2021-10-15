@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 
 using LinqToDB;
 
@@ -21,8 +20,6 @@ namespace MoonWai.Api.Controllers
     [Route("[controller]/[action]")]
     public class AuthController : BaseController
     {
-        public AuthController(ILogger<AuthController> logger) : base(logger) { }
-
         [NonAction]
         public Task Login(User user, bool trusted = false)
         {

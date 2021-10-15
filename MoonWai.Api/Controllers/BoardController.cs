@@ -3,7 +3,6 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 
 using LinqToDB;
 
@@ -17,8 +16,6 @@ namespace MoonWai.Api.Controllers
     [ApiController]
     public class BoardController : BaseController
     {
-        public BoardController(ILogger<AuthController> logger) : base(logger) { }
-
         [HttpGet]
         [Route("boards")]
         public async Task<IActionResult> GetBoards()

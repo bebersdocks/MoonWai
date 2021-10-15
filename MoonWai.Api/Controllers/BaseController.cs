@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 
 using MoonWai.Api.Resources;
 using MoonWai.Shared.Definitions;
@@ -8,10 +7,6 @@ namespace MoonWai.Api.Controllers
 {
     public class BaseController : Controller
     {
-        protected readonly ILogger<BaseController> logger;
-
-        protected BaseController(ILogger<BaseController> logger) => this.logger = logger;
-
         protected string GetTranslation(TranslationId translationId, params object[] args)
         {
             var languageId = LanguageId.English;// TODO
