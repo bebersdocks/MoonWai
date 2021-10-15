@@ -28,8 +28,8 @@ namespace MoonWai.Api.Controllers
         {
             var claims = new Claim[]
             {   
-                new("UserId", user.UserId.ToString()),
-                new(ClaimTypes.Name, user.Username) 
+                new(ClaimTypes.Name, user.Username),
+                new(ClaimTypes.NameIdentifier, user.UserId.ToString())
             };
 
             var claimsIdentity = new ClaimsIdentity(claims, Program.defaultAuthenticationScheme);
