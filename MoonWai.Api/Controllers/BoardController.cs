@@ -6,7 +6,7 @@ using Microsoft.Extensions.Logging;
 
 using LinqToDB;
 
-using MoonWai.Api.Resources.Translations;
+using MoonWai.Api.Resources;
 using MoonWai.Dal;
 using MoonWai.Shared.Definitions;
 

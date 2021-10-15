@@ -1,0 +1,11 @@
+{
+    "BoardNotFound": "Доска не найдена",
+    "FailedToCreateNewUser": "Не получилось создать пользователя",
+    "FailedToCreateUserSettings": "Не получилось создать настройки пользователя",
+    "PasswordCantBeEmpty": "Пароль не может быть пустым",
+    "PasswordlengthCantBeLessThan": "Длина пароля не может быть меньше {0} символов",
+    "UserIsAlreadyRegistered": "Пользователь уже зарегистрирован",
+    "UserNotFound": "Пользователь не найден",
+    "UsernameCantBeEmpty": "Имя пользователя не может быть пустым",
+    "WrongPassword": "Неправильный пароль"
+}

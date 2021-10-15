@@ -13,6 +13,7 @@ nuget Fable.Fetch
 nuget Fable.React
 nuget linq2db
 nuget Microsoft.AspNetCore.SpaServices.Extensions
+nuget Newtonsoft.Json
 nuget Npgsql
 nuget Serilog.AspNetCore
 nuget Serilog.Enrichers.Thread

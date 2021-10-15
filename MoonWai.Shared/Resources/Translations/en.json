@@ -1,0 +1,11 @@
+{
+    "BoardNotFound": "Board not found",
+    "FailedToCreateNewUser": "Failed to create new user",
+    "FailedToCreateUserSettings": "Failed to create user settings",
+    "PasswordCantBeEmpty": "Password can't be empty",
+    "PasswordlengthCantBeLessThan": "Password length can't be less than {0} symbols",
+    "UserIsAlreadyRegistered": "User is already registered",
+    "UserNotFound": "User not found",
+    "UsernameCantBeEmpty": "Username can't be empty",
+    "WrongPassword": "Wrong password"
+}

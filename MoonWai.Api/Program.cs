@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 
-using MoonWai.Api.Resources.Translations;
+using MoonWai.Api.Resources;
 
 using Serilog;
 
