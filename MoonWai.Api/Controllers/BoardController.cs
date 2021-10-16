@@ -58,7 +58,6 @@ namespace MoonWai.Api.Controllers
                     Title = i.Title,
                     Message = i.Message,
                     Posts = i.Posts
-                        .OrderByDescending(j => j.CreateDt)
                         .Take(postsCount)
                         .Select(j => new PostDto
                         {
