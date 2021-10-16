@@ -14,10 +14,7 @@ namespace MoonWai.Api
         
         public static void Main(string[] args)
         {
-            Log.Logger = Logging.CreateLogger();
-                
             Translations.Load();
-
             CreateHostBuilder(args).Build().Run();
         }
 

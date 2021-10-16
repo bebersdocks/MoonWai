@@ -9,6 +9,7 @@ using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Configuration;
 
+using MoonWai.Api.Utils;
 using MoonWai.Dal;
 
 using Serilog;
@@ -23,7 +24,15 @@ namespace MoonWai.Api
         {
             Configuration = configuration;
 
-            var dbSettings = configuration.GetSection("DbSettings").Get<DbSettings>();
+            var loggingSetings = configuration
+                .GetSection(nameof(LoggingSettings))
+                .Get<LoggingSettings>();
+
+            Log.Logger = Logging.CreateLogger(loggingSetings);
+
+            var dbSettings = configuration
+                .GetSection(nameof(DbSettings))
+                .Get<DbSettings>();
 
             Dc.CreateDefaultConfiguration(dbSettings);
 

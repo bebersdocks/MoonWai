@@ -4,29 +4,38 @@ using Serilog;
 using Serilog.Core;
 using Serilog.Events;
 
-public static class Logging 
+namespace MoonWai.Api.Utils
 {
-    private static string defaultTemplate = "[{Timestamp:dd-MM-yyyy HH:mm:ss.fff}] [{Level:u3}] {ThreadId} {Message}{NewLine}{Exception}";
-
-    public static Logger CreateLogger(
-        string logPath = "../_logs/",
-        LogEventLevel level = LogEventLevel.Debug,
-        LogEventLevel overrideLevel = LogEventLevel.Warning,
-        bool useConsole = true)
+    public class LoggingSettings
     {
-        return new LoggerConfiguration()
-            .Enrich.FromLogContext()
-            .Enrich.WithThreadId()
-            .MinimumLevel.Is(level)
-            .MinimumLevel.Override("System", overrideLevel)
-            .MinimumLevel.Override("Microsoft", overrideLevel)
-            .WriteTo.Async(i =>
-            {
-                if (useConsole)
-                    i.Console(level, outputTemplate: defaultTemplate);
+        public string        Path          { get; set; }
+        public LogEventLevel Level         { get; set; }
+        public LogEventLevel OverrideLevel { get; set; }
+        public bool          UseConsole    { get; set; }
+    }
 
-                i.File(logPath + DateTime.Now.ToString("dd_MM_yyyy") + ".log", outputTemplate: defaultTemplate, shared: true);
-            })
-            .CreateLogger();
+    public static class Logging 
+    {
+        private static string defaultTemplate = "[{Timestamp:dd-MM-yyyy HH:mm:ss.fff}] [{Level:u3}] {ThreadId} {Message}{NewLine}{Exception}";
+
+        public static Logger CreateLogger(LoggingSettings loggingSettings)
+        {
+            return new LoggerConfiguration()
+                .Enrich.FromLogContext()
+                .Enrich.WithThreadId()
+                .MinimumLevel.Is(loggingSettings.Level)
+                .MinimumLevel.Override("System", loggingSettings.OverrideLevel)
+                .MinimumLevel.Override("Microsoft", loggingSettings.OverrideLevel)
+                .WriteTo.Async(i =>
+                {
+                    if (loggingSettings.UseConsole)
+                        i.Console(loggingSettings.Level, outputTemplate: defaultTemplate);
+
+                    var logPath = loggingSettings.Path + "/" + DateTime.Now.ToString("dd_MM_yyyy") + ".log";
+
+                    i.File(logPath, outputTemplate: defaultTemplate, shared: true);
+                })
+                .CreateLogger();
+        }
     }
 }
