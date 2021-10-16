@@ -44,3 +44,16 @@ type ThreadDto = {
     PostsCount: int
     CreateDt: DateTime
 }
+
+type InsertThreadDto = {
+    Title: string
+    Message: string
+    BoardId: int
+    UserId: Nullable<int>
+}
+
+type UpdateThreadDto = {
+    ThreadId: int
+    Title: string 
+    Message: string
+}

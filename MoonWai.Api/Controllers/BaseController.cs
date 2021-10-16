@@ -32,8 +32,11 @@ namespace MoonWai.Api.Controllers
 
         protected IActionResult LogonFailed(TranslationId translationId, params object[] args) =>
             Failed(401, translationId, args);
-            
-        protected IActionResult NotFound(TranslationId translationId, params object[] args) => 
+
+        protected IActionResult Forbidden(TranslationId translationId, params object[] args) =>
+            Failed(403, translationId, args);
+              
+        protected IActionResult NotFound(TranslationId translationId, params object[] args) =>
             Failed(404, translationId, args);
 
         protected IActionResult Conflict(TranslationId translationId, params object[] args) =>
