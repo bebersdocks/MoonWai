@@ -11,7 +11,8 @@ public static class Logging
     public static Logger CreateLogger(
         string logPath = "../_logs/",
         LogEventLevel level = LogEventLevel.Debug,
-        LogEventLevel overrideLevel = LogEventLevel.Warning)
+        LogEventLevel overrideLevel = LogEventLevel.Warning,
+        bool useConsole = true)
     {
         return new LoggerConfiguration()
             .Enrich.FromLogContext()
@@ -21,7 +22,10 @@ public static class Logging
             .MinimumLevel.Override("Microsoft", overrideLevel)
             .WriteTo.Async(i =>
             {
-                i.File(logPath + DateTime.Now.ToString("dd_MM_yyyy") + ".log", outputTemplate: defaultTemplate);
+                if (useConsole)
+                    i.Console(level, outputTemplate: defaultTemplate);
+
+                i.File(logPath + DateTime.Now.ToString("dd_MM_yyyy") + ".log", outputTemplate: defaultTemplate, shared: true);
             })
             .CreateLogger();
     }
