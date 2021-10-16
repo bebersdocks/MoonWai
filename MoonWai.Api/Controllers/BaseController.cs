@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 
 using MoonWai.Api.Resources;
 using MoonWai.Shared.Definitions;
+using MoonWai.Shared.Models;
 
 namespace MoonWai.Api.Controllers
 {
@@ -14,26 +15,31 @@ namespace MoonWai.Api.Controllers
             return Translations.GetTranslation(languageId, translationId, args);
         }
 
-        protected IActionResult StatusCode(int statusCode, TranslationId translationId, params object[] args)
+        /// <summary>
+        /// Failed response for 4xx and 5xx status codes.
+        /// </summary>
+        protected IActionResult Failed(int statusCode, TranslationId translationId, params object[] args)
         {
             var translation = GetTranslation(translationId, args);
 
-            return StatusCode(statusCode, translation);
+            var respObj = new ErrorResponse(translation);
+
+            return StatusCode(statusCode, respObj);
         }
 
         protected IActionResult BadRequest(TranslationId translationId, params object[] args) =>
-            StatusCode(400, translationId, args);
+            Failed(400, translationId, args);
 
         protected IActionResult LogonFailed(TranslationId translationId, params object[] args) =>
-            StatusCode(401, translationId, args);
+            Failed(401, translationId, args);
             
         protected IActionResult NotFound(TranslationId translationId, params object[] args) => 
-            StatusCode(404, translationId, args);
+            Failed(404, translationId, args);
 
         protected IActionResult Conflict(TranslationId translationId, params object[] args) =>
-            StatusCode(409, translationId, args);
+            Failed(409, translationId, args);
 
         protected IActionResult ServerError(TranslationId translationId, params object[] args) =>
-            StatusCode(500, translationId, args);
+            Failed(500, translationId, args);
     }
 }

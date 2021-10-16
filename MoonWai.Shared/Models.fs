@@ -1,5 +1,10 @@
 namespace MoonWai.Shared.Models
 
+[<CLIMutable>]
+type ErrorResponse = {
+    Message: string
+}
+
 type LoginDto = {
     Username: string
     Password: string
