@@ -21,6 +21,7 @@ type RegisterDto = {
 
 type UserSettingsDto = {
     LanguageId: LanguageId
+    DefaultBoardId: int
     DefaultBoardPath: string
 }
 

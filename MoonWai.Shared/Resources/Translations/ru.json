@@ -4,6 +4,7 @@
     "FailedToCreateNewThread": "Не получилось создать новый тред",
     "FailedToCreateNewUser": "Не получилось создать пользователя",
     "FailedToCreateUserSettings": "Не получилось создать настройки пользователя",
+    "FailedToUpdateSettings": "Не получилось обновить настройки",
     "FailedToUpdateThread": "Не получилось изменить тред",
     "PageCantBeSmallerThanOne": "Номер страницы не может быть меньше единицы",
     "PageSizeCantZeroOrNegative": "Размер страницы не может быть нулем или отрицательным значением",

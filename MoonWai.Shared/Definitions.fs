@@ -10,16 +10,17 @@ type TranslationId =
     | FailedToCreateNewThread = 3
     | FailedToCreateNewUser = 4
     | FailedToCreateUserSettings = 5
-    | FailedToUpdateThread = 6
-    | PageCantBeSmallerThanOne = 7
-    | PageSizeCantZeroOrNegative = 8
-    | PasswordCantBeEmpty = 9
-    | PasswordLengthCantBeLessThan = 10
-    | ThreadNotFound = 11
-    | UserIsAlreadyRegistered = 12
-    | UserNotFound = 13
-    | UsernameCantBeEmpty = 14
-    | WrongPassword = 15
+    | FailedToUpdateSettings = 6
+    | FailedToUpdateThread = 7
+    | PageCantBeSmallerThanOne = 8
+    | PageSizeCantZeroOrNegative = 9
+    | PasswordCantBeEmpty = 10
+    | PasswordLengthCantBeLessThan = 11
+    | ThreadNotFound = 12
+    | UserIsAlreadyRegistered = 13
+    | UserNotFound = 14
+    | UsernameCantBeEmpty = 15
+    | WrongPassword = 16
 
 open System
 
