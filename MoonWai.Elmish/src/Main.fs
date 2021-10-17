@@ -66,6 +66,7 @@ let update (msg : Msg) (model : Model) =
         
 open Elements
 open Fable.React
+open Fable.React.Props
 
 let view (model : Model) (dispatch : Dispatch<Msg>) =
     let pageView = 
@@ -84,10 +85,9 @@ let view (model : Model) (dispatch : Dispatch<Msg>) =
         | Login loginModel ->
             Pages.Login.view loginModel (LoginMsg >> dispatch)
 
-    div [] [ 
-        viewLink Router.Route.Login "Login"
-        viewLink Router.Route.Register "Register"
-        pageView 
+    div [ ClassName "app" ] [
+        div [ ClassName "content" ] [ pageView ]
+        navMenu None []
     ]
 
 open Elmish.Debug

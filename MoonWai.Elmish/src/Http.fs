@@ -14,7 +14,7 @@ let inline private request<'b> url props (ofSuccess: string -> 'b) (ofFailure: s
                 return ofSuccess txt
             else
                 let errorMsg =
-                    match Decode.Auto.fromString<ErrorResponse>(txt) with 
+                    match Decode.Auto.fromString<ErrorResponse>(txt) with
                     | Ok errorObj -> errorObj.Message
                     | Error _ -> (sprintf "Request to API failed with [%i]" resp.Status)
                 return ofFailure errorMsg
@@ -26,7 +26,6 @@ let inline get<'b> url (ofSuccess: string -> 'b) (ofFailure: string -> 'b) =
     request url [ Method HttpMethod.GET ] ofSuccess ofFailure
 
 open Fable.Core.JsInterop
-open Thoth.Json
 
 let inline post<'a, 'b> url (obj: 'a) (ofSuccess: string -> 'b) (ofFailure: string -> 'b) =
     let body = Encode.Auto.toString<'a>(0, obj)

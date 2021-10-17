@@ -5,6 +5,12 @@ type ErrorResponse = {
     Message: string
 }
 
+type BoardDto = {
+    BoardId: int 
+    Page: string 
+    Name: string
+}
+
 type LoginDto = {
     Username: string
     Password: string
