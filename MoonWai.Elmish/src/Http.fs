@@ -1,6 +1,8 @@
 module Http
 
 open Fetch
+open MoonWai.Shared.Models
+open Thoth.Json
 
 let inline private request<'b> url props (ofSuccess: string -> 'b) (ofFailure: string -> 'b) =
     promise {
@@ -10,10 +12,12 @@ let inline private request<'b> url props (ofSuccess: string -> 'b) (ofFailure: s
 
             if resp.Ok then
                 return ofSuccess txt
-            else if resp.Status = 400 || resp.Status = 404 then
-                return ofFailure txt
             else
-                return ofFailure (sprintf "Request to API failed with status code %i" resp.Status)
+                let errorMsg =
+                    match Decode.Auto.fromString<ErrorResponse>(txt) with 
+                    | Ok errorObj -> errorObj.Message
+                    | Error _ -> (sprintf "Request to API failed with [%i]" resp.Status)
+                return ofFailure errorMsg
         with
         | exn -> return ofFailure exn.Message
     }
