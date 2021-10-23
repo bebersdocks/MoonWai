@@ -7,13 +7,13 @@ namespace MoonWai.Dal.DataModels
 {
     public class Thread
     {
-        [PrimaryKey, Identity] public int       ThreadId   { get; set; }
-        [Column,      NotNull] public int       BoardId    { get; set; }
-        [Column,     Nullable] public int?      UserId     { get; set; }
-        [Column,      NotNull] public string    Title      { get; set; }
-        [Column,      NotNull] public string    Message    { get; set; }
-        [Column,      NotNull] public DateTime  CreateDt   { get; set; }
-        [Column,     Nullable] public DateTime? LastEditDt { get; set; }
+        [PrimaryKey(1), NotNull] public int       ThreadId   { get; set; }
+        [PrimaryKey(2), NotNull] public int       BoardId    { get; set; }
+        [Column,       Nullable] public int?      UserId     { get; set; }
+        [Column,        NotNull] public string    Title      { get; set; }
+        [Column,        NotNull] public string    Message    { get; set; }
+        [Column,        NotNull] public DateTime  CreateDt   { get; set; }
+        [Column,       Nullable] public DateTime? LastEditDt { get; set; }
 
         #region Associations
 
