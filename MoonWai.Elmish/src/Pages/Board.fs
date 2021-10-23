@@ -1,14 +1,10 @@
 module Pages.Board
 
-type BoardIdentifier = 
-    | Id of int 
-    | Path of string
-
 open Elements
 open MoonWai.Shared.Models
 
 type Model = {
-    BoardIdentifier: BoardIdentifier
+    BoardPath: string
     Threads: ThreadDto list
     InfoMsg: InfoMsg
 }
@@ -23,10 +19,7 @@ open Router
 open Thoth.Json
 
 let getThreads (model: Model) =
-    let url = 
-        match model.BoardIdentifier with 
-        | Id id -> "board" </> id </> "threads"
-        | Path path -> "board" </> path </> "threads"
+    let url = "boards" </> model.BoardPath </> "threads"
 
     let ofSuccess json =
         match Decode.Auto.fromString<ThreadDto list>(json, caseStrategy=CamelCase) with
@@ -35,11 +28,8 @@ let getThreads (model: Model) =
 
     Http.get url ofSuccess FailedToRetrieveThreads
 
-let initById boardId =
-    { BoardIdentifier = Id boardId; Threads = []; InfoMsg = Empty }, Cmd.ofMsg GetThreads
-
-let initByPath boardPath =
-    { BoardIdentifier = Path boardPath; Threads = []; InfoMsg = Empty }, Cmd.ofMsg GetThreads
+let init boardPath =
+    { BoardPath = boardPath; Threads = []; InfoMsg = Empty }, Cmd.ofMsg GetThreads
 
 let update (msg: Msg) model : Model * Cmd<Msg> =
     match msg with

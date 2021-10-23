@@ -26,20 +26,6 @@ namespace MoonWai.Api.Controllers
             return Ok(boards);
         }
 
-        [HttpGet]
-        [Route("board/{boardId:int}/path")]
-        public async Task<IActionResult> GetBoardPath(int boardId)
-        {
-            using var dc = new Dc();
-      
-            var board = await dc.Boards.FirstOrDefaultAsync(i => i.BoardId == boardId);
-
-            if (board == null)
-                return NotFound(TranslationId.BoardNotFound);
-
-            return Ok(board.Path);
-        }
-
         [NonAction]
         private Task<List<ThreadDto>> GetThreads(Dc dc, int boardId, bool preview = true, int? page = null, int? pageSize = null)
         {   
@@ -75,7 +61,9 @@ namespace MoonWai.Api.Controllers
                 .ToListAsync(); 
         }
 
-        private async Task<IActionResult> GetBoardThreads(Dc dc, int boardId, bool preview = true, int? page = null, int? pageSize = null)
+        [HttpGet]
+        [Route("boards/{boardPath}/threads")]
+        public async Task<IActionResult> GetBoardThreads(string boardPath, bool preview = true, int? page = null, int? pageSize = null)
         {
             if ((page ?? 1) < 1)
                 return BadRequest(TranslationId.PageCantBeSmallerThanOne);
@@ -83,15 +71,6 @@ namespace MoonWai.Api.Controllers
             if ((pageSize ?? 1) < 1)
                 return BadRequest(TranslationId.PageSizeCantZeroOrNegative);
 
-            var threads = await GetThreads(dc, boardId, preview, page, pageSize);
-
-            return Ok(threads);
-        }
-
-        [HttpGet]
-        [Route("board/{boardPath}/threads")]
-        public async Task<IActionResult> GetBoardThreads(string boardPath, bool preview = true, int? page = null, int? pageSize = null)
-        {
             using var dc = new Dc();
 
             var board = await dc.Boards.FirstOrDefaultAsync(i => i.Path.Equals(boardPath));
@@ -99,21 +78,9 @@ namespace MoonWai.Api.Controllers
             if (board == null)
                 return NotFound(TranslationId.BoardNotFound);
 
-            return await GetBoardThreads(dc, board.BoardId, preview, page, pageSize);
-        }
+            var threads = await GetThreads(dc, board.BoardId, preview, page, pageSize);
 
-        [HttpGet]
-        [Route("board/{boardId:int}/threads")]
-        public async Task<IActionResult> GetBoardThreads(int boardId, bool preview = true, int? page = null, int? pageSize = null)
-        {
-            using var dc = new Dc();
-            
-            var board = await dc.Boards.FirstOrDefaultAsync(i => i.BoardId == boardId);
-
-            if (board == null)
-                return NotFound(TranslationId.BoardNotFound);
-
-            return await GetBoardThreads(dc, board.BoardId, preview, page, pageSize);
+            return Ok(threads);
         }
     }
 }
