@@ -26,7 +26,7 @@ let private initPage (route: Router.Route option) model =
         { model with ActivePage = NotFound }, Cmd.none
 
     | Some (Router.Route.Board boardPath) ->
-        let (boardModel, boardCmd) = Pages.Board.initByPath boardPath
+        let (boardModel, boardCmd) = Pages.Board.init boardPath
         { model with ActivePage = Board boardModel }, Cmd.map BoardMsg boardCmd
 
     | Some Router.Route.Register -> 
@@ -41,7 +41,7 @@ open MoonWai.Shared.Definitions
 
 let init (route : Router.Route option) =
     initPage route
-        { ActivePage = Board (Pages.Board.initById Common.defaultBoardId  |> (fun (model, _) -> model))
+        { ActivePage = Board (Pages.Board.init "" |> (fun (model, _) -> model))
           CurrentRoute = Some (Router.Route.Board "") }
 
 let update (msg : Msg) (model : Model) =

@@ -42,18 +42,32 @@ let update (msg: Msg) model : Model * Cmd<Msg> =
     | FailedToRetrieveThreads s -> 
         { model with Threads = []; InfoMsg = Error s }, Cmd.none
 
+open System
+
+let dateTimeToStr (dt: DateTime) = 
+    dt.ToLocalTime().ToString("dd/MMM/yyyy hh:mm:tt")
+
 open Fable.React
+open Fable.React.Props
+
+let postView (post: PostDto) = 
+    let idStr = sprintf "%s #%i" (dateTimeToStr post.CreateDt) post.PostId
+
+    div [ ClassName "post" ] [
+        div [ ClassName "idBox" ] [ str idStr ]
+        div [ ClassName "postMsg" ] [ str post.Message ]
+    ]
 
 let threadView (thread: ThreadDto) =
-    li [] [ 
-        div [] [ 
-            str thread.Message 
-        ]
+    let idStr = sprintf "%s %s #%i" thread.Title (dateTimeToStr thread.CreateDt) thread.ThreadId
+
+    let postsView = Seq.map postView thread.Posts
+    let view = [
+        div [ ClassName "idBox" ] [ str idStr ]
+        div [ ClassName "threadMsg" ] [ str thread.Message ]
     ]
+
+    div [ ClassName "thread" ] (Seq.append view postsView)
     
 let view (model: Model) (dispatch: Msg -> unit) =
-    div [] [ 
-        msgBox model.InfoMsg
-    
-        ul [] (model.Threads |> Seq.map threadView)
-    ]
+    div [ ClassName "board" ] (Seq.map threadView model.Threads)
