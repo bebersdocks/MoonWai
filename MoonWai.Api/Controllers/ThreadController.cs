@@ -33,7 +33,7 @@ namespace MoonWai.Api.Controllers
         }
 
         [HttpGet]
-        [Route("thread/{threadId:int}/posts")]
+        [Route("threads/{threadId:int}")]
         public async Task<IActionResult> GetThreadPosts(int threadId)
         {
             using var dc = new Dc();
@@ -49,7 +49,7 @@ namespace MoonWai.Api.Controllers
         }
 
         [HttpPost]
-        [Route("thread")]
+        [Route("threads")]
         public async Task<IActionResult> InsertThread(InsertThreadDto insertThreadDto)
         {
             using var dc = new Dc();
@@ -71,7 +71,7 @@ namespace MoonWai.Api.Controllers
         }
 
         [HttpPut]
-        [Route("thread")]
+        [Route("threads")]
         public async Task<IActionResult> UpdateThread(UpdateThreadDto updateThreadDto)
         {
             using var dc = new Dc();

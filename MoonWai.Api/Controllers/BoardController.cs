@@ -62,7 +62,7 @@ namespace MoonWai.Api.Controllers
         }
 
         [HttpGet]
-        [Route("boards/{boardPath}/threads")]
+        [Route("boards/{boardPath}")]
         public async Task<IActionResult> GetBoardThreads(string boardPath, bool preview = true, int? page = null, int? pageSize = null)
         {
             if ((page ?? 1) < 1)

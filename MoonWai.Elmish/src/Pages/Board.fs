@@ -19,7 +19,7 @@ open Router
 open Thoth.Json
 
 let getThreads (model: Model) =
-    let url = "boards" </> model.BoardPath </> "threads"
+    let url = "boards" </> model.BoardPath
 
     let ofSuccess json =
         match Decode.Auto.fromString<ThreadDto list>(json, caseStrategy=CamelCase) with
