@@ -33,7 +33,7 @@ namespace MoonWai.Api.Controllers
         }
 
         [HttpGet]
-        [Route("threads/{threadId:int}/posts")]
+        [Route("thread/{threadId:int}/posts")]
         public async Task<IActionResult> GetThreadPosts(int threadId)
         {
             using var dc = new Dc();
@@ -49,26 +49,21 @@ namespace MoonWai.Api.Controllers
         }
 
         [HttpPost]
-        [Route("threads")]
+        [Route("thread")]
         public async Task<IActionResult> InsertThread(InsertThreadDto insertThreadDto)
         {
             using var dc = new Dc();
 
             var newThread = new Thread();
-            
-            using var tr = await dc.BeginTransactionAsync();
 
-            newThread.ThreadId = dc.Threads.Where(i => i.BoardId == newThread.BoardId).Count() + 1;
             newThread.Title = insertThreadDto.Title;
             newThread.Message = insertThreadDto.Message;
             newThread.BoardId = insertThreadDto.BoardId;
             newThread.UserId = insertThreadDto.UserId;
             newThread.CreateDt = DateTime.UtcNow;
 
-            var threadId = dc.Insert(newThread);
+            var threadId = await dc.InsertWithInt32IdentityAsync(newThread);
 
-            await tr.CommitAsync();
-  
             if (threadId <= 0)
                 return ServerError(TranslationId.FailedToCreateNewThread);
 
@@ -76,7 +71,7 @@ namespace MoonWai.Api.Controllers
         }
 
         [HttpPut]
-        [Route("threads")]
+        [Route("thread")]
         public async Task<IActionResult> UpdateThread(UpdateThreadDto updateThreadDto)
         {
             using var dc = new Dc();
