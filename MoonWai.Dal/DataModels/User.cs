@@ -15,7 +15,7 @@ namespace MoonWai.Dal.DataModels
 
         #region Associations
 
-        [Association(ThisKey="UserId", OtherKey="UserId", CanBeNull=false)]
+        [Association(ThisKey=nameof(UserId), OtherKey=nameof(UserId), CanBeNull=false)]
         public UserSettings Settings { get; set; }
 
         #endregion

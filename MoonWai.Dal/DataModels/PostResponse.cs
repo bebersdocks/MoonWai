@@ -10,13 +10,13 @@ namespace MoonWai.Dal.DataModels
 
         #region Associations
 
-        [Association(ThisKey="PostId", OtherKey="PostId", CanBeNull=false)]
+        [Association(ThisKey=nameof(PostId), OtherKey=nameof(PostId), CanBeNull=false)]
         public Post Post { get; set; }
 
-        [Association(ThisKey="ThreadId", OtherKey="ThreadId", CanBeNull=false)]
+        [Association(ThisKey=nameof(ThreadId), OtherKey=nameof(ThreadId), CanBeNull=false)]
         public Thread Thread { get; set; }
 
-        [Association(ThisKey="RespondentPostId", OtherKey="PostId", CanBeNull=false)]
+        [Association(ThisKey=nameof(RespondentPostId), OtherKey=nameof(PostId), CanBeNull=false)]
         public Post RespondentPost { get; set; }
 
         #endregion

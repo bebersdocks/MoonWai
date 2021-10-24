@@ -17,13 +17,13 @@ namespace MoonWai.Dal.DataModels
 
         #region Associations
 
-        [Association(ThisKey="BoardId", OtherKey="BoardId", CanBeNull=false)]
+        [Association(ThisKey=nameof(BoardId), OtherKey=nameof(BoardId), CanBeNull=false)]
         public Board Board { get; set; }
 
-        [Association(ThisKey="UserId", OtherKey="UserId", CanBeNull=true)]
+        [Association(ThisKey=nameof(UserId), OtherKey=nameof(UserId), CanBeNull=true)]
         public User User { get; set; }
 
-        [Association(ThisKey="ThreadId", OtherKey="ThreadId", CanBeNull=false)]
+        [Association(ThisKey=nameof(ThreadId), OtherKey=nameof(ThreadId), CanBeNull=false)]
         public IEnumerable<Post> Posts { get; set; }
 
         #endregion
