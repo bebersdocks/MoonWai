@@ -66,28 +66,26 @@ open Fable.React.Props
 let view (model: Model) (dispatch: Msg -> unit) =
     let loginDisabled = String.IsNullOrEmpty(model.LoginDto.Username) || String.IsNullOrEmpty(model.LoginDto.Password) || model.Waiting
 
-    div [] [
+    div [ ClassName "form" ] [ 
         h3 [] [ str "Welcome back!" ]
-        
-        msgBox model.InfoMsg
+        div [ ClassName "loginBox" ] [
+            msgBox model.InfoMsg
 
-        div [] [
-            label [ HtmlFor "username" ] [ str "Username" ]
-            Elements.input "username" "text" "Username" model.LoginDto.Username (ChangeUsername >> dispatch) true
-        ]
+            div [ ] [
+                Elements.input "username" "text" "Username" model.LoginDto.Username (ChangeUsername >> dispatch) true
+            ]
 
-        div [] [
-            label [ HtmlFor "password" ] [ str "Password" ]
-            Elements.input "password" "password" "Password" model.LoginDto.Password (ChangePassword >> dispatch) false
-        ]
+            div [] [
+                Elements.input "password" "password" "Password" model.LoginDto.Password (ChangePassword >> dispatch) false
+            ]
 
-        div [] [
-            label [ HtmlFor "trusted" ] [ str "Trusted Computer" ]
-            checkbox "trusted" (ChangeTrusted >> dispatch) model.LoginDto.Trusted
-        ]
+            div [] [
+                label [ HtmlFor "trusted" ] [ 
+                    checkbox "trusted" (ChangeTrusted >> dispatch) model.LoginDto.Trusted
+                    str "Trusted Computer" 
+                ]
 
-        div [] [
-            Elements.button (fun _ -> dispatch Login) "Log In" loginDisabled
-            Elements.button (fun _ -> setRoute Register) "Register" model.Waiting
+                Elements.button (fun _ -> dispatch Login) "Log In" loginDisabled
+            ]
         ]
     ]

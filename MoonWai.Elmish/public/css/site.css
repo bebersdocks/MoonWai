@@ -1,29 +1,22 @@
 body {
-    background: ghostwhite;
-    font-size: 18px;
+    background: rgb(31, 25, 83);
+    font-family: Arial, Helvetica, sans-serif;
     margin: 0; 
     padding: 0;
-}
-
-label {
-    height: 20px;
-    width: 150px;
-    margin-top: 10px;
-    margin-left: 10px;
-    text-align: left;
-    margin-right: 7px;
-    float: left;
+    font-size: 12px;
 }
 
 input {
+    padding: 9px;
     height: 20px;
-    width: 250px;
-    border: 1px solid gainsboro;
+    width: 100%;
+    border: 1px solid #f1f3f5;
     margin-top: 10px;
+    border-width: thin;
 }
 
 input:focus {
-    outline-color: #E7E8EC;
+    outline-color: darkblue;
 }
 
 .app {
@@ -47,19 +40,17 @@ input:focus {
     width: 100%;
 }
 
+.form {
+    margin-left: 39%;
+    margin-top: 7%;
+    width: 20%;
+}
+
 .registerBox,
 .loginBox {
-    border: 1px solid gainsboro;
-    border-radius: 5px;
-    padding: 25px;
+    background-color: white;
     text-align: center;
-    width: fit-content; 
     margin: 0;
-    position: absolute;
-    top: 35%;
-    left: 50%;
-    -ms-transform: translate(-50%, -50%);
-    transform: translate(-50%, -50%);
 }
 
 .thread {

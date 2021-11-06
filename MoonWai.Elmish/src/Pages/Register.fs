@@ -53,7 +53,8 @@ let update (msg: Msg) model : Model * Cmd<Msg> =
     | ChangeUsername username ->
         { model with RegisterDto = { model.RegisterDto with Username = username }; InfoMsg = Empty }, Cmd.none
 
-    | ChangePassword password when password.Length < Common.minPasswordLength ->
+    | ChangePassword password when 
+        password.Length < Common.minPasswordLength && password.Length <> 0 ->
         { model with
             RegisterDto = { model.RegisterDto with Password = password };
             InfoMsg = Info (sprintf "Password length can't be less than %i" Common.minPasswordLength) }, Cmd.none
@@ -91,25 +92,24 @@ let view (model: Model) (dispatch: Msg -> unit) =
         not (model.RegisterDto.Password.Equals(model.PasswordAgain)) ||
         model.Waiting
 
-    div [] [
+    div [ ClassName "form" ] [
         h3 [] [ str "Registration" ]
-           
-        msgBox model.InfoMsg
+        div [ ClassName "registerBox" ] [
+               
+            msgBox model.InfoMsg
 
-        div [] [
-            label [ HtmlFor "username" ] [ str "Username" ]
-            Elements.input "username" "text" "Username" model.RegisterDto.Username (ChangeUsername >> dispatch) true
+            div [] [
+                Elements.input "username" "text" "Username" model.RegisterDto.Username (ChangeUsername >> dispatch) true
+            ]
+
+            div [] [
+                Elements.input "password" "password" "Password" model.RegisterDto.Password (ChangePassword >> dispatch) false
+            ]
+
+            div [] [
+                Elements.input "passwordAgain" "password" "Repeat password" model.PasswordAgain (ChangePasswordAgain >> dispatch) false
+            ]
+
+            Elements.button (fun _ -> dispatch Register) "Register" registerDisabled
         ]
-
-        div [] [
-            label [ HtmlFor "password" ] [ str "Password" ]
-            Elements.input "password" "password" "Password" model.RegisterDto.Password (ChangePassword >> dispatch) false
-        ]
-
-        div [] [
-            label [ HtmlFor "passwordAgain" ] [ str "Repeat Password" ]
-            Elements.input "passwordAgain" "password" "Repeat password" model.PasswordAgain (ChangePasswordAgain >> dispatch) false
-        ]
-
-        Elements.button (fun _ -> dispatch Register) "Register" registerDisabled
     ]
