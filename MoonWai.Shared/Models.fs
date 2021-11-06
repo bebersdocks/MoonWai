@@ -1,66 +1,57 @@
 namespace MoonWai.Shared.Models
 
 [<CLIMutable>]
-type ErrorResponse = {
-    Message: string
-}
+type ErrorResponse =
+    { Message: string }
 
-type BoardDto = {
-    BoardId: int 
-    Page: string 
-    Name: string
-}
+type BoardDto =
+    { BoardId: int 
+      Page: string 
+      Name: string }
 
-type LoginDto = {
-    Username: string
-    Password: string
-    Trusted: bool
-}
+type LoginDto =
+    { Username: string
+      Password: string
+      Trusted: bool }
 
 open MoonWai.Shared.Definitions
 
-type RegisterDto = {
-    Username: string 
-    Password: string
-    LanguageId: LanguageId
-}
+type RegisterDto =
+    { Username: string 
+      Password: string
+      LanguageId: LanguageId }
 
-type UserSettingsDto = {
-    LanguageId: LanguageId
-    DefaultBoardId: int
-    DefaultBoardPath: string
-}
+type UserSettingsDto =
+    { LanguageId: LanguageId
+      DefaultBoardId: int
+      DefaultBoardPath: string }
 
 open System
 
 [<CLIMutable>]
-type PostDto = {
-    PostId: int
-    Message: string 
-    CreateDt: DateTime
-}
+type PostDto =
+    { PostId: int
+      Message: string 
+      CreateDt: DateTime }
 
 open System.Collections.Generic
 
 [<CLIMutable>]
-type ThreadDto = {
-    ThreadId: int
-    Title: string
-    Message: string
-    Posts: List<PostDto>
-    PostsCount: int
-    CreateDt: DateTime
-}
+type ThreadDto =
+    { ThreadId: int
+      Title: string
+      Message: string
+      Posts: List<PostDto>
+      PostsCount: int
+      CreateDt: DateTime }
 
-type InsertThreadDto = {
-    Title: string
-    Message: string
-    BoardId: int
-    UserId: Nullable<int>
-}
+type InsertThreadDto =
+    { Title: string
+      Message: string
+      BoardId: int
+      UserId: Nullable<int> }
 
-type UpdateThreadDto = {
-    ThreadId: int
-    Title: string 
-    Message: string
-}
+type UpdateThreadDto =
+    { ThreadId: int
+      Title: string 
+      Message: string }
