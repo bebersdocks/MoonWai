@@ -1,5 +1,10 @@
 namespace MoonWai.Shared.Models
 
+open System
+open System.Collections.Generic
+
+open MoonWai.Shared.Definitions
+
 [<CLIMutable>]
 type ErrorResponse =
     { Message: string }
@@ -14,8 +19,6 @@ type LoginDto =
       Password: string
       Trusted: bool }
 
-open MoonWai.Shared.Definitions
-
 type RegisterDto =
     { Username: string 
       Password: string
@@ -26,15 +29,11 @@ type UserSettingsDto =
       DefaultBoardId: int
       DefaultBoardPath: string }
 
-open System
-
 [<CLIMutable>]
 type PostDto =
     { PostId: int
       Message: string 
       CreateDt: DateTime }
-
-open System.Collections.Generic
 
 [<CLIMutable>]
 type ThreadDto =

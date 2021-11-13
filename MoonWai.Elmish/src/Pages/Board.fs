@@ -1,22 +1,26 @@
 module Pages.Board
 
+open System
+
 open Elements
+
+open Elmish
+
 open MoonWai.Shared.Models
 
-type Model = {
-    BoardPath: string
-    Threads: ThreadDto list
-    InfoMsg: InfoMsg
-}
+open Router
+
+open Thoth.Json
+
+type Model = 
+    { BoardPath: string
+      Threads: ThreadDto list
+      InfoMsg: InfoMsg }
     
 type Msg =
     | GetThreads
     | RetrievedThreads of ThreadDto list
     | FailedToRetrieveThreads of string
-
-open Elmish
-open Router
-open Thoth.Json
 
 let getThreads (model: Model) =
     let url = "boards" </> model.BoardPath

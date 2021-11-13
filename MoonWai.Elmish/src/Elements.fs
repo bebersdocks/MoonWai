@@ -1,7 +1,12 @@
 module Elements
 
+open Fable.Core.JsInterop
 open Fable.React
 open Fable.React.Props
+
+open MoonWai.Shared.Models
+
+open Router
 
 let button onClick s disabled = 
     button [
@@ -9,8 +14,6 @@ let button onClick s disabled =
         OnClick onClick
         Disabled disabled
     ] [ str s ]
-
-open Fable.Core.JsInterop
 
 let goToUrl (e: Browser.Types.MouseEvent) =
     e.preventDefault()
@@ -23,9 +26,6 @@ let link route s =
         Href (Router.toPath route)
         OnClick goToUrl
     ] [ str s ]
-
-open MoonWai.Shared.Models
-open Router
 
 let navMenu (userSettings: UserSettingsDto option) (boards: BoardDto list) =
     let userBox =

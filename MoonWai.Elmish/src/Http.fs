@@ -1,7 +1,11 @@
 module Http
 
+open Fable.Core.JsInterop
+
 open Fetch
+
 open MoonWai.Shared.Models
+
 open Thoth.Json
 
 let inline private request<'b> url props (ofSuccess: string -> 'b) (ofFailure: string -> 'b) =
@@ -24,8 +28,6 @@ let inline private request<'b> url props (ofSuccess: string -> 'b) (ofFailure: s
 
 let inline get<'b> url (ofSuccess: string -> 'b) (ofFailure: string -> 'b) =
     request url [ Method HttpMethod.GET ] ofSuccess ofFailure
-
-open Fable.Core.JsInterop
 
 let inline post<'a, 'b> url (obj: 'a) (ofSuccess: string -> 'b) (ofFailure: string -> 'b) =
     let body = Encode.Auto.toString<'a>(0, obj)

@@ -1,16 +1,25 @@
 module Pages.Login
 
+open System
+
 open Elements
+
+open Elmish
+
+open Fable.React
+open Fable.React.Props
+
 open MoonWai.Shared.Models
 
-type Model = {
-    LoginDto: LoginDto
-    UserSettings: UserSettingsDto option
-    InfoMsg: InfoMsg
-    Waiting: bool
-}
-
 open Router
+
+open Thoth.Json
+
+type Model =
+    { LoginDto: LoginDto
+      UserSettings: UserSettingsDto option
+      InfoMsg: InfoMsg
+      Waiting: bool }
 
 type Msg =
     | ChangeUsername of string
@@ -20,8 +29,6 @@ type Msg =
     | LoginSuccess of UserSettingsDto
     | LoginFailed of string
 
-open Thoth.Json
-
 let login (model: Model) =
     let ofSuccess json =
         match Decode.Auto.fromString<UserSettingsDto>(json, caseStrategy=CamelCase) with
@@ -29,8 +36,6 @@ let login (model: Model) =
         | Result.Error e -> LoginFailed e
 
     Http.post "/auth/login" model.LoginDto ofSuccess LoginFailed
-
-open Elmish
 
 let init userSettings =
     { LoginDto = { Username = ""; Password = ""; Trusted = false };
@@ -58,10 +63,6 @@ let update (msg: Msg) model : Model * Cmd<Msg> =
 
     | LoginFailed s ->
         { model with Waiting = false; InfoMsg = Error s }, Cmd.none
-
-open System
-open Fable.React
-open Fable.React.Props
 
 let view (model: Model) (dispatch: Msg -> unit) =
     let loginDisabled = String.IsNullOrEmpty(model.LoginDto.Username) || String.IsNullOrEmpty(model.LoginDto.Password) || model.Waiting

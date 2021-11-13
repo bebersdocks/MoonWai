@@ -1,5 +1,8 @@
 module Router
 
+open Elmish.Navigation
+open Elmish.UrlParser
+
 let inline (</>) a b = a + "/" + string b
 
 type Route =
@@ -13,16 +16,12 @@ let toPath =
     | Login -> "/login"
     | Board boardPath -> "/" + boardPath
 
-open Elmish.UrlParser
-
 let route : Parser<Route -> Route, Route> =
     oneOf [ 
         map Register (s "register")
         map Login (s "login") 
         map Board str
     ]
-
-open Elmish.Navigation
 
 let newUrl newUrl =     
     Navigation.newUrl newUrl 

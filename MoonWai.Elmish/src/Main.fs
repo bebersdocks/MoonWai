@@ -1,5 +1,16 @@
 module Main
 
+open Elements
+
+open Elmish
+open Elmish.Debug
+open Elmish.Navigation
+open Elmish.React
+open Elmish.UrlParser
+
+open Fable.React
+open Fable.React.Props
+
 type Page =
     | Board of Pages.Board.Model
     | Register of Pages.Register.Model
@@ -14,9 +25,6 @@ type Msg =
     | BoardMsg of Pages.Board.Msg
     | RegisterMsg of Pages.Register.Msg
     | LoginMsg of Pages.Login.Msg
-
-open Elmish
-open Elmish.Navigation
 
 let private initPage (route: Router.Route option) model =
     let model = { model with CurrentRoute = route }
@@ -36,8 +44,6 @@ let private initPage (route: Router.Route option) model =
     | Some (Router.Route.Login ) ->
         let (loginModel, loginCmd) = Pages.Login.init None
         { model with ActivePage = Login loginModel }, Cmd.map LoginMsg loginCmd
-
-open MoonWai.Shared.Definitions
 
 let init (route : Router.Route option) =
     initPage route
@@ -61,13 +67,9 @@ let update (msg : Msg) (model : Model) =
         let (loginModel, loginCmd) = Pages.Login.update loginMsg loginModel
         { model with ActivePage = Login loginModel }, Cmd.map LoginMsg loginCmd
 
-    | _, msg ->
+    | _, _ ->
         model, Cmd.none
         
-open Elements
-open Fable.React
-open Fable.React.Props
-
 let view (model : Model) (dispatch : Dispatch<Msg>) =
     let pageView = 
         match model.ActivePage with
@@ -89,10 +91,6 @@ let view (model : Model) (dispatch : Dispatch<Msg>) =
         div [ ClassName "content" ] [ pageView ]
         navMenu None []
     ]
-
-open Elmish.Debug
-open Elmish.React
-open Elmish.UrlParser
 
 Program.mkProgram init update view
 |> Program.toNavigable (parsePath Router.route) initPage

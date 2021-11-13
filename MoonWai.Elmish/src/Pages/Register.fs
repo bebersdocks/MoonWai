@@ -1,17 +1,27 @@
 module Pages.Register
 
-open Elements
-open MoonWai.Shared.Models
+open System
 
-type Model = {
-    RegisterDto: RegisterDto
-    UserSettings: UserSettingsDto option
-    PasswordAgain: string option
-    InfoMsg: InfoMsg
-    Waiting: bool
-}
+open Elements
+
+open Elmish
+
+open Fable.React
+open Fable.React.Props
 
 open Router
+
+open Thoth.Json
+
+open MoonWai.Shared.Definitions
+open MoonWai.Shared.Models
+
+type Model = 
+    { RegisterDto: RegisterDto
+      UserSettings: UserSettingsDto option
+      PasswordAgain: string option
+      InfoMsg: InfoMsg
+      Waiting: bool }
 
 type Msg =
     | ChangeUsername of string
@@ -21,8 +31,6 @@ type Msg =
     | RegisterSuccess of UserSettingsDto
     | RegisterFailed of string
 
-open Thoth.Json
-
 let register (model: Model) =
     let ofSuccess json =
         match Decode.Auto.fromString<UserSettingsDto>(json, caseStrategy=CamelCase) with
@@ -31,17 +39,12 @@ let register (model: Model) =
 
     Http.post "/auth/register" model.RegisterDto ofSuccess RegisterFailed
 
-open Elmish
-open MoonWai.Shared.Definitions
-
 let init userSettings =
     { RegisterDto = { Username = ""; Password = ""; LanguageId = LanguageId.English };
       UserSettings = userSettings;
       PasswordAgain = None;
       InfoMsg = Empty;
       Waiting = false }, Cmd.none
-
-open System
 
 let update (msg: Msg) model : Model * Cmd<Msg> =
     match msg with
@@ -80,9 +83,6 @@ let update (msg: Msg) model : Model * Cmd<Msg> =
 
     | RegisterFailed s ->
         { model with Waiting = false; InfoMsg = Error s }, Cmd.none
-
-open Fable.React
-open Fable.React.Props
 
 let view (model: Model) (dispatch: Msg -> unit) =
     let registerDisabled =
