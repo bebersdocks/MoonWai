@@ -64,14 +64,13 @@ let checkbox id onChangeEvent isChecked =
     ]
 
 type InfoMsg =
-    | Empty
+    | EmptyMsg
     | Info of string
     | Warning of string
     | Error of string
 
-let getInfoMsgStr =
-    function
-    | Empty -> None
+let getInfoMsgStr = function
+    | EmptyMsg -> None
     | Info s -> Some s
     | Warning s -> Some s
     | Error s -> Some s
@@ -79,5 +78,5 @@ let getInfoMsgStr =
 let msgBox (infoMsg: InfoMsg) =
     div [
         ClassName "msg-box"
-        Style [ Visibility (if infoMsg <> Empty then "visible" else "collapse") ]
+        Style [ Visibility (if infoMsg <> EmptyMsg then "visible" else "collapse") ]
     ] [ str (Option.defaultValue "" (getInfoMsgStr infoMsg)) ]

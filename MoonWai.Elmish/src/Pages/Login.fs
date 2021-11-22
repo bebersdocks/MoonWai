@@ -40,26 +40,26 @@ let login (model: Model) =
 let init userSettings =
     { LoginDto = { Username = ""; Password = ""; Trusted = false };
       UserSettings = userSettings
-      InfoMsg = Empty;
+      InfoMsg = EmptyMsg;
       Waiting = false; }, Cmd.none
 
 let update (msg: Msg) model : Model * Cmd<Msg> =
     match msg with
     | ChangeUsername username ->
-        { model with LoginDto = { model.LoginDto with Username = username }; InfoMsg = Empty }, Cmd.none
+        { model with LoginDto = { model.LoginDto with Username = username }; InfoMsg = EmptyMsg }, Cmd.none
 
     | ChangePassword password ->
-        { model with LoginDto = { model.LoginDto with Password = password }; InfoMsg = Empty }, Cmd.none
+        { model with LoginDto = { model.LoginDto with Password = password }; InfoMsg = EmptyMsg }, Cmd.none
 
     | ChangeTrusted trusted ->
-        { model with LoginDto = { model.LoginDto with Trusted = trusted }; InfoMsg = Empty }, Cmd.none
+        { model with LoginDto = { model.LoginDto with Trusted = trusted }; InfoMsg = EmptyMsg }, Cmd.none
 
     | Login _ ->
-        { model with Waiting = true; InfoMsg = Empty }, Cmd.OfPromise.result (login model)
+        { model with Waiting = true; InfoMsg = EmptyMsg }, Cmd.OfPromise.result (login model)
 
     | LoginSuccess userSettings ->
         setRoute (Board userSettings.DefaultBoardPath)
-        { model with UserSettings = Some userSettings; Waiting = false; InfoMsg = Empty }, Cmd.none
+        { model with UserSettings = Some userSettings; Waiting = false; InfoMsg = EmptyMsg }, Cmd.none
 
     | LoginFailed s ->
         { model with Waiting = false; InfoMsg = Error s }, Cmd.none

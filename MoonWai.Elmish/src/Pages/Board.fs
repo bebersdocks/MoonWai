@@ -33,7 +33,7 @@ let getThreads (model: Model) =
     Http.get url ofSuccess FailedToRetrieveThreads
 
 let init boardPath =
-    { BoardPath = boardPath; Threads = []; InfoMsg = Empty }, Cmd.ofMsg GetThreads
+    { BoardPath = boardPath; Threads = []; InfoMsg = EmptyMsg }, Cmd.ofMsg GetThreads
 
 let update (msg: Msg) model : Model * Cmd<Msg> =
     match msg with
@@ -41,7 +41,7 @@ let update (msg: Msg) model : Model * Cmd<Msg> =
         model, Cmd.OfPromise.result (getThreads model)
 
     | RetrievedThreads threads -> 
-        { model with Threads = threads; InfoMsg = Empty }, Cmd.none
+        { model with Threads = threads; InfoMsg = EmptyMsg }, Cmd.none
      
     | FailedToRetrieveThreads s -> 
         { model with Threads = []; InfoMsg = Error s }, Cmd.none

@@ -43,7 +43,7 @@ let init userSettings =
     { RegisterDto = { Username = ""; Password = ""; LanguageId = LanguageId.English };
       UserSettings = userSettings;
       PasswordAgain = None;
-      InfoMsg = Empty;
+      InfoMsg = EmptyMsg;
       Waiting = false }, Cmd.none
 
 let update (msg: Msg) model : Model * Cmd<Msg> =
@@ -54,7 +54,7 @@ let update (msg: Msg) model : Model * Cmd<Msg> =
             InfoMsg = Info "Username can't be empty" }, Cmd.none
 
     | ChangeUsername username ->
-        { model with RegisterDto = { model.RegisterDto with Username = username }; InfoMsg = Empty }, Cmd.none
+        { model with RegisterDto = { model.RegisterDto with Username = username }; InfoMsg = EmptyMsg }, Cmd.none
 
     | ChangePassword password when 
         password.Length < Common.minPasswordLength && password.Length <> 0 ->
@@ -66,20 +66,20 @@ let update (msg: Msg) model : Model * Cmd<Msg> =
         { model with RegisterDto = { model.RegisterDto with Password = password }; InfoMsg = Info "Passwords don't match" }, Cmd.none
 
     | ChangePassword password ->
-        { model with RegisterDto = { model.RegisterDto with Password = password }; InfoMsg = Empty }, Cmd.none
+        { model with RegisterDto = { model.RegisterDto with Password = password }; InfoMsg = EmptyMsg }, Cmd.none
 
     | ChangePasswordAgain passwordAgain when not (model.RegisterDto.Password.Equals(passwordAgain)) ->
         { model with PasswordAgain = Some passwordAgain; InfoMsg = Info "Passwords don't match" }, Cmd.none
 
     | ChangePasswordAgain passwordAgain ->
-        { model with PasswordAgain = Some passwordAgain; InfoMsg = Empty }, Cmd.none
+        { model with PasswordAgain = Some passwordAgain; InfoMsg = EmptyMsg }, Cmd.none
 
     | Register ->
-        { model with Waiting = true; InfoMsg = Empty }, Cmd.OfPromise.result (register model)
+        { model with Waiting = true; InfoMsg = EmptyMsg }, Cmd.OfPromise.result (register model)
 
     | RegisterSuccess userSettings ->
         setRoute (Board userSettings.DefaultBoardPath)
-        { model with UserSettings = Some userSettings; Waiting = false; InfoMsg = Empty }, Cmd.none
+        { model with UserSettings = Some userSettings; Waiting = false; InfoMsg = EmptyMsg }, Cmd.none
 
     | RegisterFailed s ->
         { model with Waiting = false; InfoMsg = Error s }, Cmd.none
