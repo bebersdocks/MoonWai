@@ -18,7 +18,7 @@ open Thoth.Json
 type Model =
     { LoginDto: LoginDto
       UserSettings: UserSettingsDto option
-      InfoMsg: InfoMsg
+      InfoMsg: InfoMsg option
       Waiting: bool }
 
 type Msg =
@@ -40,39 +40,39 @@ let login (model: Model) =
 let init userSettings =
     { LoginDto = { Username = ""; Password = ""; Trusted = false };
       UserSettings = userSettings
-      InfoMsg = EmptyMsg;
+      InfoMsg = None;
       Waiting = false; }, Cmd.none
 
 let update (msg: Msg) model : Model * Cmd<Msg> =
     match msg with
     | ChangeUsername username ->
-        { model with LoginDto = { model.LoginDto with Username = username }; InfoMsg = EmptyMsg }, Cmd.none
+        { model with LoginDto = { model.LoginDto with Username = username }; InfoMsg = None }, Cmd.none
 
     | ChangePassword password ->
-        { model with LoginDto = { model.LoginDto with Password = password }; InfoMsg = EmptyMsg }, Cmd.none
+        { model with LoginDto = { model.LoginDto with Password = password }; InfoMsg = None }, Cmd.none
 
     | ChangeTrusted trusted ->
-        { model with LoginDto = { model.LoginDto with Trusted = trusted }; InfoMsg = EmptyMsg }, Cmd.none
+        { model with LoginDto = { model.LoginDto with Trusted = trusted }; InfoMsg = None }, Cmd.none
 
     | Login _ ->
-        { model with Waiting = true; InfoMsg = EmptyMsg }, Cmd.OfPromise.result (login model)
+        { model with Waiting = true; InfoMsg = None }, Cmd.OfPromise.result (login model)
 
     | LoginSuccess userSettings ->
         setRoute (Board userSettings.DefaultBoardPath)
-        { model with UserSettings = Some userSettings; Waiting = false; InfoMsg = EmptyMsg }, Cmd.none
+        { model with UserSettings = Some userSettings; Waiting = false; InfoMsg = None }, Cmd.none
 
     | LoginFailed s ->
-        { model with Waiting = false; InfoMsg = Error s }, Cmd.none
+        { model with Waiting = false; InfoMsg = Some (Error s) }, Cmd.none
 
 let view (model: Model) (dispatch: Msg -> unit) =
     let loginDisabled = String.IsNullOrEmpty(model.LoginDto.Username) || String.IsNullOrEmpty(model.LoginDto.Password) || model.Waiting
 
-    div [ ClassName "form" ] [ 
-        h3 [] [ str "Welcome back!" ]
+    div [ ClassName "form" ] [
+        h3 [ ClassName "formHeader" ] [ str "Welcome back!" ]
         div [ ClassName "loginBox" ] [
             msgBox model.InfoMsg
 
-            div [ ] [
+            div [] [
                 Elements.input "username" "text" "Username" model.LoginDto.Username (ChangeUsername >> dispatch) true
             ]
 

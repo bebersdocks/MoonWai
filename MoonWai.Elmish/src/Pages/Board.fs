@@ -6,6 +6,9 @@ open Elements
 
 open Elmish
 
+open Fable.React
+open Fable.React.Props
+
 open MoonWai.Shared.Models
 
 open Router
@@ -15,7 +18,7 @@ open Thoth.Json
 type Model = 
     { BoardPath: string
       Threads: ThreadDto list
-      InfoMsg: InfoMsg }
+      InfoMsg: InfoMsg option }
     
 type Msg =
     | GetThreads
@@ -33,7 +36,7 @@ let getThreads (model: Model) =
     Http.get url ofSuccess FailedToRetrieveThreads
 
 let init boardPath =
-    { BoardPath = boardPath; Threads = []; InfoMsg = EmptyMsg }, Cmd.ofMsg GetThreads
+    { BoardPath = boardPath; Threads = []; InfoMsg = None }, Cmd.ofMsg GetThreads
 
 let update (msg: Msg) model : Model * Cmd<Msg> =
     match msg with
@@ -41,18 +44,13 @@ let update (msg: Msg) model : Model * Cmd<Msg> =
         model, Cmd.OfPromise.result (getThreads model)
 
     | RetrievedThreads threads -> 
-        { model with Threads = threads; InfoMsg = EmptyMsg }, Cmd.none
+        { model with Threads = threads; InfoMsg = None }, Cmd.none
      
     | FailedToRetrieveThreads s -> 
-        { model with Threads = []; InfoMsg = Error s }, Cmd.none
-
-open System
+        { model with Threads = []; InfoMsg = Some (Error s) }, Cmd.none
 
 let dateTimeToStr (dt: DateTime) = 
     dt.ToLocalTime().ToString("dd/MMM/yyyy hh:mm:tt")
-
-open Fable.React
-open Fable.React.Props
 
 let postView (post: PostDto) = 
     let idStr = sprintf "%s #%i" (dateTimeToStr post.CreateDt) post.PostId

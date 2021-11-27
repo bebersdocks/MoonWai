@@ -1,5 +1,7 @@
 module Elements
 
+open System
+
 open Fable.Core.JsInterop
 open Fable.React
 open Fable.React.Props
@@ -64,19 +66,20 @@ let checkbox id onChangeEvent isChecked =
     ]
 
 type InfoMsg =
-    | EmptyMsg
     | Info of string
     | Warning of string
     | Error of string
 
 let getInfoMsgStr = function
-    | EmptyMsg -> None
-    | Info s -> Some s
-    | Warning s -> Some s
-    | Error s -> Some s
+    | Some (Info s) | Some (Warning s) | Some (Error s) -> s
+    | None -> String.Empty
 
-let msgBox (infoMsg: InfoMsg) =
+let msgBox (infoMsg: InfoMsg option) =
+    let visibility = 
+        if Option.isSome infoMsg then "visible" 
+        else "collapse"
+
     div [
         ClassName "msg-box"
-        Style [ Visibility (if infoMsg <> EmptyMsg then "visible" else "collapse") ]
-    ] [ str (Option.defaultValue "" (getInfoMsgStr infoMsg)) ]
+        Style [ Visibility visibility ]
+    ] [ str (getInfoMsgStr infoMsg) ]
