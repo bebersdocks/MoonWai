@@ -104,7 +104,7 @@ namespace MoonWai.Api.Controllers
 
             userSettings.LanguageId = registerDto.LanguageId;
 
-            await dc.BeginTransactionAsync();
+            using var tr = await dc.BeginTransactionAsync();
 
             var userId = await dc.InsertWithInt32IdentityAsync(newUser);
 
@@ -117,7 +117,7 @@ namespace MoonWai.Api.Controllers
             if (await dc.InsertAsync(userSettings) <= 0)
                 return ServerError(TranslationId.FailedToCreateUserSettings);
    
-            await dc.CommitTransactionAsync();
+            await tr.CommitAsync();
 
             await Login(newUser);
 
