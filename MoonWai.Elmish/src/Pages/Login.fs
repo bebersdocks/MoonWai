@@ -72,11 +72,11 @@ let view (model: Model) (dispatch: Msg -> unit) =
         div [ ClassName "loginBox" ] [
             msgBox model.InfoMsg
 
-            div [] [
+            div [ ClassName "inputBlock" ] [
                 Elements.input "username" "text" "Username" model.LoginDto.Username (ChangeUsername >> dispatch) true
             ]
 
-            div [] [
+            div [ ClassName "inputBlock" ] [
                 Elements.input "password" "password" "Password" model.LoginDto.Password (ChangePassword >> dispatch) false
             ]
 

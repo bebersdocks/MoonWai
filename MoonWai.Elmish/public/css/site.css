@@ -1,56 +1,61 @@
 body {
-    background: rgb(31, 25, 83);
+    background: rgb(255, 255, 255);
     font-family: Arial, Helvetica, sans-serif;
     margin: 0; 
     padding: 0;
     font-size: 12px;
 }
 
-input {
-    padding: 9px;
-    height: 20px;
-    width: 100%;
-    border: 1px solid #f1f3f5;
-    margin-top: 10px;
-    border-width: thin;
-}
-
-input:focus {
-    outline-color: darkblue;
-}
-
 .app {
+    background-color: white;
     display: flex;
-  }
-
-  .content {
-    width: 80%;
-  }
-  
-  .navMenu {
-    background-color: #F2F4FE;
-    border-left: 1px solid gainsboro;
+    flex-direction: column;
     height: 100vh;
-    width: 20%;
   }
 
 .userBox {
     border-bottom: 1px solid gainsboro;
-    height: 30px;
     width: 100%;
 }
 
 .form {
-    margin-left: 39%;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    margin: auto;
     margin-top: 7%;
-    width: 20%;
+    width: 400px;
+}
+
+.formHeader {
+    color: black;
+    font-size: x-large;
+    margin-bottom: 10%;
 }
 
 .registerBox,
 .loginBox {
-    background-color: white;
-    text-align: center;
-    margin: 0;
+    border: thin solid black;
+    display: flex;
+    flex-direction: column;
+    padding: 30px;
+    padding-bottom: 40px;
+    width: 80%;
+}
+
+.inputBlock {
+    display: flex;
+    width: 100%;
+    border: thin solid #f1f3f5;
+    margin-bottom: 10px;
+}
+
+.inputBlock input {
+    border: none;
+    color: #c7c7c7;
+    font-size: 16px;
+    padding: 10px 8px;
+    width: 100%;
 }
 
 .thread {
@@ -79,8 +84,7 @@ button {
 }
 
     button:hover {
-        background-color: #F3F9FF;
+        background-color: white;
         border: 1px solid #ECECF0;
         cursor: pointer;
     }
-    
