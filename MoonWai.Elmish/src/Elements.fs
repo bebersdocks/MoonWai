@@ -32,7 +32,7 @@ let link route s =
 let navMenu (userSettings: UserSettingsDto option) (boards: BoardDto list) =
     let userBox =
         div [ ClassName "userBox" ] [
-            if userSettings.IsNone then 
+            if userSettings.IsNone then
                 button (fun _ -> setRoute Login) "Login" false
                 button (fun _ -> setRoute Register) "Register" false
             else 
@@ -80,6 +80,6 @@ let msgBox (infoMsg: InfoMsg option) =
         else "collapse"
 
     div [
-        ClassName "msg-box"
+        ClassName "msgBox"
         Style [ Visibility visibility ]
     ] [ str (getInfoMsgStr infoMsg) ]

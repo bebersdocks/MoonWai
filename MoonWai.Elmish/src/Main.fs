@@ -19,9 +19,14 @@ type Page =
 
 type Model =
     { ActivePage : Page
-      CurrentRoute : Router.Route option }
+      CurrentRoute : Router.Route option 
+      Boards: BoardDto list
+      BoardsFailedMessage: string option }
 
 type Msg =
+    | RetrieveBoards
+    | RetrieveBoardsFailed of string
+    | RetrievedBoards of BoardDto list
     | BoardMsg of Pages.Board.Msg
     | RegisterMsg of Pages.Register.Msg
     | LoginMsg of Pages.Login.Msg
@@ -50,16 +55,30 @@ let init (route : Router.Route option) =
         { ActivePage = Board (Pages.Board.init "" |> (fun (model, _) -> model))
           CurrentRoute = Some (Router.Route.Board "") }
 
+let retrieveBoards (model: Model) =
+    let ofSuccess json =
+        match Decode.Auto.fromString<BoardDto list>(json, caseStrategy=CamelCase) with
+        | Ok boards -> RetrieveBoards boards
+        | Result.Error e -> RetrieveBoardsFailed e
+
+    Http.get "/boards" ofSuccess RetrieveBoardsFailed
+
 let update (msg : Msg) (model : Model) =
     match model.ActivePage, msg with
-    | NotFound, _ ->
-        model, Cmd.none
+    | _, RetrieveBoards ->
+        model, Cmd.OfPromise.result (retrieveBoards model)
+
+    | _, RetrieveBoardsFailed s ->
+        { model with BoardsFailedMessage = Some s }, Cmd.none
+
+    | _, RetrieveBoards boards ->
+        { model with Boards = boards }, Cmd.none
 
     | Board boardModel, BoardMsg boardMsg ->
         let (boardModel, boardCmd) = Pages.Board.update boardMsg boardModel
         { model with ActivePage = Board boardModel }, Cmd.map BoardMsg boardCmd
 
-    | Register registerModel, RegisterMsg registerMsg -> 
+    | Register registerModel, RegisterMsg registerMsg ->
         let (registerModel, registerCmd) = Pages.Register.update registerMsg registerModel
         { model with ActivePage = Register registerModel }, Cmd.map RegisterMsg registerCmd
 
@@ -88,8 +107,8 @@ let view (model : Model) (dispatch : Dispatch<Msg>) =
             Pages.Login.view loginModel (LoginMsg >> dispatch)
 
     div [ ClassName "app" ] [
-        div [ ClassName "content" ] [ pageView ]
         navMenu None []
+        div [ ClassName "content" ] [ pageView ]
     ]
 
 Program.mkProgram init update view
