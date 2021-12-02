@@ -1,22 +1,33 @@
 body {
-    background: rgb(255, 255, 255);
-    font-family: Arial, Helvetica, sans-serif;
+    background-image: linear-gradient(white, #fafaff);
+    font-family: monospace;
     margin: 0; 
     padding: 0;
     font-size: 12px;
 }
 
+button {
+    color: black;
+    background: #fafaff;
+    border: 1px solid gainsboro;
+    border-radius: 2px;
+    height: 35px;
+}
+    button:hover {
+        background-color:#EAF0FF;
+        cursor: pointer;
+    }
+
+    button:disabled {
+        background-color: #fcfcff;
+        cursor: default
+    }
+
 .app {
-    background-color: white;
     display: flex;
     flex-direction: column;
     height: 100vh;
   }
-
-.userBox {
-    border-bottom: 1px solid gainsboro;
-    width: 100%;
-}
 
 .form {
     align-items: center;
@@ -30,12 +41,14 @@ body {
 .formHeader {
     color: black;
     font-size: x-large;
+    font-weight: lighter;
     margin-bottom: 10%;
 }
 
 .registerBox,
 .loginBox {
-    border: thin solid black;
+    background-color: white;
+    border: thin solid snow;
     display: flex;
     flex-direction: column;
     padding: 30px;
@@ -46,23 +59,30 @@ body {
 .inputBlock {
     display: flex;
     width: 100%;
-    border: thin solid #f1f3f5;
     margin-bottom: 10px;
 }
 
 .inputBlock input {
-    border: none;
-    color: #c7c7c7;
+    border: thin solid #f1f3f5;
     font-size: 16px;
     padding: 10px 8px;
     width: 100%;
 }
 
-.thread {
-    border-bottom: 1px solid gainsboro;
-    margin-bottom: 15px;
-    margin-left: 1%;
-    margin-right: 0.5%;
+.inputBlock input:focus {
+    border: thin solid #98ade3;
+    outline: none !important;
+  }
+
+input[type="checkbox"] {
+    cursor: pointer;
+    font-size: large;
+    position: relative;
+    vertical-align: middle;
+}
+
+.msgBox {
+    margin-bottom: 12px;
 }
 
 .post {
@@ -77,14 +97,9 @@ body {
         cursor: auto;
     }
 
-button {
-    background-color: transparent;
-    border: 1px solid transparent;
-    height: 100%;
+.thread {
+    border-bottom: 1px solid gainsboro;
+    margin-bottom: 15px;
+    margin-left: 1%;
+    margin-right: 0.5%;
 }
-
-    button:hover {
-        background-color: white;
-        border: 1px solid #ECECF0;
-        cursor: pointer;
-    }
