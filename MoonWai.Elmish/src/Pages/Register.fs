@@ -1,4 +1,4 @@
-module MoonWai.Pages.Register
+module MoonWai.Elmish.Pages.Register
 
 open System
 
@@ -9,9 +9,9 @@ open Fable.React.Props
 
 open Thoth.Json
 
-open MoonWai.Elements
-open MoonWai.Http
-open MoonWai.Router
+open MoonWai.Elmish.Elements
+open MoonWai.Elmish.Http
+open MoonWai.Elmish.Router
 open MoonWai.Shared.Definitions
 open MoonWai.Shared.Models
 

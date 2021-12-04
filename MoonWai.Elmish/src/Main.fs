@@ -1,4 +1,4 @@
-module Main
+module MoonWai.Elmish.Main
 
 open Elmish
 open Elmish.Debug
@@ -9,9 +9,9 @@ open Elmish.UrlParser
 open Fable.React
 open Fable.React.Props
 
-open MoonWai.Elements
-open MoonWai.Pages
-open MoonWai.Router
+open MoonWai.Elmish.Elements
+open MoonWai.Elmish.Pages
+open MoonWai.Elmish.Router
 open MoonWai.Shared.Models
 
 type Page =

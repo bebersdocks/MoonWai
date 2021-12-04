@@ -1,12 +1,12 @@
-module MoonWai.Pages.Catalog
+module MoonWai.Elmish.Pages.Catalog
 
 open Elmish
 
 open Fable.React
 open Fable.React.Props
 
-open MoonWai.Elements
-open MoonWai.Http
+open MoonWai.Elmish.Elements
+open MoonWai.Elmish.Http
 open MoonWai.Shared.Models
 
 open Thoth.Json

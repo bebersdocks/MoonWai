@@ -1,4 +1,4 @@
-module MoonWai.Http
+module MoonWai.Elmish.Http
 
 open Fable.Core.JsInterop
 
