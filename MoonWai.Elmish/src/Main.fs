@@ -1,6 +1,4 @@
-module Main
-
-open Elements
+module MoonWai.Main
 
 open Elmish
 open Elmish.Debug
@@ -10,6 +8,8 @@ open Elmish.UrlParser
 
 open Fable.React
 open Fable.React.Props
+
+open MoonWai.Elements
 
 type Page =
     | Catalog of Pages.Catalog.Model

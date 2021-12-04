@@ -1,17 +1,16 @@
-module Pages.Login
+module MoonWai.Pages.Login
 
 open System
-
-open Elements
 
 open Elmish
 
 open Fable.React
 open Fable.React.Props
 
+open MoonWai.Elements
+open MoonWai.Http
+open MoonWai.Router
 open MoonWai.Shared.Models
-
-open Router
 
 open Thoth.Json
 
@@ -35,7 +34,7 @@ let login (model: Model) =
         | Ok userSettings -> LoginSuccess userSettings
         | Result.Error e -> LoginFailed e
 
-    Http.post "/auth/login" model.LoginDto ofSuccess LoginFailed
+    post "/auth/login" model.LoginDto ofSuccess LoginFailed
 
 let init userSettings =
     { LoginDto = { Username = ""; Password = ""; Trusted = false };
@@ -73,11 +72,11 @@ let view (model: Model) (dispatch: Msg -> unit) =
             msgBox model.InfoMsg
 
             div [ ClassName "inputBlock" ] [
-                Elements.input "username" "text" "Username" model.LoginDto.Username (ChangeUsername >> dispatch) true
+                input "username" "text" "Username" model.LoginDto.Username (ChangeUsername >> dispatch) true
             ]
 
             div [ ClassName "inputBlock" ] [
-                Elements.input "password" "password" "Password" model.LoginDto.Password (ChangePassword >> dispatch) false
+                input "password" "password" "Password" model.LoginDto.Password (ChangePassword >> dispatch) false
             ]
 
             div [] [
@@ -86,7 +85,7 @@ let view (model: Model) (dispatch: Msg -> unit) =
                     str "Trusted Computer" 
                 ]
 
-                Elements.button (fun _ -> dispatch Login) "Log In" loginDisabled
+                button (fun _ -> dispatch Login) "Log In" loginDisabled
             ]
         ]
     ]

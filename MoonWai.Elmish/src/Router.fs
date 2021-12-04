@@ -1,4 +1,4 @@
-module Router
+module MoonWai.Router
 
 open Elmish.Navigation
 open Elmish.UrlParser

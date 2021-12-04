@@ -1,4 +1,4 @@
-module Elements
+module MoonWai.Elements
 
 open System
 
@@ -6,9 +6,8 @@ open Fable.Core.JsInterop
 open Fable.React
 open Fable.React.Props
 
+open MoonWai.Router
 open MoonWai.Shared.Models
-
-open Router
 
 let button onClick s disabled = 
     button [

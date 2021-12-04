@@ -1,12 +1,12 @@
-module Pages.Catalog
-
-open Elements
+module MoonWai.Pages.Catalog
 
 open Elmish
 
 open Fable.React
 open Fable.React.Props
 
+open MoonWai.Elements
+open MoonWai.Http
 open MoonWai.Shared.Models
 
 open Thoth.Json
@@ -32,7 +32,7 @@ let getBoards (model: Model) =
         | Ok boards -> RetrievedBoards boards
         | Result.Error e -> RetrieveBoardsFailed e
 
-    Http.get "/boards" ofSuccess RetrieveBoardsFailed
+    get "/boards" ofSuccess RetrieveBoardsFailed
 
 let update (msg : Msg) (model : Model) =
     match msg with

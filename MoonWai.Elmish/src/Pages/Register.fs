@@ -1,18 +1,17 @@
-module Pages.Register
+module MoonWai.Pages.Register
 
 open System
-
-open Elements
 
 open Elmish
 
 open Fable.React
 open Fable.React.Props
 
-open Router
-
 open Thoth.Json
 
+open MoonWai.Elements
+open MoonWai.Http
+open MoonWai.Router
 open MoonWai.Shared.Definitions
 open MoonWai.Shared.Models
 
@@ -37,7 +36,7 @@ let register (model: Model) =
         | Ok userSettings -> RegisterSuccess userSettings
         | Result.Error e -> RegisterFailed e
 
-    Http.post "/auth/register" model.RegisterDto ofSuccess RegisterFailed
+    post "/auth/register" model.RegisterDto ofSuccess RegisterFailed
 
 let init userSettings =
     { RegisterDto = { Username = ""; Password = ""; LanguageId = LanguageId.English };
@@ -99,17 +98,17 @@ let view (model: Model) (dispatch: Msg -> unit) =
             msgBox model.InfoMsg
 
             div [ ClassName "inputBlock" ] [
-                Elements.input "username" "text" "Username" model.RegisterDto.Username (ChangeUsername >> dispatch) true
+                input "username" "text" "Username" model.RegisterDto.Username (ChangeUsername >> dispatch) true
             ]
 
             div [ ClassName "inputBlock" ] [
-                Elements.input "password" "password" "Password" model.RegisterDto.Password (ChangePassword >> dispatch) false
+                input "password" "password" "Password" model.RegisterDto.Password (ChangePassword >> dispatch) false
             ]
 
             div [ ClassName "inputBlock" ] [
-                Elements.input "passwordAgain" "password" "Repeat password" model.PasswordAgain (ChangePasswordAgain >> dispatch) false
+                input "passwordAgain" "password" "Repeat password" model.PasswordAgain (ChangePasswordAgain >> dispatch) false
             ]
 
-            Elements.button (fun _ -> dispatch Register) "Register" registerDisabled
+            button (fun _ -> dispatch Register) "Register" registerDisabled
         ]
     ]

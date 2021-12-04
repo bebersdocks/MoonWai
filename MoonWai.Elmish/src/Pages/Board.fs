@@ -1,17 +1,16 @@
-module Pages.Board
+module MoonWai.Pages.Board
 
 open System
-
-open Elements
 
 open Elmish
 
 open Fable.React
 open Fable.React.Props
 
+open MoonWai.Elements
+open MoonWai.Http
+open MoonWai.Router
 open MoonWai.Shared.Models
-
-open Router
 
 open Thoth.Json
 
@@ -33,7 +32,7 @@ let getThreads (model: Model) =
         | Ok threads -> RetrievedThreads threads
         | Result.Error e -> FailedToRetrieveThreads e
 
-    Http.get url ofSuccess FailedToRetrieveThreads
+    get url ofSuccess FailedToRetrieveThreads
 
 let init boardPath =
     { BoardPath = boardPath; Threads = []; InfoMsg = None }, Cmd.ofMsg GetThreads

@@ -1,4 +1,4 @@
-module Http
+module MoonWai.Http
 
 open Fable.Core.JsInterop
 
