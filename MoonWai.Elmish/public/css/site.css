@@ -19,7 +19,7 @@ button {
     }
 
     button:disabled {
-        background-color: #fcfcff;
+        background-color: #fcfdff;
         cursor: default
     }
 
@@ -34,7 +34,7 @@ button {
     display: flex;
     flex-direction: column;
     margin: auto;
-    margin-top: 7%;
+    margin-top: 9%;
     width: 400px;
 }
 
@@ -42,7 +42,7 @@ button {
     color: black;
     font-size: x-large;
     font-weight: lighter;
-    margin-bottom: 10%;
+    margin-bottom: 7%;
 }
 
 .registerBox,
@@ -52,7 +52,7 @@ button {
     display: flex;
     flex-direction: column;
     padding: 30px;
-    padding-bottom: 40px;
+    padding-bottom: 37px;
     width: 80%;
 }
 
@@ -64,24 +64,38 @@ button {
 
 .inputBlock input {
     border: thin solid #f1f3f5;
+    border-radius: 2px;
     font-size: 16px;
     padding: 10px 8px;
     width: 100%;
 }
 
 .inputBlock input:focus {
-    border: thin solid #98ade3;
+    border: thin solid #7889c2;
     outline: none !important;
   }
+
+.sidedInputBlock {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+}
 
 input[type="checkbox"] {
     cursor: pointer;
     font-size: large;
     position: relative;
+    zoom: 1.25;
+    vertical-align: middle;
+}
+
+input[type="checkbox"] + label {
+    font-size: 15px;
     vertical-align: middle;
 }
 
 .msgBox {
+    font-size: 14px;
     margin-bottom: 12px;
 }
 

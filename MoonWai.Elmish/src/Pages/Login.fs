@@ -45,16 +45,18 @@ let init userSettings =
 let update (msg: Msg) model : Model * Cmd<Msg> =
     match msg with
     | ChangeUsername username ->
-        { model with LoginDto = { model.LoginDto with Username = username }; InfoMsg = None }, Cmd.none
+        let infoMsg = if String.IsNullOrEmpty(username) then Some (Info "Username can't be empty") else None
+        { model with LoginDto = { model.LoginDto with Username = username }; InfoMsg = infoMsg }, Cmd.none
 
     | ChangePassword password ->
-        { model with LoginDto = { model.LoginDto with Password = password }; InfoMsg = None }, Cmd.none
+        let infoMsg = if String.IsNullOrEmpty(password) then Some (Info "Password can't be empty") else None
+        { model with LoginDto = { model.LoginDto with Password = password }; InfoMsg = infoMsg }, Cmd.none
 
     | ChangeTrusted trusted ->
-        { model with LoginDto = { model.LoginDto with Trusted = trusted }; InfoMsg = None }, Cmd.none
+        { model with LoginDto = { model.LoginDto with Trusted = trusted } }, Cmd.none
 
-    | Login _ ->
-        { model with Waiting = true; InfoMsg = None }, Cmd.OfPromise.result (login model)
+    | Login ->
+        { model with Waiting = true }, Cmd.OfPromise.result (login model)
 
     | LoginSuccess userSettings ->
         setRoute (Board userSettings.DefaultBoardPath)
@@ -67,7 +69,7 @@ let view (model: Model) (dispatch: Msg -> unit) =
     let loginDisabled = String.IsNullOrEmpty(model.LoginDto.Username) || String.IsNullOrEmpty(model.LoginDto.Password) || model.Waiting
 
     div [ ClassName "form" ] [
-        h3 [ ClassName "formHeader" ] [ str "Welcome back!" ]
+        div [ ClassName "formHeader" ] [ str "Welcome back!" ]
         div [ ClassName "loginBox" ] [
             msgBox model.InfoMsg
 
@@ -79,12 +81,11 @@ let view (model: Model) (dispatch: Msg -> unit) =
                 input "password" "password" "Password" model.LoginDto.Password (ChangePassword >> dispatch) false
             ]
 
-            div [] [
-                label [ HtmlFor "trusted" ] [ 
+            div [ ClassName "sidedInputBlock" ] [ 
+                div [] [
                     checkbox "trusted" (ChangeTrusted >> dispatch) model.LoginDto.Trusted
-                    str "Trusted Computer" 
+                    label [ HtmlFor "trusted" ] [ str "Trusted Computer" ]
                 ]
-
                 button (fun _ -> dispatch Login) "Log In" loginDisabled
             ]
         ]

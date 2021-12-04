@@ -18,7 +18,7 @@ let inline private request<'b> url props (ofSuccess: string -> 'b) (ofFailure: s
                 return ofSuccess txt
             else
                 let errorMsg =
-                    match Decode.Auto.fromString<ErrorResponse>(txt) with
+                    match Decode.Auto.fromString<ErrorResponse>(txt, caseStrategy=CamelCase) with
                     | Ok errorObj -> errorObj.Message
                     | Error _ -> (sprintf "Request to API failed with [%i]" resp.Status)
                 return ofFailure errorMsg

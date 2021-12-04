@@ -74,11 +74,10 @@ let getInfoMsgStr = function
     | None -> String.Empty
 
 let msgBox (infoMsg: InfoMsg option) =
-    let visibility = 
-        if Option.isSome infoMsg then "visible" 
-        else "collapse"
+    if Option.isSome infoMsg then
+        div [ ClassName "msgBox" ] [
+            str (getInfoMsgStr infoMsg)
+        ]
+    else
+        div [] []
 
-    div [
-        ClassName "msgBox"
-        Style [ Visibility visibility ]
-    ] [ str (getInfoMsgStr infoMsg) ]
