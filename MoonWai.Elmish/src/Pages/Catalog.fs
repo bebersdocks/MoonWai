@@ -32,7 +32,7 @@ let getBoards (model: Model) =
         | Ok boards -> RetrievedBoards boards
         | Result.Error e -> RetrieveBoardsFailed e
 
-    get "/boards" ofSuccess RetrieveBoardsFailed
+    get "api/boards" ofSuccess RetrieveBoardsFailed
 
 let update (msg : Msg) (model : Model) =
     match msg with

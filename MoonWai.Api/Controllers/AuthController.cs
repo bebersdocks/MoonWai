@@ -17,7 +17,7 @@ using MoonWai.Shared.Models;
 namespace MoonWai.Api.Controllers
 {
     [ApiController]
-    [Route("[controller]/[action]")]
+    [Route("api/[controller]/[action]")]
     public class AuthController : BaseController
     {
         [NonAction]

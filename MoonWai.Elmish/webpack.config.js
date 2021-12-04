@@ -9,9 +9,15 @@ module.exports = {
         filename: "bundle.js",
     },
     devServer: {
-        publicPath: "/",
         contentBase: "./public",
-        port: 5000,
+        port: 5002,
+        proxy: {
+            '/api': {
+                target: 'http://localhost:5000',
+                changeOrigin: false
+            }
+        },
+        publicPath: "/",
     },
     module: {
         rules: [{

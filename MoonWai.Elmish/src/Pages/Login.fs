@@ -34,7 +34,7 @@ let login (model: Model) =
         | Ok userSettings -> LoginSuccess userSettings
         | Result.Error e -> LoginFailed e
 
-    post "/auth/login" model.LoginDto ofSuccess LoginFailed
+    post "api/auth/login" model.LoginDto ofSuccess LoginFailed
 
 let init userSettings =
     { LoginDto = { Username = ""; Password = ""; Trusted = false };

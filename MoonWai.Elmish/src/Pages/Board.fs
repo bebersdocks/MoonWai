@@ -25,7 +25,7 @@ type Msg =
     | FailedToRetrieveThreads of string
 
 let getThreads (model: Model) =
-    let url = "boards" </> model.BoardPath
+    let url = "api/boards" </> model.BoardPath
 
     let ofSuccess json =
         match Decode.Auto.fromString<ThreadDto list>(json, caseStrategy=CamelCase) with

@@ -16,7 +16,7 @@ namespace MoonWai.Api.Controllers
     public class BoardController : BaseController
     {
         [HttpGet]
-        [Route("boards")]
+        [Route("api/boards")]
         public async Task<IActionResult> GetBoards()
         {
             using var dc = new Dc();
@@ -62,7 +62,7 @@ namespace MoonWai.Api.Controllers
         }
 
         [HttpGet]
-        [Route("boards/{boardPath}")]
+        [Route("api/boards/{boardPath}")]
         public async Task<IActionResult> GetBoardThreads(string boardPath, bool preview = true, int? page = null, int? pageSize = null)
         {
             if ((page ?? 1) < 1)

@@ -36,7 +36,7 @@ let register (model: Model) =
         | Ok userSettings -> RegisterSuccess userSettings
         | Result.Error e -> RegisterFailed e
 
-    post "/auth/register" model.RegisterDto ofSuccess RegisterFailed
+    post "api/auth/register" model.RegisterDto ofSuccess RegisterFailed
 
 let init userSettings =
     { RegisterDto = { Username = ""; Password = ""; LanguageId = LanguageId.English };
