@@ -1,4 +1,4 @@
-module MoonWai.Main
+module Main
 
 open Elmish
 open Elmish.Debug
@@ -10,92 +10,64 @@ open Fable.React
 open Fable.React.Props
 
 open MoonWai.Elements
+open MoonWai.Pages
+open MoonWai.Router
+open MoonWai.Shared.Models
 
 type Page =
-    | Catalog of Pages.Catalog.Model
-    | Board of Pages.Board.Model
-    | Register of Pages.Register.Model
-    | Login of Pages.Login.Model
+    | Catalog of Catalog.Model
+    | Board of Board.Model
+    | Register of Register.Model
+    | Login of Login.Model
     | NotFound
 
 type Model =
     { ActivePage : Page
-      CurrentRoute : Router.Route option  }
+      CurrentRoute : Route option }
 
 type Msg =
-    | CatalogMsg of Pages.Catalog.Msg
-    | BoardMsg of Pages.Board.Msg
-    | RegisterMsg of Pages.Register.Msg
-    | LoginMsg of Pages.Login.Msg
+    | CatalogMsg of Catalog.Msg
+    | BoardMsg of Board.Msg
+    | RegisterMsg of Register.Msg
+    | LoginMsg of Login.Msg
 
-let private initPage (route: Router.Route option) model =
+let private initPage (route: Route option) model =
     let model = { model with CurrentRoute = route }
 
-    match route with
-    | None ->
-        { model with ActivePage = NotFound }, Cmd.none
+    let (activePage, cmd) =
+        match route with
+        | None -> NotFound, Cmd.none
+        | Some Route.Catalog -> Catalog.init |> (fun (model, cmd) -> Catalog model, Cmd.map CatalogMsg cmd)
+        | Some (Route.Board boardPath) -> Board.init boardPath |> (fun (model, cmd) -> Board model, Cmd.map BoardMsg cmd)
+        | Some Route.Register -> Register.init None |> (fun (model, cmd) -> Register model, Cmd.map RegisterMsg cmd)
+        | Some Route.Login -> Login.init None |> (fun (model, cmd) -> Login model, Cmd.map LoginMsg cmd)
 
-    | Some Router.Route.Catalog ->
-        let (catalogModel, catalogCmd) = Pages.Catalog.init
-        { model with ActivePage = Catalog catalogModel }, Cmd.map CatalogMsg catalogCmd 
+    { model with ActivePage = activePage}, cmd
 
-    | Some (Router.Route.Board boardPath) ->
-        let (boardModel, boardCmd) = Pages.Board.init boardPath
-        { model with ActivePage = Board boardModel }, Cmd.map BoardMsg boardCmd
+let init (route: Route option) =
+    let activePage = Catalog (Catalog.init |> (fun (model, _) -> model))
+    let model = { ActivePage = activePage; CurrentRoute = Some Route.Catalog }
 
-    | Some Router.Route.Register -> 
-        let (registerModel, registerCmd) = Pages.Register.init None
-        { model with ActivePage = Register registerModel }, Cmd.map RegisterMsg registerCmd
+    initPage route model
 
-    | Some (Router.Route.Login ) ->
-        let (loginModel, loginCmd) = Pages.Login.init None
-        { model with ActivePage = Login loginModel }, Cmd.map LoginMsg loginCmd
-
-let init (route : Router.Route option) =
-    initPage route
-        { ActivePage = Board (Pages.Board.init "" |> (fun (model, _) -> model))
-          CurrentRoute = Some (Router.Route.Board "") }
-
-let update (msg : Msg) (model : Model) =
-    match model.ActivePage, msg with
-    | Catalog catalogModel, CatalogMsg catalogMsg ->
-        let (catalogModel, catalogCmd) = Pages.Catalog.update catalogMsg catalogModel
-        { model with ActivePage = Catalog catalogModel }, Cmd.map CatalogMsg catalogCmd
-
-    | Board boardModel, BoardMsg boardMsg ->
-        let (boardModel, boardCmd) = Pages.Board.update boardMsg boardModel
-        { model with ActivePage = Board boardModel }, Cmd.map BoardMsg boardCmd
-
-    | Register registerModel, RegisterMsg registerMsg ->
-        let (registerModel, registerCmd) = Pages.Register.update registerMsg registerModel
-        { model with ActivePage = Register registerModel }, Cmd.map RegisterMsg registerCmd
-
-    | Login loginModel, LoginMsg loginMsg ->
-        let (loginModel, loginCmd) = Pages.Login.update loginMsg loginModel
-        { model with ActivePage = Login loginModel }, Cmd.map LoginMsg loginCmd
-
-    | _, _ ->
-        model, Cmd.none
+let update (msg: Msg) (model: Model) =
+    let (activePage, cmd) =
+        match model.ActivePage, msg with
+        | Catalog model, CatalogMsg msg -> Catalog.update msg model |> (fun (model, cmd) -> Catalog model, Cmd.map CatalogMsg cmd)
+        | Board model, BoardMsg msg -> Board.update msg model |> (fun (model, cmd) -> Board model, Cmd.map BoardMsg cmd)
+        | Register model, RegisterMsg msg -> Register.update msg model |> (fun (model, cmd) -> Register model, Cmd.map RegisterMsg cmd)
+        | Login model, LoginMsg msg -> Login.update msg model |> (fun (model, cmd) -> Login model, Cmd.map LoginMsg cmd)
+        | _, _ -> NotFound, Cmd.none
+    { model with ActivePage = activePage }, cmd
         
-let view (model : Model) (dispatch : Dispatch<Msg>) =
+let view (model: Model) (dispatch: Dispatch<Msg>) =
     let pageView = 
         match model.ActivePage with
-        | NotFound ->
-            div [] [
-                str "404 Page not found"
-            ]
-
-        | Catalog catalogModel -> 
-            Pages.Catalog.view catalogModel (CatalogMsg >> dispatch)
-
-        | Board boardModel ->
-            Pages.Board.view boardModel (BoardMsg >> dispatch)
-
-        | Register registerModel -> 
-            Pages.Register.view registerModel (RegisterMsg >> dispatch)
-
-        | Login loginModel ->
-            Pages.Login.view loginModel (LoginMsg >> dispatch)
+        | NotFound -> div [] [ str "404 Page not found" ]
+        | Catalog catalogModel -> Catalog.view catalogModel (CatalogMsg >> dispatch)
+        | Board boardModel -> Board.view boardModel (BoardMsg >> dispatch)
+        | Register registerModel -> Register.view registerModel (RegisterMsg >> dispatch)
+        | Login loginModel -> Login.view loginModel (LoginMsg >> dispatch)
 
     div [ ClassName "app" ] [
         navMenu None []
@@ -103,7 +75,7 @@ let view (model : Model) (dispatch : Dispatch<Msg>) =
     ]
 
 Program.mkProgram init update view
-|> Program.toNavigable (parsePath Router.route) initPage
+|> Program.toNavigable (parsePath route) initPage
 |> Program.withReactHydrate "elmish-app"
 |> Program.withDebugger
 |> Program.run
