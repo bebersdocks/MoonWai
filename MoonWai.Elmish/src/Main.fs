@@ -12,6 +12,7 @@ open Fable.React
 open Fable.React.Props
 
 type Page =
+    | Catalog of Pages.Catalog.Model
     | Board of Pages.Board.Model
     | Register of Pages.Register.Model
     | Login of Pages.Login.Model
@@ -19,14 +20,10 @@ type Page =
 
 type Model =
     { ActivePage : Page
-      CurrentRoute : Router.Route option 
-      Boards: BoardDto list
-      BoardsFailedMessage: string option }
+      CurrentRoute : Router.Route option  }
 
 type Msg =
-    | RetrieveBoards
-    | RetrieveBoardsFailed of string
-    | RetrievedBoards of BoardDto list
+    | CatalogMsg of Pages.Catalog.Msg
     | BoardMsg of Pages.Board.Msg
     | RegisterMsg of Pages.Register.Msg
     | LoginMsg of Pages.Login.Msg
@@ -37,6 +34,10 @@ let private initPage (route: Router.Route option) model =
     match route with
     | None ->
         { model with ActivePage = NotFound }, Cmd.none
+
+    | Some Router.Route.Catalog ->
+        let (catalogModel, catalogCmd) = Pages.Catalog.init
+        { model with ActivePage = Catalog catalogModel }, Cmd.map CatalogMsg catalogCmd 
 
     | Some (Router.Route.Board boardPath) ->
         let (boardModel, boardCmd) = Pages.Board.init boardPath
@@ -55,24 +56,11 @@ let init (route : Router.Route option) =
         { ActivePage = Board (Pages.Board.init "" |> (fun (model, _) -> model))
           CurrentRoute = Some (Router.Route.Board "") }
 
-let retrieveBoards (model: Model) =
-    let ofSuccess json =
-        match Decode.Auto.fromString<BoardDto list>(json, caseStrategy=CamelCase) with
-        | Ok boards -> RetrieveBoards boards
-        | Result.Error e -> RetrieveBoardsFailed e
-
-    Http.get "/boards" ofSuccess RetrieveBoardsFailed
-
 let update (msg : Msg) (model : Model) =
     match model.ActivePage, msg with
-    | _, RetrieveBoards ->
-        model, Cmd.OfPromise.result (retrieveBoards model)
-
-    | _, RetrieveBoardsFailed s ->
-        { model with BoardsFailedMessage = Some s }, Cmd.none
-
-    | _, RetrieveBoards boards ->
-        { model with Boards = boards }, Cmd.none
+    | Catalog catalogModel, CatalogMsg catalogMsg ->
+        let (catalogModel, catalogCmd) = Pages.Catalog.update catalogMsg catalogModel
+        { model with ActivePage = Catalog catalogModel }, Cmd.map CatalogMsg catalogCmd
 
     | Board boardModel, BoardMsg boardMsg ->
         let (boardModel, boardCmd) = Pages.Board.update boardMsg boardModel
@@ -96,6 +84,9 @@ let view (model : Model) (dispatch : Dispatch<Msg>) =
             div [] [
                 str "404 Page not found"
             ]
+
+        | Catalog catalogModel -> 
+            Pages.Catalog.view catalogModel (CatalogMsg >> dispatch)
 
         | Board boardModel ->
             Pages.Board.view boardModel (BoardMsg >> dispatch)

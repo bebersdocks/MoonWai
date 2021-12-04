@@ -6,20 +6,24 @@ open Elmish.UrlParser
 let inline (</>) a b = a + "/" + string b
 
 type Route =
+    | Catalog
+    | Board of string
+    | Thread of int 
     | Register
     | Login
-    | Board of string
 
 let toPath =
     function
+    | Catalog -> "/catalog"
+    | Board boardPath -> "/" + boardPath
     | Register -> "/register"
     | Login -> "/login"
-    | Board boardPath -> "/" + boardPath
 
 let route : Parser<Route -> Route, Route> =
-    oneOf [ 
+    oneOf [
+        map Catalog (s "catalog")
         map Register (s "register")
-        map Login (s "login") 
+        map Login (s "login")
         map Board str
     ]
 
