@@ -53,8 +53,8 @@ namespace MoonWai.Api
                 });
             });
             services
-                .AddAuthentication()
-                .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme);
+                .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie();
             services.AddAuthorization();
             services.AddSpaStaticFiles(configuration =>
             {

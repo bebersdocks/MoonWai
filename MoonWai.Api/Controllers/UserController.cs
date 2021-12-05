@@ -37,10 +37,9 @@ namespace MoonWai.Api.Controllers
         [Route("user/threads")]
         public async Task<IActionResult> GetUserThreads()
         {
-            var user = await GetUser();
-            
             using var dc = new Dc();
 
+            var user = await GetUser(dc);    
             var threads = await GetUserThreads(dc, user.UserId);
 
             return Ok(threads);
@@ -65,10 +64,9 @@ namespace MoonWai.Api.Controllers
         [Route("user/posts")]
         public async Task<IActionResult> GetUserPosts()
         {
-            var user = await GetUser();
-            
             using var dc = new Dc();
 
+            var user = await GetUser(dc);     
             var posts = await GetUserPosts(dc, user.UserId);
 
             return Ok(posts);
@@ -78,11 +76,11 @@ namespace MoonWai.Api.Controllers
         [Route("user/language/{languageId:int}")]
         public async Task<IActionResult> UpdateLanguage(LanguageId languageId)
         {
-            var user = await GetUser();
+            using var dc = new Dc();
+
+            var user = await GetUser(dc);
             
             user.Settings.LanguageId = languageId;
-
-            using var dc = new Dc();
 
             if (await dc.UpdateAsync(user.Settings) < 1)
                 return ServerError(TranslationId.FailedToUpdateSettings);
@@ -94,14 +92,13 @@ namespace MoonWai.Api.Controllers
         [Route("user/settings")]
         public async Task<IActionResult> UpdateSettings(UserSettingsDto userSettingsDto)
         {
-            var user = await GetUser();
+            using var dc = new Dc();
 
+            var user = await GetUser(dc);
             var settings = user.Settings;
 
             settings.LanguageId = userSettingsDto.LanguageId;
             settings.DefaultBoardId = userSettingsDto.DefaultBoardId;
-
-            using var dc = new Dc();
 
             if (await dc.UpdateAsync(settings) < 1)
                 return ServerError(TranslationId.FailedToUpdateSettings);
