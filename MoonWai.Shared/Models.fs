@@ -6,12 +6,19 @@ open System.Collections.Generic
 open MoonWai.Shared.Definitions
 
 [<CLIMutable>]
-type ErrorResponse =
+type ErrorDto =
     { Message: string }
 
+[<CLIMutable>]
+type BoardSectionDto =
+    { BoardSectionId: int 
+      Name: string }
+
+[<CLIMutable>]
 type BoardDto =
-    { BoardId: int 
-      Page: string 
+    { BoardId: int
+      BoardSection: BoardSectionDto 
+      Path: string
       Name: string }
 
 type LoginDto =

@@ -40,7 +40,7 @@ let navMenu (userSettings: UserSettingsDto option) (boards: BoardDto list) =
     
     let boardLinks =
         List.map 
-            (fun (x: BoardDto) -> link (Board x.Page) (sprintf "/%s/ - %s" x.Page x.Name)) 
+            (fun (x: BoardDto) -> link (Board x.Path) (sprintf "/%s/ - %s" x.Path x.Name)) 
             boards
 
     div [ ClassName "navMenu" ] (userBox :: boardLinks)

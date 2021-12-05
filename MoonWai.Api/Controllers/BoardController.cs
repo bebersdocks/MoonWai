@@ -15,13 +15,33 @@ namespace MoonWai.Api.Controllers
     [ApiController]
     public class BoardController : BaseController
     {
+        [NonAction]
+        private Task<List<BoardDto>> GetBoards(Dc dc)
+        {
+            var query = dc.Boards 
+                .LoadWith(i => i.BoardSection)
+                .Select(i => new BoardDto
+                {
+                    BoardId = i.BoardId,
+                    BoardSection = new BoardSectionDto
+                    {
+                        BoardSectionId = i.BoardSectionId,
+                        Name = i.BoardSection.Name
+                    },
+                    Path = i.Path,
+                    Name = i.Name
+                });
+            
+            return query.ToListAsync();
+        }
+
         [HttpGet]
         [Route("api/boards")]
         public async Task<IActionResult> GetBoards()
         {
             using var dc = new Dc();
 
-            var boards = await dc.Boards.ToListAsync();
+            var boards = await GetBoards(dc);
 
             return Ok(boards);
         }

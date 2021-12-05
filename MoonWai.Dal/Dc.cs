@@ -9,13 +9,14 @@ namespace MoonWai.Dal
 {
     public partial class Dc : LinqToDB.Data.DataConnection
     {
-        public ITable<Board>        Boards        { get { return this.GetTable<Board>(); } }
-        public ITable<Media>        Media         { get { return this.GetTable<Media>(); } }
-        public ITable<Post>         Posts         { get { return this.GetTable<Post>(); } }
-        public ITable<PostResponse> PostResponses { get { return this.GetTable<PostResponse>(); } }
-        public ITable<Thread>       Threads       { get { return this.GetTable<Thread>(); } }
-        public ITable<User>         Users         { get { return this.GetTable<User>(); } }
-        public ITable<UserSettings> UserSettings  { get { return this.GetTable<UserSettings>(); } }
+        public ITable<Board>        Boards        => this.GetTable<Board>();
+        public ITable<BoardSection> BoardSections => this.GetTable<BoardSection>();
+        public ITable<Media>        Media         => this.GetTable<Media>();
+        public ITable<Post>         Posts         => this.GetTable<Post>();
+        public ITable<PostResponse> PostResponses => this.GetTable<PostResponse>();
+        public ITable<Thread>       Threads       => this.GetTable<Thread>();
+        public ITable<User>         Users         => this.GetTable<User>();
+        public ITable<UserSettings> UserSettings  => this.GetTable<UserSettings>();
    
         private const string defaultConfigurationStr = "MoonWai";
 
@@ -48,6 +49,7 @@ namespace MoonWai.Dal
                 }
             }
 
+            createTable(BoardSections);
             createTable(Boards);
             createTable(Media);
             createTable(Posts);

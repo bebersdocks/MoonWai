@@ -42,13 +42,13 @@ namespace MoonWai.Api.Controllers
         }
 
         /// <summary>
-        /// Failed response for 4xx and 5xx status codes.
+        /// Failed responses for 4xx and 5xx status codes.
         /// </summary>
         protected IActionResult Failed(int statusCode, TranslationId translationId, params object[] args)
         {
             var translation = GetTranslation(translationId, args);
 
-            var respObj = new ErrorResponse(translation);
+            var respObj = new ErrorDto(translation);
 
             return StatusCode(statusCode, respObj);
         }
