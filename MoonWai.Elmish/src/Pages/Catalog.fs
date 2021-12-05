@@ -7,6 +7,7 @@ open Fable.React.Props
 
 open MoonWai.Elmish.Elements
 open MoonWai.Elmish.Http
+open MoonWai.Elmish.Router
 open MoonWai.Shared.Models
 
 open Thoth.Json
@@ -34,7 +35,7 @@ let getBoards (model: Model) =
 
     get "api/boards" ofSuccess RetrieveBoardsFailed
 
-let update (msg : Msg) (model : Model) =
+let update (msg: Msg) (model: Model) =
     match msg with
     | GetBoards ->
         { model with Waiting = true }, Cmd.OfPromise.result (getBoards model)
@@ -45,5 +46,20 @@ let update (msg : Msg) (model : Model) =
     | RetrievedBoards boards ->
         { model with Boards = boards; Waiting = false }, Cmd.none
 
-let view (model : Model) (dispatch : Dispatch<Msg>) =
-    div [ ClassName "catalog" ] []
+
+let boardView (board: BoardDto) =
+    div [] [
+        (link (Board board.Path) (sprintf "/%s/ - %s" board.Path board.Name))
+    ]
+
+let boardSectionView (boardSection: BoardSectionDto, boards: BoardDto list) =
+    let boardSectionName = div [ ClassName "boardSectionName" ] [ str (boardSection.Name) ]
+    div [ ClassName "boardSection" ] (boardSectionName :: (List.map boardView boards))
+
+let catalogView (boards: BoardDto list) =
+    boards 
+    |> List.groupBy (fun (x: BoardDto) -> x.BoardSection)
+    |> List.map boardSectionView
+
+let view (model: Model) (dispatch: Dispatch<Msg>) =
+    div [ ClassName "catalog" ] (catalogView model.Boards)

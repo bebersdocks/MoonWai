@@ -19,18 +19,19 @@ let toPath =
     | Register -> "/register"
     | Login -> "/login"
 
-let route : Parser<Route -> Route, Route> =
+let route: Parser<Route -> Route, Route> =
     oneOf [
+        map Catalog top
         map Catalog (s "catalog")
         map Register (s "register")
         map Login (s "login")
         map Board str
     ]
 
-let newUrl newUrl =     
+let newUrl newUrl =
     Navigation.newUrl newUrl 
     |> List.map (fun f -> f ignore) 
     |> ignore
 
-let setRoute (route: Route) = 
+let setRoute (route: Route) =
     newUrl (toPath route)
