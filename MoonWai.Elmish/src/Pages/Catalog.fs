@@ -35,7 +35,7 @@ let getBoards (model: Model) =
 
     get "api/boards" ofSuccess RetrieveBoardsFailed
 
-let update (msg: Msg) (model: Model) =
+let update msg model : Model * Cmd<Msg> =
     match msg with
     | GetBoards ->
         { model with Waiting = true }, Cmd.OfPromise.result (getBoards model)

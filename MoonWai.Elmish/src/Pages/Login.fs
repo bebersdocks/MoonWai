@@ -42,7 +42,7 @@ let init userSettings =
       InfoMsg = None;
       Waiting = false; }, Cmd.none
 
-let update (msg: Msg) model : Model * Cmd<Msg> =
+let update msg model : Model * Cmd<Msg> =
     match msg with
     | ChangeUsername username ->
         let infoMsg = if String.IsNullOrEmpty(username) then Some (Info "Username can't be empty") else None

@@ -15,7 +15,7 @@ open MoonWai.Elmish.Router
 open MoonWai.Shared.Definitions
 open MoonWai.Shared.Models
 
-type Model = 
+type Model =
     { RegisterDto: RegisterDto
       UserSettings: UserSettingsDto option
       PasswordAgain: string option
@@ -45,36 +45,32 @@ let init userSettings =
       InfoMsg = None;
       Waiting = false }, Cmd.none
 
-let update (msg: Msg) model : Model * Cmd<Msg> =
+let update msg model : Model * Cmd<Msg> =
     match msg with
-    | ChangeUsername username when String.IsNullOrEmpty(username) ->
-        { model with 
-            RegisterDto = { model.RegisterDto with Username = username }; 
-            InfoMsg = Some (Info "Username can't be empty") }, Cmd.none
-
     | ChangeUsername username ->
-        { model with RegisterDto = { model.RegisterDto with Username = username }; InfoMsg = None }, Cmd.none
-
-    | ChangePassword password when 
-        password.Length < Common.minPasswordLength && password.Length <> 0 ->
-        { model with
-            RegisterDto = { model.RegisterDto with Password = password };
-            InfoMsg = Some (Info (sprintf "Password length can't be less than %i" Common.minPasswordLength)) }, Cmd.none
-
-    | ChangePassword password when not (model.RegisterDto.Password.Equals(password)) ->
-        { model with RegisterDto = { model.RegisterDto with Password = password }; InfoMsg = Some (Info "Passwords don't match") }, Cmd.none
+        let infoMsg = if String.IsNullOrEmpty(username) then Some (Info "Username can't be empty") else None
+        { model with RegisterDto = { model.RegisterDto with Username = username }; InfoMsg = infoMsg }, Cmd.none
 
     | ChangePassword password ->
-        { model with RegisterDto = { model.RegisterDto with Password = password }; InfoMsg = None }, Cmd.none
+        let infoMsg = 
+            if password.Length < Common.minPasswordLength && password.Length <> 0 then
+                Some (Info (sprintf "Password length can't be less than %i" Common.minPasswordLength))
+            else if not (model.RegisterDto.Password.Equals(password)) then 
+                Some (Info "Passwords don't match")
+            else 
+                None
 
-    | ChangePasswordAgain passwordAgain when not (model.RegisterDto.Password.Equals(passwordAgain)) ->
-        { model with PasswordAgain = Some passwordAgain; InfoMsg = Some (Info "Passwords don't match") }, Cmd.none
+        { model with RegisterDto = { model.RegisterDto with Password = password }; InfoMsg = infoMsg }, Cmd.none
 
     | ChangePasswordAgain passwordAgain ->
-        { model with PasswordAgain = Some passwordAgain; InfoMsg = None }, Cmd.none
+        let infoMsg = 
+            if not (model.RegisterDto.Password.Equals(passwordAgain)) then 
+                Some (Info "Passwords don't match") else 
+            None
+        { model with PasswordAgain = Some passwordAgain; InfoMsg = infoMsg }, Cmd.none
 
     | Register ->
-        { model with Waiting = true; InfoMsg = None }, Cmd.OfPromise.result (register model)
+        { model with Waiting = true }, Cmd.OfPromise.result (register model)
 
     | RegisterSuccess userSettings ->
         setRoute (Board userSettings.DefaultBoardPath)
@@ -92,9 +88,8 @@ let view (model: Model) (dispatch: Msg -> unit) =
         model.Waiting
 
     div [ ClassName "form" ] [
-        h3 [ ClassName "formHeader" ] [ str "Registration" ]
+        div [ ClassName "formHeader" ] [ str "Registration" ]
         div [ ClassName "registerBox" ] [
-               
             msgBox model.InfoMsg
 
             div [ ClassName "inputBlock" ] [
