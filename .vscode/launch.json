@@ -17,21 +17,6 @@
             "env": {
                 "ASPNETCORE_ENVIRONMENT": "Development"
             },
-            "sourceFileMap": {
-                "/Views": "${workspaceFolder}/Views"
-            }
-        },
-        {
-            "name": "Elmish Launch",
-            "type": "chrome",
-            "request": "launch",
-            "preLaunchTask": "watchElmish",
-            "url": "http://localhost:5000",
-            "webRoot": "${workspaceFolder}/MoonWai.Elmish/public",
-            "sourceMaps": true,
-            "sourceMapPathOverrides": {
-                "webpack:///*": "${workspaceFolder}/MoonWai.Elmish/src/*",
-            }
         },
     ]
 }
