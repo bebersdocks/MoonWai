@@ -1,0 +1,13 @@
+body {
+    background-color: $background-color;
+    font-family: monospace;
+    margin: 0; 
+    padding: 0;
+    font-size: 12px;
+}
+
+.app {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+  }

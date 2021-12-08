@@ -69,19 +69,19 @@ let view (model: Model) (dispatch: Msg -> unit) =
     let loginDisabled = String.IsNullOrEmpty(model.LoginDto.Username) || String.IsNullOrEmpty(model.LoginDto.Password) || model.Waiting
 
     div [ ClassName "form" ] [
-        div [ ClassName "formHeader" ] [ str "Welcome back!" ]
-        div [ ClassName "loginBox" ] [
+        div [ ClassName "form__header" ] [ str "Welcome back!" ]
+        div [ ClassName "login-box" ] [
             msgBox model.InfoMsg
 
-            div [ ClassName "inputBlock" ] [
+            div [ ClassName "input-block" ] [
                 input "username" "text" "Username" model.LoginDto.Username (ChangeUsername >> dispatch) true
             ]
 
-            div [ ClassName "inputBlock" ] [
+            div [ ClassName "input-block" ] [
                 input "password" "password" "Password" model.LoginDto.Password (ChangePassword >> dispatch) false
             ]
 
-            div [ ClassName "sidedInputBlock" ] [ 
+            div [ ClassName "input-block--sided" ] [ 
                 div [] [
                     checkbox "trusted" (ChangeTrusted >> dispatch) model.LoginDto.Trusted
                     label [ HtmlFor "trusted" ] [ str "Trusted Computer" ]

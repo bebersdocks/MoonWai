@@ -1,0 +1,16 @@
+button {
+    color: $button-text-color;
+    background: $button-background;
+    border: $button-border;
+    border-radius: 2px;
+    height: 35px;
+}
+    button:hover {
+        background-color:$button-hover-color;
+        cursor: pointer;
+    }
+
+    button:disabled {
+        background-color: $button-disabled-color;
+        cursor: default
+    }

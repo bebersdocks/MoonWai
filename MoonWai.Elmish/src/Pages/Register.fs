@@ -88,19 +88,19 @@ let view (model: Model) (dispatch: Msg -> unit) =
         model.Waiting
 
     div [ ClassName "form" ] [
-        div [ ClassName "formHeader" ] [ str "Registration" ]
-        div [ ClassName "registerBox" ] [
+        div [ ClassName "form__header" ] [ str "Registration" ]
+        div [ ClassName "register-box" ] [
             msgBox model.InfoMsg
 
-            div [ ClassName "inputBlock" ] [
+            div [ ClassName "input-block" ] [
                 input "username" "text" "Username" model.RegisterDto.Username (ChangeUsername >> dispatch) true
             ]
 
-            div [ ClassName "inputBlock" ] [
+            div [ ClassName "input-block" ] [
                 input "password" "password" "Password" model.RegisterDto.Password (ChangePassword >> dispatch) false
             ]
 
-            div [ ClassName "inputBlock" ] [
+            div [ ClassName "input-block" ] [
                 input "passwordAgain" "password" "Repeat password" model.PasswordAgain (ChangePasswordAgain >> dispatch) false
             ]
 

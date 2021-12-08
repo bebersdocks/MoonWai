@@ -55,8 +55,8 @@ let postView (post: PostDto) =
     let idStr = sprintf "%s #%i" (dateTimeToStr post.CreateDt) post.PostId
 
     div [ ClassName "post" ] [
-        div [ ClassName "idBox" ] [ str idStr ]
-        div [ ClassName "postMsg" ] [ str post.Message ]
+        div [ ClassName "post__header" ] [ str idStr ]
+        div [ ClassName "post__body" ] [ str post.Message ]
     ]
 
 let threadView (thread: ThreadDto) =
@@ -64,8 +64,8 @@ let threadView (thread: ThreadDto) =
 
     let postsView = Seq.map postView thread.Posts
     let view = [
-        div [ ClassName "idBox" ] [ str idStr ]
-        div [ ClassName "threadMsg" ] [ str thread.Message ]
+        div [ ClassName "thread__header" ] [ str idStr ]
+        div [ ClassName "thread__body" ] [ str thread.Message ]
     ]
 
     div [ ClassName "thread" ] (Seq.append view postsView)

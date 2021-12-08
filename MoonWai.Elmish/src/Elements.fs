@@ -75,9 +75,8 @@ let getInfoMsgStr = function
 
 let msgBox (infoMsg: InfoMsg option) =
     if Option.isSome infoMsg then
-        div [ ClassName "msgBox" ] [
+        div [ ClassName "msg-box" ] [
             str (getInfoMsgStr infoMsg)
         ]
     else
         div [] []
-

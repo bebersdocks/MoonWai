@@ -74,6 +74,8 @@ let view (model: Model) (dispatch: Dispatch<Msg>) =
         div [ ClassName "content" ] [ pageView ]
     ]
 
+Fable.Core.JsInterop.importAll "../../public/css/main.scss"
+
 Program.mkProgram init update view
 |> Program.toNavigable (parsePath route) initPage
 |> Program.withReactHydrate "elmish-app"

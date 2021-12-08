@@ -53,8 +53,8 @@ let boardView (board: BoardDto) =
     ]
 
 let boardSectionView (boardSection: BoardSectionDto, boards: BoardDto list) =
-    let boardSectionName = div [ ClassName "boardSectionName" ] [ str (boardSection.Name) ]
-    div [ ClassName "boardSection" ] (boardSectionName :: (List.map boardView boards))
+    let boardSectionName = div [ ClassName "board-section__name" ] [ str (boardSection.Name) ]
+    div [ ClassName "board-section" ] (boardSectionName :: (List.map boardView boards))
 
 let catalogView (boards: BoardDto list) =
     boards 
