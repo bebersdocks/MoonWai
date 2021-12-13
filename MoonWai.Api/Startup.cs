@@ -73,9 +73,9 @@ namespace MoonWai.Api
             {
                 app.UseExceptionHandler("/Error/Exception");
                 app.UseHsts();
+                app.UseHttpsRedirection();
             }
 
-            app.UseHttpsRedirection();
             app.UseSerilogRequestLogging();       
             app.UseAuthentication();
             app.UseRouting();
