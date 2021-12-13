@@ -3,8 +3,6 @@ module MoonWai.Elmish.Router
 open Elmish.Navigation
 open Elmish.UrlParser
 
-let inline (</>) a b = a + "/" + string b
-
 type Route =
     | Catalog
     | Board of string
@@ -16,6 +14,7 @@ let toPath =
     function
     | Catalog -> "/catalog"
     | Board boardPath -> "/" + boardPath
+    | Thread threadId -> "/threads/" + (string threadId)
     | Register -> "/register"
     | Login -> "/login"
 
@@ -23,6 +22,7 @@ let route: Parser<Route -> Route, Route> =
     oneOf [
         map Catalog top
         map Catalog (s "catalog")
+        map Thread (s "threads" </> i32)
         map Register (s "register")
         map Login (s "login")
         map Board str

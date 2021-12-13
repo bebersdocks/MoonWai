@@ -9,6 +9,7 @@ open Fable.React.Props
 
 open Thoth.Json
 
+open MoonWai.Elmish.Components.MessageBox
 open MoonWai.Elmish.Elements
 open MoonWai.Elmish.Http
 open MoonWai.Elmish.Router
@@ -90,7 +91,7 @@ let view (model: Model) (dispatch: Msg -> unit) =
     div [ ClassName "form" ] [
         div [ ClassName "form__header" ] [ str "Registration" ]
         div [ ClassName "register-box" ] [
-            msgBox model.InfoMsg
+            messageBox model.InfoMsg
 
             div [ ClassName "input-block" ] [
                 input "username" "text" "Username" model.RegisterDto.Username (ChangeUsername >> dispatch) true

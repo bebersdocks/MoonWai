@@ -30,7 +30,7 @@ let link route s =
 
 let navMenu (userSettings: UserSettingsDto option) (boards: BoardDto list) =
     let userBox =
-        div [ ClassName "userBox" ] [
+        div [ ClassName "user-box" ] [
             if userSettings.IsNone then
                 button (fun _ -> setRoute Login) "Login" false
                 button (fun _ -> setRoute Register) "Register" false
@@ -43,7 +43,7 @@ let navMenu (userSettings: UserSettingsDto option) (boards: BoardDto list) =
             (fun (x: BoardDto) -> link (Board x.Path) (sprintf "/%s/ - %s" x.Path x.Name)) 
             boards
 
-    div [ ClassName "navMenu" ] (userBox :: boardLinks)
+    div [ ClassName "nav" ] (userBox :: boardLinks)
 
 let input id inputType placeholder value onChangeEvent autoFocus = 
     Standard.input [
@@ -63,20 +63,3 @@ let checkbox id onChangeEvent isChecked =
         OnChange (fun ev -> onChangeEvent (unbox<bool> ev?target?``checked``))
         Checked isChecked
     ]
-
-type InfoMsg =
-    | Info of string
-    | Warning of string
-    | Error of string
-
-let getInfoMsgStr = function
-    | Some (Info s) | Some (Warning s) | Some (Error s) -> s
-    | None -> String.Empty
-
-let msgBox (infoMsg: InfoMsg option) =
-    if Option.isSome infoMsg then
-        div [ ClassName "msg-box" ] [
-            str (getInfoMsgStr infoMsg)
-        ]
-    else
-        div [] []

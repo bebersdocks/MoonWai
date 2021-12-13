@@ -5,6 +5,7 @@ open Elmish
 open Fable.React
 open Fable.React.Props
 
+open MoonWai.Elmish.Components.MessageBox
 open MoonWai.Elmish.Elements
 open MoonWai.Elmish.Http
 open MoonWai.Elmish.Router
@@ -48,9 +49,7 @@ let update msg model : Model * Cmd<Msg> =
 
 
 let boardView (board: BoardDto) =
-    div [] [
-        (link (Board board.Path) (sprintf "/%s/ - %s" board.Path board.Name))
-    ]
+    div [] [ (link (Board board.Path) board.Name) ]
 
 let boardSectionView (boardSection: BoardSectionDto, boards: BoardDto list) =
     let boardSectionName = div [ ClassName "board-section__name" ] [ str (boardSection.Name) ]

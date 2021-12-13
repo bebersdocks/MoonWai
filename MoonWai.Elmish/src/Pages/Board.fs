@@ -1,15 +1,13 @@
 module MoonWai.Elmish.Pages.Board
 
-open System
-
 open Elmish
 
 open Fable.React
 open Fable.React.Props
 
-open MoonWai.Elmish.Elements
+open MoonWai.Elmish.Components.MessageBox
+open MoonWai.Elmish.Components.Thread
 open MoonWai.Elmish.Http
-open MoonWai.Elmish.Router
 open MoonWai.Shared.Models
 
 open Thoth.Json
@@ -25,7 +23,7 @@ type Msg =
     | FailedToRetrieveThreads of string
 
 let getThreads (model: Model) =
-    let url = "api/boards" </> model.BoardPath
+    let url = sprintf "api/boards/%s" model.BoardPath
 
     let ofSuccess json =
         match Decode.Auto.fromString<ThreadDto list>(json, caseStrategy=CamelCase) with
@@ -48,27 +46,5 @@ let update (msg: Msg) model : Model * Cmd<Msg> =
     | FailedToRetrieveThreads s -> 
         { model with Threads = []; InfoMsg = Some (Error s) }, Cmd.none
 
-let dateTimeToStr (dt: DateTime) = 
-    dt.ToLocalTime().ToString("dd/MMM/yyyy hh:mm:tt")
-
-let postView (post: PostDto) = 
-    let idStr = sprintf "%s #%i" (dateTimeToStr post.CreateDt) post.PostId
-
-    div [ ClassName "post" ] [
-        div [ ClassName "post__header" ] [ str idStr ]
-        div [ ClassName "post__body" ] [ str post.Message ]
-    ]
-
-let threadView (thread: ThreadDto) =
-    let idStr = sprintf "%s %s #%i" thread.Title (dateTimeToStr thread.CreateDt) thread.ThreadId
-
-    let postsView = Seq.map postView thread.Posts
-    let view = [
-        div [ ClassName "thread__header" ] [ str idStr ]
-        div [ ClassName "thread__body" ] [ str thread.Message ]
-    ]
-
-    div [ ClassName "thread" ] (Seq.append view postsView)
-    
 let view (model: Model) (dispatch: Msg -> unit) =
     div [ ClassName "board" ] (Seq.map threadView model.Threads)

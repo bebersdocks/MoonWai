@@ -17,6 +17,7 @@ open MoonWai.Shared.Models
 type Page =
     | Catalog of Catalog.Model
     | Board of Board.Model
+    | Thread of Thread.Model
     | Register of Register.Model
     | Login of Login.Model
     | NotFound
@@ -28,6 +29,7 @@ type Model =
 type Msg =
     | CatalogMsg of Catalog.Msg
     | BoardMsg of Board.Msg
+    | ThreadMsg of Thread.Msg
     | RegisterMsg of Register.Msg
     | LoginMsg of Login.Msg
 
@@ -39,6 +41,7 @@ let private initPage (route: Route option) model =
         | None -> NotFound, Cmd.none
         | Some Route.Catalog -> Catalog.init |> (fun (model, cmd) -> Catalog model, Cmd.map CatalogMsg cmd)
         | Some (Route.Board boardPath) -> Board.init boardPath |> (fun (model, cmd) -> Board model, Cmd.map BoardMsg cmd)
+        | Some (Route.Thread threadId) -> Thread.init threadId |> (fun (model, cmd) -> Thread model, Cmd.map ThreadMsg cmd)
         | Some Route.Register -> Register.init None |> (fun (model, cmd) -> Register model, Cmd.map RegisterMsg cmd)
         | Some Route.Login -> Login.init None |> (fun (model, cmd) -> Login model, Cmd.map LoginMsg cmd)
 
@@ -55,6 +58,7 @@ let update (msg: Msg) (model: Model) =
         match model.ActivePage, msg with
         | Catalog model, CatalogMsg msg -> Catalog.update msg model |> (fun (model, cmd) -> Catalog model, Cmd.map CatalogMsg cmd)
         | Board model, BoardMsg msg -> Board.update msg model |> (fun (model, cmd) -> Board model, Cmd.map BoardMsg cmd)
+        | Thread model, ThreadMsg msg -> Thread.update msg model |> (fun (model, cmd) -> Thread model, Cmd.map ThreadMsg cmd)
         | Register model, RegisterMsg msg -> Register.update msg model |> (fun (model, cmd) -> Register model, Cmd.map RegisterMsg cmd)
         | Login model, LoginMsg msg -> Login.update msg model |> (fun (model, cmd) -> Login model, Cmd.map LoginMsg cmd)
         | _, _ -> NotFound, Cmd.none
@@ -64,17 +68,18 @@ let view (model: Model) (dispatch: Dispatch<Msg>) =
     let pageView = 
         match model.ActivePage with
         | NotFound -> div [] [ str "404 Page not found" ]
-        | Catalog catalogModel -> Catalog.view catalogModel (CatalogMsg >> dispatch)
-        | Board boardModel -> Board.view boardModel (BoardMsg >> dispatch)
-        | Register registerModel -> Register.view registerModel (RegisterMsg >> dispatch)
-        | Login loginModel -> Login.view loginModel (LoginMsg >> dispatch)
+        | Catalog model -> Catalog.view model (CatalogMsg >> dispatch)
+        | Board model -> Board.view model (BoardMsg >> dispatch)
+        | Thread model -> Thread.view model (ThreadMsg >> dispatch)
+        | Register model -> Register.view model (RegisterMsg >> dispatch)
+        | Login model -> Login.view model (LoginMsg >> dispatch)
 
     div [ ClassName "app" ] [
         navMenu None []
         div [ ClassName "content" ] [ pageView ]
     ]
 
-Fable.Core.JsInterop.importAll "../../public/css/main.scss"
+Fable.Core.JsInterop.importAll "../public/css/main.scss"
 
 Program.mkProgram init update view
 |> Program.toNavigable (parsePath route) initPage

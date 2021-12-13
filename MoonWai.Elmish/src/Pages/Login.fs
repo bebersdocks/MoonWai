@@ -7,6 +7,7 @@ open Elmish
 open Fable.React
 open Fable.React.Props
 
+open MoonWai.Elmish.Components.MessageBox
 open MoonWai.Elmish.Elements
 open MoonWai.Elmish.Http
 open MoonWai.Elmish.Router
@@ -71,7 +72,7 @@ let view (model: Model) (dispatch: Msg -> unit) =
     div [ ClassName "form" ] [
         div [ ClassName "form__header" ] [ str "Welcome back!" ]
         div [ ClassName "login-box" ] [
-            msgBox model.InfoMsg
+            messageBox model.InfoMsg
 
             div [ ClassName "input-block" ] [
                 input "username" "text" "Username" model.LoginDto.Username (ChangeUsername >> dispatch) true
