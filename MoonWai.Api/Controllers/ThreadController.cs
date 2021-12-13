@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -18,34 +17,42 @@ namespace MoonWai.Api.Controllers
     public class ThreadController : BaseController
     {
         [NonAction]
-        private Task<List<PostDto>> GetThreadPosts(Dc dc, int threadId)
+        private Task<ThreadDto> GetThread(Dc dc, int threadId)
         {   
-            var query = dc.Posts
-                .Where(i => i.ThreadId == threadId)
-                .Select(i => new PostDto
+            var query = dc.Threads
+                .LoadWith(i => i.Posts)
+                .Select(i => new ThreadDto
                 {
-                    PostId = i.PostId,
+                    ThreadId = i.ThreadId,
+                    Title = i.Title,
                     Message = i.Message,
+                    Posts = i.Posts
+                        .Select(j => new PostDto
+                        {
+                            PostId = j.PostId,
+                            Message = j.Message,
+                            CreateDt = j.CreateDt
+                        })
+                        .ToList(),
+                    PostsCount = i.Posts.Count(),
                     CreateDt = i.CreateDt
                 });
 
-            return query.ToListAsync();
+            return query.FirstOrDefaultAsync(i => i.ThreadId == threadId);
         }
 
         [HttpGet]
         [Route("api/threads/{threadId:int}")]
-        public async Task<IActionResult> GetThreadPosts(int threadId)
+        public async Task<IActionResult> GetThread(int threadId)
         {
             using var dc = new Dc();
 
-            var thread = await dc.Threads.FirstOrDefaultAsync(i => i.ThreadId == threadId);
+            var thread = await GetThread(threadId);
 
             if (thread == null)
                 return NotFound(TranslationId.ThreadNotFound);
 
-            var posts = await GetThreadPosts(dc, threadId);
-
-            return Ok(posts);
+            return Ok(thread);
         }
 
         [HttpPost]
