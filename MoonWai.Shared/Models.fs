@@ -45,6 +45,7 @@ type PostDto =
 [<CLIMutable>]
 type ThreadDto =
     { ThreadId: int
+      ParentId: int
       Title: string
       Message: string
       Posts: List<PostDto>

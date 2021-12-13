@@ -60,6 +60,7 @@ namespace MoonWai.Api.Controllers
                 .Select(i => new ThreadDto
                 {
                     ThreadId = i.ThreadId,
+                    ParentId = i.ParentId,
                     Title = i.Title,
                     Message = i.Message,
                     Posts = i.Posts
