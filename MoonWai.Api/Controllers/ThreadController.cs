@@ -48,7 +48,7 @@ namespace MoonWai.Api.Controllers
         {
             using var dc = new Dc();
 
-            var thread = await GetThread(threadId);
+            var thread = await GetThread(dc, threadId);
 
             if (thread == null)
                 return NotFound(TranslationId.ThreadNotFound);
@@ -61,6 +61,20 @@ namespace MoonWai.Api.Controllers
         public async Task<IActionResult> InsertThread(InsertThreadDto insertThreadDto)
         {
             using var dc = new Dc();
+
+            var allowedUserIds = await dc.BoardAllowedUsers
+                .Where(i => i.BoardId == insertThreadDto.BoardId)
+                .Select(i => i.UserId)
+                .ToListAsync();
+
+            if (allowedUserIds.Any())
+            {
+                var user = await GetUser(dc);
+                if (user == null || !allowedUserIds.Contains(user.UserId))
+                {
+                    return Forbidden(TranslationId.NotAllowedToPostInThisBoard);
+                }
+            }
 
             var newThread = new Thread();
 

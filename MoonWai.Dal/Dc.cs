@@ -9,14 +9,15 @@ namespace MoonWai.Dal
 {
     public partial class Dc : LinqToDB.Data.DataConnection
     {
-        public ITable<Board>        Boards        => this.GetTable<Board>();
-        public ITable<BoardSection> BoardSections => this.GetTable<BoardSection>();
-        public ITable<Media>        Media         => this.GetTable<Media>();
-        public ITable<Post>         Posts         => this.GetTable<Post>();
-        public ITable<PostResponse> PostResponses => this.GetTable<PostResponse>();
-        public ITable<Thread>       Threads       => this.GetTable<Thread>();
-        public ITable<User>         Users         => this.GetTable<User>();
-        public ITable<UserSettings> UserSettings  => this.GetTable<UserSettings>();
+        public ITable<Board>            Boards            => this.GetTable<Board>();
+        public ITable<BoardAllowedUser> BoardAllowedUsers => this.GetTable<BoardAllowedUser>();
+        public ITable<BoardSection>     BoardSections     => this.GetTable<BoardSection>();
+        public ITable<Media>            Media             => this.GetTable<Media>();
+        public ITable<Post>             Posts             => this.GetTable<Post>();
+        public ITable<PostResponse>     PostResponses     => this.GetTable<PostResponse>();
+        public ITable<Thread>           Threads           => this.GetTable<Thread>();
+        public ITable<User>             Users             => this.GetTable<User>();
+        public ITable<UserSettings>     UserSettings      => this.GetTable<UserSettings>();
    
         private const string defaultConfigurationStr = "MoonWai";
 
@@ -51,6 +52,7 @@ namespace MoonWai.Dal
 
             createTable(BoardSections);
             createTable(Boards);
+            createTable(BoardAllowedUsers);
             createTable(Media);
             createTable(Posts);
             createTable(PostResponses);

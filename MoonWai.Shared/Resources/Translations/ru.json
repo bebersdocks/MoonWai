@@ -6,6 +6,7 @@
     "FailedToCreateUserSettings": "Не получилось создать настройки пользователя",
     "FailedToUpdateSettings": "Не получилось обновить настройки",
     "FailedToUpdateThread": "Не получилось изменить тред",
+    "NotAllowedToPostInThisBoard": "Вы не можете постить на этой борде",
     "PageCantBeSmallerThanOne": "Номер страницы не может быть меньше единицы",
     "PageSizeCantZeroOrNegative": "Размер страницы не может быть нулем или отрицательным значением",
     "PasswordCantBeEmpty": "Пароль не может быть пустым",

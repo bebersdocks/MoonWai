@@ -6,6 +6,7 @@
     "FailedToCreateUserSettings": "Failed to create user settings",
     "FailedToUpdateSettings": "Failed to update settings",
     "FailedToUpdateThread": "Failed to update thread",
+    "NotAllowedToPostInThisBoard": "You are not allowed to post in this board",
     "PageCantBeSmallerThanOne": "Page can't be smaller than one",
     "PageSizeCantZeroOrNegative": "Page size can't be zero or negative",
     "PasswordCantBeEmpty": "Password can't be empty",
