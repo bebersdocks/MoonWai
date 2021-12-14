@@ -7,13 +7,14 @@ open Elmish
 open Fable.React
 open Fable.React.Props
 
+open MoonWai.Elmish.Components.Nav
 open MoonWai.Elmish.Elements
 open MoonWai.Elmish.Http
 open MoonWai.Elmish.Router
 open MoonWai.Shared.Models
 
 let dateTimeToStr (dt: DateTime) = 
-    dt.ToLocalTime().ToString("dd/MMM/yyyy hh:mm:tt")
+    dt.ToLocalTime().ToString("dd/MMM/yyyy hh:mm")
 
 let postView (post: PostDto) = 
     let idStr = sprintf "%s #%i" (dateTimeToStr post.CreateDt) post.PostId
@@ -30,7 +31,7 @@ let threadView (thread: ThreadDto) =
     let view = [
         div [ ClassName "thread__header" ] [ 
             str idStr
-            link (Thread thread.ThreadId) "Open"
+            navLink (Thread thread.ThreadId) "Open"
         ]
         div [ ClassName "thread__body" ] [ str thread.Message ]
     ]

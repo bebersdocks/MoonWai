@@ -8,6 +8,7 @@
         <Compile Include="Router.fs" />
         <Compile Include="Elements.fs" />
         <Compile Include="Components/MessageBox.fs" />
+        <Compile Include="Components/Nav.fs" />
         <Compile Include="Components/Thread.fs" />
         <Compile Include="Pages/Catalog.fs" />
         <Compile Include="Pages/Board.fs" />

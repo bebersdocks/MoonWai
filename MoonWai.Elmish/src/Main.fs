@@ -9,6 +9,7 @@ open Elmish.UrlParser
 open Fable.React
 open Fable.React.Props
 
+open MoonWai.Elmish.Components.Nav
 open MoonWai.Elmish.Elements
 open MoonWai.Elmish.Pages
 open MoonWai.Elmish.Router
@@ -23,8 +24,8 @@ type Page =
     | NotFound
 
 type Model =
-    { ActivePage : Page
-      CurrentRoute : Route option }
+    { ActivePage: Page
+      CurrentRoute: Route option }
 
 type Msg =
     | CatalogMsg of Catalog.Msg
@@ -33,9 +34,7 @@ type Msg =
     | RegisterMsg of Register.Msg
     | LoginMsg of Login.Msg
 
-let private initPage (route: Route option) model =
-    let model = { model with CurrentRoute = route }
-
+let private initPage (route: Route option) (model: Model) =
     let (activePage, cmd) =
         match route with
         | None -> NotFound, Cmd.none
@@ -45,7 +44,7 @@ let private initPage (route: Route option) model =
         | Some Route.Register -> Register.init None |> (fun (model, cmd) -> Register model, Cmd.map RegisterMsg cmd)
         | Some Route.Login -> Login.init None |> (fun (model, cmd) -> Login model, Cmd.map LoginMsg cmd)
 
-    { model with ActivePage = activePage}, cmd
+    { model with ActivePage = activePage; CurrentRoute = route }, cmd
 
 let init (route: Route option) =
     let activePage = Catalog (Catalog.init |> (fun (model, _) -> model))
