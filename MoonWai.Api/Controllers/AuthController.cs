@@ -95,6 +95,8 @@ namespace MoonWai.Api.Controllers
             newUser.PasswordSalt = salt;
             newUser.PasswordHash = hash;
 
+            newUser.AccessLevel = AccessLevel.Standard;
+
             var utcNow = DateTime.UtcNow;
 
             newUser.CreateDt = utcNow;
