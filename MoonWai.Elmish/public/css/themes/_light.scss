@@ -1,6 +1,12 @@
-$background-color: linear-gradient(white, #fafaff);
+$background-color: #fafaff;
+
+$border: thin solid gainsboro;
+
 $button-text-color: black;
 $button-background: #fafaff;
-$button-border: 1px solid gainsboro;
+$button-border: $border;
 $button-disabled-color: #fcfdff;
 $button-hover-color: #EAF0FF;
+
+$nav-link-color: #1a5670;
+$nav-link-hover-color: #89b3c0;

@@ -16,8 +16,7 @@
 
 .register-box,
 .login-box {
-    background-color: white;
-    border: thin solid snow;
+    border: $border;
     display: flex;
     flex-direction: column;
     padding: 30px;

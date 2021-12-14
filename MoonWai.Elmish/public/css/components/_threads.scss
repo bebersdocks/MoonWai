@@ -1,0 +1,11 @@
+.thread {
+    border-bottom: 1px solid gainsboro;
+    display: flex;
+    flex-direction: column;
+    margin-top: 12px;
+}
+
+.thread__body {
+    margin-bottom: 15px;
+    margin-top: 15px;
+}
