@@ -17,7 +17,7 @@ open Thoth.Json
 
 type Model =
     { LoginDto: LoginDto
-      UserSettings: UserSettingsDto option
+      User: UserDto option
       InfoMsg: InfoMsg option
       Waiting: bool }
 
@@ -26,20 +26,20 @@ type Msg =
     | ChangePassword of string
     | ChangeTrusted of bool
     | Login
-    | LoginSuccess of UserSettingsDto
+    | LoginSuccess of UserDto
     | LoginFailed of string
 
 let login (model: Model) =
     let ofSuccess json =
-        match Decode.Auto.fromString<UserSettingsDto>(json, caseStrategy=CamelCase) with
-        | Ok userSettings -> LoginSuccess userSettings
+        match Decode.Auto.fromString<UserDto>(json, caseStrategy=CamelCase) with
+        | Ok user -> LoginSuccess user
         | Result.Error e -> LoginFailed e
 
     post "api/auth/login" model.LoginDto ofSuccess LoginFailed
 
-let init userSettings =
+let init user =
     { LoginDto = { Username = ""; Password = ""; Trusted = false };
-      UserSettings = userSettings
+      User = user
       InfoMsg = None;
       Waiting = false; }, Cmd.none
 
@@ -59,9 +59,9 @@ let update msg model : Model * Cmd<Msg> =
     | Login ->
         { model with Waiting = true }, Cmd.OfPromise.result (login model)
 
-    | LoginSuccess userSettings ->
-        setRoute (Board userSettings.DefaultBoardPath)
-        { model with UserSettings = Some userSettings; Waiting = false; InfoMsg = None }, Cmd.none
+    | LoginSuccess user ->
+        setRoute (Board user.DefaultBoardPath)
+        { model with User = Some user; Waiting = false; InfoMsg = None }, Cmd.none
 
     | LoginFailed s ->
         { model with Waiting = false; InfoMsg = Some (Error s) }, Cmd.none

@@ -67,7 +67,7 @@ namespace MoonWai.Api.Controllers
 
             var defaultBoard = user.Settings.DefaultBoard;
 
-            return Ok(new UserSettingsDto(user.Settings.LanguageId, defaultBoard.BoardId, defaultBoard.Path));
+            return Ok(new UserDto(user.Username, defaultBoard.Path));
         }
 
         [HttpPost]
@@ -125,7 +125,7 @@ namespace MoonWai.Api.Controllers
 
             var defaultBoard = await dc.Boards.FirstAsync(i => i.BoardId == Common.defaultBoardId);
 
-            return Ok(new UserSettingsDto(userSettings.LanguageId, defaultBoard.BoardId, defaultBoard.Path));
+            return Ok(new UserDto(newUser.Username, defaultBoard.Path));
         }
 
         [HttpPost]

@@ -31,10 +31,14 @@ type RegisterDto =
       Password: string
       LanguageId: LanguageId }
 
+[<CLIMutable>]
+type UserDto =
+    { Username: string
+      DefaultBoardPath: string }
+
 type UserSettingsDto =
     { LanguageId: LanguageId
-      DefaultBoardId: int
-      DefaultBoardPath: string }
+      DefaultBoardId: int }
 
 [<CLIMutable>]
 type PostDto =
