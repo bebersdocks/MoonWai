@@ -17,12 +17,9 @@ namespace MoonWai.Api.Utils
 
         public static (byte[] salt, byte[] hash) GenerateSaltHash(string password)
         {
-            var saltProvider = new RNGCryptoServiceProvider();
-            var salt = new byte[byteSize];
-            saltProvider.GetBytes(salt);
-            
+            var salt = RandomNumberGenerator.GetBytes(byteSize);       
             var hash = GenerateHash(password, salt);
-   
+
             return (salt, hash);
         }
         
