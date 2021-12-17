@@ -9,10 +9,10 @@ namespace MoonWai.Dal.DataModels
 
         #region Associations
 
-        [Association(ThisKey=nameof(BoardId), OtherKey=nameof(BoardId), CanBeNull=true)]
+        [Association(ThisKey=nameof(BoardId), OtherKey=nameof(BoardId), CanBeNull=false)]
         public Board Board { get; set; }
 
-        [Association(ThisKey=nameof(UserId), OtherKey=nameof(UserId), CanBeNull=true)]
+        [Association(ThisKey=nameof(UserId), OtherKey=nameof(UserId), CanBeNull=false)]
         public User User { get; set; }
 
         #endregion

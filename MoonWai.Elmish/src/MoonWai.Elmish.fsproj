@@ -18,7 +18,7 @@
         <Compile Include="Main.fs" />
     </ItemGroup>
     <ItemGroup>
-        <ProjectReference Include="..\..\MoonWai.Shared\MoonWai.Shared.fsproj" />
+        <ProjectReference Include="..\..\MoonWai.Shared\MoonWai.Shared.csproj" />
     </ItemGroup>
     <Import Project="..\..\.paket\Paket.Restore.targets" />
 </Project>

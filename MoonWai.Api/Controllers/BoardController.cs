@@ -7,8 +7,11 @@ using Microsoft.AspNetCore.Mvc;
 using LinqToDB;
 
 using MoonWai.Dal;
+using MoonWai.Shared;
 using MoonWai.Shared.Definitions;
-using MoonWai.Shared.Models;
+using MoonWai.Shared.Models.Board;
+using MoonWai.Shared.Models.Post;
+using MoonWai.Shared.Models.Thread;
 
 namespace MoonWai.Api.Controllers
 {
@@ -50,9 +53,9 @@ namespace MoonWai.Api.Controllers
         private Task<List<ThreadDto>> GetThreads(Dc dc, int boardId, bool preview = true, int? page = null, int? pageSize = null)
         {   
             page ??= 1; // first page by default
-            pageSize ??= Common.defaultThreadsPerPage;
+            pageSize ??= Constants.DefaultThreadsPerPage;
 
-            var postsCount = preview ? Common.postsInPreviewCount : Common.maxPostsPerThread;
+            var postsCount = preview ? Constants.PostsInPreview : Constants.MaxPostsPerThread;
 
             var query = dc.Threads
                 .LoadWith(i => i.Posts)

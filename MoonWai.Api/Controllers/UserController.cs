@@ -9,7 +9,9 @@ using LinqToDB;
 
 using MoonWai.Dal;
 using MoonWai.Shared.Definitions;
-using MoonWai.Shared.Models;
+using MoonWai.Shared.Models.Post;
+using MoonWai.Shared.Models.Thread;
+using MoonWai.Shared.Models.User;
 
 namespace MoonWai.Api.Controllers
 {

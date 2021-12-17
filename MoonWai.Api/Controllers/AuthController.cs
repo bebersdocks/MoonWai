@@ -7,12 +7,13 @@ using Microsoft.AspNetCore.Mvc;
 
 using LinqToDB;
 
-using MoonWai.Api.Resources;
 using MoonWai.Api.Utils;
 using MoonWai.Dal;
 using MoonWai.Dal.DataModels;
+using MoonWai.Shared;
 using MoonWai.Shared.Definitions;
-using MoonWai.Shared.Models;
+using MoonWai.Shared.Models.Auth;
+using MoonWai.Shared.Models.User;
 
 namespace MoonWai.Api.Controllers
 {
@@ -67,7 +68,7 @@ namespace MoonWai.Api.Controllers
 
             var defaultBoard = user.Settings.DefaultBoard;
 
-            return Ok(new UserDto(user.Username, defaultBoard.Path));
+            return Ok(new UserDto { Username = user.Username, DefaultBoardPath = defaultBoard.Path });
         }
 
         [HttpPost]
@@ -84,8 +85,8 @@ namespace MoonWai.Api.Controllers
             if (string.IsNullOrEmpty(registerDto.Password))
                 return BadRequest(TranslationId.PasswordCantBeEmpty);
 
-            if (registerDto.Password.Length < Common.minPasswordLength)
-                return BadRequest(TranslationId.PasswordLengthCantBeLessThan, Common.minPasswordLength);
+            if (registerDto.Password.Length < Constants.MinPasswordLength)
+                return BadRequest(TranslationId.PasswordLengthCantBeLessThan, Constants.MinPasswordLength);
             
             (var salt, var hash) = Crypto.GenerateSaltHash(registerDto.Password);
 
@@ -104,7 +105,7 @@ namespace MoonWai.Api.Controllers
             
             var userSettings = new UserSettings();
 
-            userSettings.LanguageId = registerDto.LanguageId;
+            userSettings.LanguageId = LanguageId.English;
 
             using var tr = await dc.BeginTransactionAsync();
 
@@ -114,7 +115,7 @@ namespace MoonWai.Api.Controllers
                 return ServerError(TranslationId.FailedToCreateNewUser);
 
             userSettings.UserId = userId;
-            userSettings.DefaultBoardId = Common.defaultBoardId;
+            userSettings.DefaultBoardId = Constants.DefaultBoardId;
 
             if (await dc.InsertAsync(userSettings) <= 0)
                 return ServerError(TranslationId.FailedToCreateUserSettings);
@@ -123,9 +124,9 @@ namespace MoonWai.Api.Controllers
 
             await Login(newUser);
 
-            var defaultBoard = await dc.Boards.FirstAsync(i => i.BoardId == Common.defaultBoardId);
+            var defaultBoard = await dc.Boards.FirstAsync(i => i.BoardId == Constants.DefaultBoardId);
 
-            return Ok(new UserDto(newUser.Username, defaultBoard.Path));
+            return Ok(new UserDto { Username = newUser.Username, DefaultBoardPath = defaultBoard.Path });
         }
 
         [HttpPost]

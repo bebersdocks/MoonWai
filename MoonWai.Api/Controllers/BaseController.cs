@@ -46,7 +46,7 @@ namespace MoonWai.Api.Controllers
         {
             var translation = GetTranslation(translationId, args);
 
-            var respObj = new ErrorDto(translation);
+            var respObj = new ErrorDto { Message = translation };
 
             return StatusCode(statusCode, respObj);
         }

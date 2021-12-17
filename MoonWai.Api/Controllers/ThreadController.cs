@@ -8,8 +8,10 @@ using LinqToDB;
 
 using MoonWai.Dal;
 using MoonWai.Dal.DataModels;
+using MoonWai.Shared;
 using MoonWai.Shared.Definitions;
-using MoonWai.Shared.Models;
+using MoonWai.Shared.Models.Post;
+using MoonWai.Shared.Models.Thread;
 
 namespace MoonWai.Api.Controllers
 {
@@ -103,8 +105,8 @@ namespace MoonWai.Api.Controllers
             if (thread == null)
                 return NotFound(TranslationId.ThreadNotFound);
 
-            if (thread.CreateDt.Add(Common.allowedEditTime) > DateTime.UtcNow)
-                return Forbidden(TranslationId.AllowedEditTime, Common.allowedEditTime.Minutes);
+            if (thread.CreateDt.Add(Constants.AllowedEditTime) > DateTime.UtcNow)
+                return Forbidden(TranslationId.AllowedEditTime, Constants.AllowedEditTime.Minutes);
 
             thread.Title = updateThreadDto.Title;
             thread.Message = updateThreadDto.Message;

@@ -5,7 +5,7 @@
     </PropertyGroup>
     <ItemGroup>
         <ProjectReference Include="..\MoonWai.Dal\MoonWai.Dal.csproj" />
-        <ProjectReference Include="..\MoonWai.Shared\MoonWai.Shared.fsproj" />
+        <ProjectReference Include="..\MoonWai.Shared\MoonWai.Shared.csproj" />
     </ItemGroup>
     <ItemGroup>
         <EmbeddedResource Include="..\MoonWai.Shared\Resources\Translations\en.json" />
