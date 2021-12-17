@@ -85,7 +85,7 @@ namespace MoonWai.Api.Controllers
             user.Settings.LanguageId = languageId;
 
             if (await dc.UpdateAsync(user.Settings) < 1)
-                return ServerError(TranslationId.FailedToUpdateSettings);
+                return ServerError(ErrorId.FailedToUpdateSettings);
 
             return Ok();
         }
@@ -103,7 +103,7 @@ namespace MoonWai.Api.Controllers
             settings.DefaultBoardId = userSettingsDto.DefaultBoardId;
 
             if (await dc.UpdateAsync(settings) < 1)
-                return ServerError(TranslationId.FailedToUpdateSettings);
+                return ServerError(ErrorId.FailedToUpdateSettings);
 
             return Ok();
         }

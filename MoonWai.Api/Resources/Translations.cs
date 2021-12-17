@@ -1,5 +1,5 @@
 using System;
-using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 
 using MoonWai.Shared.Definitions;
@@ -8,41 +8,34 @@ using Newtonsoft.Json;
 
 namespace MoonWai.Api.Resources
 {
-    public static class Translations
-    {
-        private static List<(LanguageId, string)> languageResources = new()
+    public class Translations
+    {   
+        public LanguageId                           LanguageId { get; init; }
+        public ImmutableDictionary<ErrorId, string> Errors     { get; init; }
+        
+        public string GetErrorMsg(ErrorId errorId, params object[] args)
         {
-            (LanguageId.English, "en"),
-            (LanguageId.Russian, "ru")
-        };
-
-        private static Dictionary<LanguageId, Dictionary<TranslationId, string>> translations;
-
-        public async static void Load()
-        {
-            if (translations != null)
-                return;
-
-            var translationsCounts = Enum.GetValues<TranslationId>().Count();
-
-            translations = new();
-
-            foreach (var (languageId, languageIdStr) in languageResources)
-            {
-                var json = await EmbeddedResources.GetResourceStr(languageIdStr + ".json");
-
-                translations[languageId] = JsonConvert.DeserializeObject<Dictionary<TranslationId, string>>(json);
-
-                if (translations[languageId].Keys.Count != translationsCounts)
-                    throw new Exception($"Translation list for {languageId.ToString()} is not complete");
-            }
-        }
-
-        public static string GetTranslation(LanguageId languageId, TranslationId translationId, params object[] args)
-        {
-            var translationStr = translations[languageId][translationId];
+            var translationStr = Errors[errorId];
 
             return string.Format(translationStr, args);
+        }
+
+        public static Translations Load(LanguageId languageId)
+        {
+            var languageIdStr = languageId switch
+            {
+                LanguageId.English => "en",
+                _ => "ru"
+            };
+
+            var json = EmbeddedResources.GetResourceStr(languageIdStr + ".json");
+            var translations = JsonConvert.DeserializeObject<Translations>(json);
+
+            var errorCount = Enum.GetValues<ErrorId>().Count();
+            if (translations.Errors.Keys.Count() != errorCount)
+                throw new Exception($"Translation list for {languageId} is not complete.");
+
+            return translations;
         }
     }
 }

@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 
 using LinqToDB;
 
-using MoonWai.Api.Resources;
 using MoonWai.Dal;
 using MoonWai.Dal.DataModels;
 using MoonWai.Shared.Definitions;
@@ -32,41 +31,33 @@ namespace MoonWai.Api.Controllers
             return Task.FromResult<User>(null);
         }
 
-        protected string GetTranslation(TranslationId translationId, params object[] args)
-        {
-            var languageId = LanguageId.English;// TODO
-
-            return Translations.GetTranslation(languageId, translationId, args);
-        }
-
         /// <summary>
         /// Failed responses for 4xx and 5xx status codes.
         /// </summary>
-        protected IActionResult Failed(int statusCode, TranslationId translationId, params object[] args)
+        protected IActionResult Failed(int statusCode, ErrorId errorId, params object[] args)
         {
-            var translation = GetTranslation(translationId, args);
+            var errorMsg = Program.Translations.GetErrorMsg(errorId, args);
+            var error = new ErrorDto { ErrorId = errorId, Message = errorMsg };
 
-            var respObj = new ErrorDto { Message = translation };
-
-            return StatusCode(statusCode, respObj);
+            return StatusCode(statusCode, error);
         }
 
-        protected IActionResult BadRequest(TranslationId translationId, params object[] args) =>
-            Failed(400, translationId, args);
+        protected IActionResult BadRequest(ErrorId errorId, params object[] args) =>
+            Failed(400, errorId, args);
 
-        protected IActionResult LogonFailed(TranslationId translationId, params object[] args) =>
-            Failed(401, translationId, args);
+        protected IActionResult LogonFailed(ErrorId errorId, params object[] args) =>
+            Failed(401, errorId, args);
 
-        protected IActionResult Forbidden(TranslationId translationId, params object[] args) =>
-            Failed(403, translationId, args);
+        protected IActionResult Forbidden(ErrorId errorId, params object[] args) =>
+            Failed(403, errorId, args);
               
-        protected IActionResult NotFound(TranslationId translationId, params object[] args) =>
-            Failed(404, translationId, args);
+        protected IActionResult NotFound(ErrorId errorId, params object[] args) =>
+            Failed(404, errorId, args);
 
-        protected IActionResult Conflict(TranslationId translationId, params object[] args) =>
-            Failed(409, translationId, args);
+        protected IActionResult Conflict(ErrorId errorId, params object[] args) =>
+            Failed(409, errorId, args);
 
-        protected IActionResult ServerError(TranslationId translationId, params object[] args) =>
-            Failed(500, translationId, args);
+        protected IActionResult ServerError(ErrorId errorId, params object[] args) =>
+            Failed(500, errorId, args);
     }
 }

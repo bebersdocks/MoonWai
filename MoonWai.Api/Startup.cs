@@ -5,8 +5,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Configuration;
 
+using MoonWai.Api.Resources;
 using MoonWai.Api.Utils;
 using MoonWai.Dal;
+using MoonWai.Shared.Definitions;
 
 using Serilog;
 
@@ -37,6 +39,10 @@ namespace MoonWai.Api
             using var dc = new Dc();
 
             dc.CreateTables();
+
+            var languageId = configuration.GetValue<LanguageId>(nameof(LanguageId));
+
+            Program.Translations = Translations.Load(languageId);
         }
 
         public void ConfigureServices(IServiceCollection services)

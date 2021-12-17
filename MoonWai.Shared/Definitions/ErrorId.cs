@@ -1,6 +1,6 @@
 namespace MoonWai.Shared.Definitions
 {
-    public enum TranslationId 
+    public enum ErrorId 
     {
         AllowedEditTime = 0,
         BoardNotFound,

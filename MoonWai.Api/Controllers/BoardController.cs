@@ -90,17 +90,17 @@ namespace MoonWai.Api.Controllers
         public async Task<IActionResult> GetBoardThreads(string boardPath, bool preview = true, int? page = null, int? pageSize = null)
         {
             if ((page ?? 1) < 1)
-                return BadRequest(TranslationId.PageCantBeSmallerThanOne);
+                return BadRequest(ErrorId.PageCantBeSmallerThanOne);
 
             if ((pageSize ?? 1) < 1)
-                return BadRequest(TranslationId.PageSizeCantZeroOrNegative);
+                return BadRequest(ErrorId.PageSizeCantZeroOrNegative);
 
             using var dc = new Dc();
 
             var board = await dc.Boards.FirstOrDefaultAsync(i => i.Path.Equals(boardPath));
 
             if (board == null)
-                return NotFound(TranslationId.BoardNotFound);
+                return NotFound(ErrorId.BoardNotFound);
 
             var threads = await GetThreads(dc, board.BoardId, preview, page, pageSize);
 

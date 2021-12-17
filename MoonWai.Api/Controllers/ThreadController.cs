@@ -53,7 +53,7 @@ namespace MoonWai.Api.Controllers
             var thread = await GetThread(dc, threadId);
 
             if (thread == null)
-                return NotFound(TranslationId.ThreadNotFound);
+                return NotFound(ErrorId.ThreadNotFound);
 
             return Ok(thread);
         }
@@ -74,7 +74,7 @@ namespace MoonWai.Api.Controllers
                 var user = await GetUser(dc);
                 if (user == null || !allowedUserIds.Contains(user.UserId))
                 {
-                    return Forbidden(TranslationId.NotAllowedToPostInThisBoard);
+                    return Forbidden(ErrorId.NotAllowedToPostInThisBoard);
                 }
             }
 
@@ -89,7 +89,7 @@ namespace MoonWai.Api.Controllers
             var threadId = await dc.InsertWithInt32IdentityAsync(newThread);
 
             if (threadId <= 0)
-                return ServerError(TranslationId.FailedToCreateNewThread);
+                return ServerError(ErrorId.FailedToCreateNewThread);
 
             return Ok();
         }
@@ -103,16 +103,16 @@ namespace MoonWai.Api.Controllers
             var thread = await dc.Threads.FirstOrDefaultAsync(i => i.ThreadId == updateThreadDto.ThreadId);
 
             if (thread == null)
-                return NotFound(TranslationId.ThreadNotFound);
+                return NotFound(ErrorId.ThreadNotFound);
 
             if (thread.CreateDt.Add(Constants.AllowedEditTime) > DateTime.UtcNow)
-                return Forbidden(TranslationId.AllowedEditTime, Constants.AllowedEditTime.Minutes);
+                return Forbidden(ErrorId.AllowedEditTime, Constants.AllowedEditTime.Minutes);
 
             thread.Title = updateThreadDto.Title;
             thread.Message = updateThreadDto.Message;
 
             if (await dc.UpdateAsync(thread) < 1)
-                return ServerError(TranslationId.FailedToUpdateThread);
+                return ServerError(ErrorId.FailedToUpdateThread);
 
             return Ok();
         }

@@ -11,10 +11,10 @@ namespace MoonWai.Api
     public class Program
     {
         public static string defaultAuthenticationScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-        
+        public static Translations Translations;
+
         public static void Main(string[] args)
         {
-            Translations.Load();
             CreateHostBuilder(args).Build().Run();
         }
 

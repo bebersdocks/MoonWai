@@ -45,7 +45,7 @@ namespace MoonWai.Api.Controllers
         public async Task<IActionResult> Login(LoginDto loginDto)
         {
             if (string.IsNullOrEmpty(loginDto.Username))
-                return BadRequest(TranslationId.UsernameCantBeEmpty);
+                return BadRequest(ErrorId.UsernameCantBeEmpty);
 
             using var dc = new Dc();
 
@@ -55,10 +55,10 @@ namespace MoonWai.Api.Controllers
                     .FirstOrDefaultAsync(i => i.Username == loginDto.Username);
 
             if (user == null)
-                return NotFound(TranslationId.UserNotFound);
+                return NotFound(ErrorId.UserNotFound);
 
             if (!Crypto.ValidatePassword(loginDto.Password, user.PasswordSalt, user.PasswordHash))
-                return LogonFailed(TranslationId.WrongPassword);
+                return LogonFailed(ErrorId.WrongPassword);
 
             user.LastAccessDt = DateTime.UtcNow;
 
@@ -75,18 +75,18 @@ namespace MoonWai.Api.Controllers
         public async Task<IActionResult> Register(RegisterDto registerDto)
         {
             if (string.IsNullOrEmpty(registerDto.Username))
-                return BadRequest(TranslationId.UsernameCantBeEmpty);
+                return BadRequest(ErrorId.UsernameCantBeEmpty);
 
             using var dc = new Dc();
             
             if (await dc.Users.AnyAsync(i => i.Username == registerDto.Username))
-                return Conflict(TranslationId.UserIsAlreadyRegistered);
+                return Conflict(ErrorId.UserIsAlreadyRegistered);
 
             if (string.IsNullOrEmpty(registerDto.Password))
-                return BadRequest(TranslationId.PasswordCantBeEmpty);
+                return BadRequest(ErrorId.PasswordCantBeEmpty);
 
             if (registerDto.Password.Length < Constants.MinPasswordLength)
-                return BadRequest(TranslationId.PasswordLengthCantBeLessThan, Constants.MinPasswordLength);
+                return BadRequest(ErrorId.PasswordLengthCantBeLessThan, Constants.MinPasswordLength);
             
             (var salt, var hash) = Crypto.GenerateSaltHash(registerDto.Password);
 
@@ -112,13 +112,13 @@ namespace MoonWai.Api.Controllers
             var userId = await dc.InsertWithInt32IdentityAsync(newUser);
 
             if (userId <= 0)
-                return ServerError(TranslationId.FailedToCreateNewUser);
+                return ServerError(ErrorId.FailedToCreateNewUser);
 
             userSettings.UserId = userId;
             userSettings.DefaultBoardId = Constants.DefaultBoardId;
 
             if (await dc.InsertAsync(userSettings) <= 0)
-                return ServerError(TranslationId.FailedToCreateUserSettings);
+                return ServerError(ErrorId.FailedToCreateUserSettings);
    
             await tr.CommitAsync();
 
