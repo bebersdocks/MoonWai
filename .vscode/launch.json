@@ -6,7 +6,7 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceFolder}/MoonWai.Api/bin/Debug/net5.0/MoonWai.Api.dll",
+            "program": "${workspaceFolder}/MoonWai.Api/bin/Debug/net6.0/MoonWai.Api.dll",
             "args": [],
             "cwd": "${workspaceFolder}/MoonWai.Api",
             "stopAtEntry": false,
