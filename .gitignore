@@ -1,4 +1,6 @@
 *.fs.js
+*.db
+*.log
 .fable/
 bin/
 bundle.js
