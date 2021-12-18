@@ -6,6 +6,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Configuration;
 
 using MoonWai.Api.Resources;
+using MoonWai.Api.Services;
 using MoonWai.Api.Utils;
 using MoonWai.Dal;
 using MoonWai.Shared.Definitions;
@@ -66,6 +67,8 @@ namespace MoonWai.Api
             {
                 configuration.RootPath = "wwwroot/dist";
             });
+
+            services.AddSingleton<ThreadService, ThreadService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
