@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -7,6 +8,7 @@ using LinqToDB;
 
 using MoonWai.Dal;
 using MoonWai.Dal.DataModels;
+using MoonWai.Shared;
 using MoonWai.Shared.Definitions;
 using MoonWai.Shared.Models;
 
@@ -59,5 +61,27 @@ namespace MoonWai.Api.Controllers
 
         protected IActionResult ServerError(ErrorId errorId, params object[] args) =>
             Failed(500, errorId, args);
+
+        protected async Task<IActionResult> PagedQueryResult<T>(IQueryable<T> query, int? page = null, int? pageSize = null)
+        {
+            if ((page ?? 1) < 1)
+                return BadRequest(ErrorId.PageCantBeSmallerThanOne);
+
+            if ((pageSize ?? 1) < 1)
+                return BadRequest(ErrorId.PageSizeCantZeroOrNegative);
+
+            page ??= 1; // first page by default
+            pageSize ??= Constants.DefaultThreadsPerPage;
+            
+            var totalCount = await query.CountAsync();
+            var pages = ((totalCount - 1) / pageSize.Value) + 1;
+
+            var items = await query
+                .Skip((page.Value - 1) * pageSize.Value)
+                .Take(pageSize.Value)
+                .ToListAsync();
+
+            return Ok(new { Items = items, TotalCount = totalCount, Pages = pages }); 
+        }
     }
 }

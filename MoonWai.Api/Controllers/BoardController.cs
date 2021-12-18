@@ -50,11 +50,8 @@ namespace MoonWai.Api.Controllers
         }
 
         [NonAction]
-        private Task<List<ThreadDto>> GetThreads(Dc dc, int boardId, bool preview = true, int? page = null, int? pageSize = null)
+        private IQueryable<ThreadDto> GetThreads(Dc dc, int boardId, bool preview = true)
         {   
-            page ??= 1; // first page by default
-            pageSize ??= Constants.DefaultThreadsPerPage;
-
             var postsCount = preview ? Constants.PostsInPreview : Constants.MaxPostsPerThread;
 
             var query = dc.Threads
@@ -79,22 +76,13 @@ namespace MoonWai.Api.Controllers
                     CreateDt = i.CreateDt
                 });
 
-            return query
-                .Skip((page.Value - 1) * pageSize.Value)
-                .Take(pageSize.Value)
-                .ToListAsync(); 
+            return query;
         }
 
         [HttpGet]
         [Route("api/boards/{boardPath}")]
         public async Task<IActionResult> GetBoardThreads(string boardPath, bool preview = true, int? page = null, int? pageSize = null)
         {
-            if ((page ?? 1) < 1)
-                return BadRequest(ErrorId.PageCantBeSmallerThanOne);
-
-            if ((pageSize ?? 1) < 1)
-                return BadRequest(ErrorId.PageSizeCantZeroOrNegative);
-
             using var dc = new Dc();
 
             var board = await dc.Boards.FirstOrDefaultAsync(i => i.Path.Equals(boardPath));
@@ -102,9 +90,9 @@ namespace MoonWai.Api.Controllers
             if (board == null)
                 return NotFound(ErrorId.BoardNotFound);
 
-            var threads = await GetThreads(dc, board.BoardId, preview, page, pageSize);
-
-            return Ok(threads);
+            var query = GetThreads(dc, board.BoardId, preview);
+            
+            return await PagedQueryResult(query, page, pageSize);
         }
     }
 }
