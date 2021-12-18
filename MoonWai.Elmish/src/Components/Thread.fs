@@ -9,9 +9,9 @@ open Fable.React.Props
 
 open MoonWai.Elmish.Components.Nav
 open MoonWai.Elmish.Elements
-open MoonWai.Elmish.Http
 open MoonWai.Elmish.Router
-open MoonWai.Shared.Models
+open MoonWai.Shared.Models.Post
+open MoonWai.Shared.Models.Thread
 
 let dateTimeToStr (dt: DateTime) = 
     dt.ToLocalTime().ToString("dd/MMM/yyyy hh:mm")

@@ -5,7 +5,8 @@ open Fable.React
 open Fable.React.Props
 
 open MoonWai.Elmish.Router
-open MoonWai.Shared.Models
+open MoonWai.Shared.Models.Board
+open MoonWai.Shared.Models.User
 
 let goToUrl (e: Browser.Types.MouseEvent) =
     e.preventDefault()
@@ -19,13 +20,17 @@ let navLink route s =
         OnClick goToUrl
     ] [ str s ]
 
-let navMenu (userSettings: UserSettingsDto option) (boards: BoardDto list) =
+let navMenu (user: UserDto option) (boards: BoardDto list) =
     let accountLinks =
-        match userSettings with 
-        | _ -> 
+        match user with 
+        | None ->
             div [ ClassName "nav__auth" ] [
                 navLink Login "Login"
                 navLink Register "Register"
+            ]
+        | Some user -> 
+            div [ ClassName "nav__auth" ] [
+                navLink Login "Logout"
             ]
     
     let boardLinks =

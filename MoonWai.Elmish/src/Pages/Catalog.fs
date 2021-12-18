@@ -7,10 +7,9 @@ open Fable.React.Props
 
 open MoonWai.Elmish.Components.MessageBox
 open MoonWai.Elmish.Components.Nav
-open MoonWai.Elmish.Elements
 open MoonWai.Elmish.Http
 open MoonWai.Elmish.Router
-open MoonWai.Shared.Models
+open MoonWai.Shared.Models.Board
 
 open Thoth.Json
 

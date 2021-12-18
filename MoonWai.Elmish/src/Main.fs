@@ -10,10 +10,9 @@ open Fable.React
 open Fable.React.Props
 
 open MoonWai.Elmish.Components.Nav
-open MoonWai.Elmish.Elements
 open MoonWai.Elmish.Pages
 open MoonWai.Elmish.Router
-open MoonWai.Shared.Models
+open MoonWai.Shared.Models.User
 
 type Page =
     | Catalog of Catalog.Model
@@ -89,7 +88,7 @@ let view (model: Model) (dispatch: Dispatch<Msg>) =
         | Login model -> Login.view model (LoginMsg >> dispatch)
 
     div [ ClassName "app" ] [
-        navMenu None []
+        navMenu model.User []
         div [ ClassName "content" ] [ pageView ]
     ]
 

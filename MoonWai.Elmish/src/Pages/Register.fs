@@ -13,8 +13,9 @@ open MoonWai.Elmish.Components.MessageBox
 open MoonWai.Elmish.Elements
 open MoonWai.Elmish.Http
 open MoonWai.Elmish.Router
-open MoonWai.Shared.Definitions
-open MoonWai.Shared.Models
+open MoonWai.Shared
+open MoonWai.Shared.Models.Auth
+open MoonWai.Shared.Models.User
 
 type Model =
     { RegisterDto: RegisterDto
@@ -40,7 +41,7 @@ let register (model: Model) =
     post "api/auth/register" model.RegisterDto ofSuccess RegisterFailed
 
 let init user =
-    { RegisterDto = { Username = ""; Password = ""; LanguageId = LanguageId.English };
+    { RegisterDto = RegisterDto(Username = "", Password = "");
       User = user;
       PasswordAgain = None;
       InfoMsg = None;
@@ -50,18 +51,20 @@ let update msg model : Model * Cmd<Msg> =
     match msg with
     | ChangeUsername username ->
         let infoMsg = if String.IsNullOrEmpty(username) then Some (Info "Username can't be empty") else None
-        { model with RegisterDto = { model.RegisterDto with Username = username }; InfoMsg = infoMsg }, Cmd.none
+        model.RegisterDto.Username <- username
+        { model with InfoMsg = infoMsg }, Cmd.none
 
     | ChangePassword password ->
         let infoMsg = 
-            if password.Length < Common.minPasswordLength && password.Length <> 0 then
-                Some (Info (sprintf "Password length can't be less than %i" Common.minPasswordLength))
+            if password.Length < Constants.MinPasswordLength && password.Length <> 0 then
+                Some (Info (sprintf "Password length can't be less than %i" Constants.MinPasswordLength))
             else if not (model.RegisterDto.Password.Equals(password)) then 
                 Some (Info "Passwords don't match")
             else 
                 None
-
-        { model with RegisterDto = { model.RegisterDto with Password = password }; InfoMsg = infoMsg }, Cmd.none
+        
+        model.RegisterDto.Password <- password
+        { model with InfoMsg = infoMsg }, Cmd.none
 
     | ChangePasswordAgain passwordAgain ->
         let infoMsg = 
@@ -82,9 +85,9 @@ let update msg model : Model * Cmd<Msg> =
 
 let view (model: Model) (dispatch: Msg -> unit) =
     let registerDisabled =
-        String.IsNullOrEmpty(model.RegisterDto.Username) || 
-        String.IsNullOrEmpty(model.RegisterDto.Password) || 
-        model.RegisterDto.Password.Length < Common.minPasswordLength ||
+        String.IsNullOrEmpty(model.RegisterDto.Username) ||
+        String.IsNullOrEmpty(model.RegisterDto.Password) ||
+        model.RegisterDto.Password.Length < Constants.MinPasswordLength ||
         not (model.RegisterDto.Password.Equals(model.PasswordAgain)) ||
         model.Waiting
 

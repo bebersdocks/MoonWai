@@ -11,7 +11,8 @@ open MoonWai.Elmish.Components.MessageBox
 open MoonWai.Elmish.Elements
 open MoonWai.Elmish.Http
 open MoonWai.Elmish.Router
-open MoonWai.Shared.Models
+open MoonWai.Shared.Models.Auth
+open MoonWai.Shared.Models.User
 
 open Thoth.Json
 
@@ -31,6 +32,7 @@ type Msg =
 
 let login (model: Model) =
     let ofSuccess json =
+        Browser.Dom.console.log (string json)
         match Decode.Auto.fromString<UserDto>(json, caseStrategy=CamelCase) with
         | Ok user -> LoginSuccess user
         | Result.Error e -> LoginFailed e
@@ -38,8 +40,8 @@ let login (model: Model) =
     post "api/auth/login" model.LoginDto ofSuccess LoginFailed
 
 let init user =
-    { LoginDto = { Username = ""; Password = ""; Trusted = false };
-      User = user
+    { LoginDto = LoginDto(Username = "", Password = "", Trusted = false);
+      User = user;
       InfoMsg = None;
       Waiting = false; }, Cmd.none
 
@@ -47,14 +49,17 @@ let update msg model : Model * Cmd<Msg> =
     match msg with
     | ChangeUsername username ->
         let infoMsg = if String.IsNullOrEmpty(username) then Some (Info "Username can't be empty") else None
-        { model with LoginDto = { model.LoginDto with Username = username }; InfoMsg = infoMsg }, Cmd.none
+        model.LoginDto.Username <- username
+        { model with InfoMsg = infoMsg }, Cmd.none
 
     | ChangePassword password ->
         let infoMsg = if String.IsNullOrEmpty(password) then Some (Info "Password can't be empty") else None
-        { model with LoginDto = { model.LoginDto with Password = password }; InfoMsg = infoMsg }, Cmd.none
+        model.LoginDto.Password <- password
+        { model with InfoMsg = infoMsg }, Cmd.none
 
     | ChangeTrusted trusted ->
-        { model with LoginDto = { model.LoginDto with Trusted = trusted } }, Cmd.none
+        model.LoginDto.Trusted <- trusted
+        model, Cmd.none
 
     | Login ->
         { model with Waiting = true }, Cmd.OfPromise.result (login model)

@@ -5,7 +5,7 @@ open Elmish
 open MoonWai.Elmish.Components.MessageBox
 open MoonWai.Elmish.Components.Thread
 open MoonWai.Elmish.Http
-open MoonWai.Shared.Models
+open MoonWai.Shared.Models.Thread
 
 open Thoth.Json
 
