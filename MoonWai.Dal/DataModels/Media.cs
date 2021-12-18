@@ -15,9 +15,10 @@ namespace MoonWai.Dal.DataModels
     {
         [PrimaryKey, Identity] public int             MediaId    { get; set; }
         [Column,     Nullable] public int             SourceId   { get; set; }
-        [Column,     Nullable] public MediaSourceType SourceType { get; set; }
+        [Column,      NotNull] public MediaSourceType SourceType { get; set; }
         [Column,      NotNull] public string          Name       { get; set; }
         [Column,      NotNull] public string          Path       { get; set; }
+        [Column,      NotNull] public string          Thumbnail  { get; set; }
         [Column,      NotNull] public DateTime        CreateDt   { get; set; }
     }
 }

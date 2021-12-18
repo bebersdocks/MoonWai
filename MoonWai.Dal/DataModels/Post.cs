@@ -1,4 +1,7 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
 
 using LinqToDB.Mapping;
 
@@ -13,6 +16,13 @@ namespace MoonWai.Dal.DataModels
         [Column,      NotNull] public DateTime  CreateDt   { get; set; }
         [Column,     Nullable] public DateTime? LastEditDt { get; set; }
 
+        #region QueryExpressions
+
+        private static Expression<Func<Post, Dc, IQueryable<Media>>> MediaJoin =>
+            (i, dc) => dc.Media.Where(j => j.SourceId == i.PostId && j.SourceType == MediaSourceType.Post);
+
+        #endregion
+
         #region Associations
 
         [Association(ThisKey=nameof(UserId), OtherKey=nameof(UserId), Relationship=Relationship.OneToOne, CanBeNull=true)]
@@ -20,6 +30,9 @@ namespace MoonWai.Dal.DataModels
 
         [Association(ThisKey=nameof(ThreadId), OtherKey=nameof(ThreadId), Relationship=Relationship.OneToOne, CanBeNull=false)]
         public Thread Thread { get; set; }
+
+        [Association(QueryExpressionMethod=nameof(MediaJoin), Relationship=Relationship.OneToMany)]
+        public IEnumerable<Media> Media { get; set; }
 
         #endregion
     }

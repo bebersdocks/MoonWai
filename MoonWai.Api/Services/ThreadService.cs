@@ -7,6 +7,7 @@ using LinqToDB;
 using MoonWai.Dal;
 using MoonWai.Dal.DataModels;
 using MoonWai.Shared;
+using MoonWai.Shared.Models;
 using MoonWai.Shared.Models.Post;
 using MoonWai.Shared.Models.Thread;
 
@@ -19,6 +20,7 @@ namespace MoonWai.Api.Services
             var postsCount = preview ? Constants.PostsInPreview : Constants.MaxPostsPerThread;
 
             var query = dc.Threads
+                .LoadWith(i => i.Media)
                 .LoadWith(i => i.Posts.Take(postsCount))
                 .Select(i => new ThreadDto
                 {
@@ -26,11 +28,27 @@ namespace MoonWai.Api.Services
                     ParentId = i.ParentId,
                     Title = i.Title,
                     Message = i.Message,
+                    Media = i.Media 
+                        .Select(j => new MediaDto
+                        {
+                            Name = j.Name,
+                            Path = j.Path,
+                            Thumbnail = j.Thumbnail
+                        })
+                        .ToList(),
                     Posts = i.Posts
                         .Select(j => new PostDto
                         {
                             PostId = j.PostId,
                             Message = j.Message,
+                            Media = j.Media 
+                                .Select(k => new MediaDto
+                                {
+                                    Name = k.Name,
+                                    Path = k.Path,
+                                    Thumbnail = k.Thumbnail
+                                })
+                                .ToList(),
                             CreateDt = j.CreateDt
                         })
                         .ToList(),
