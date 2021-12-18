@@ -11,7 +11,7 @@ namespace MoonWai.Dal.DataModels
 
         #region Associations
 
-        [Association(ThisKey=nameof(BoardSectionId), OtherKey=nameof(BoardSectionId), CanBeNull=true)]
+        [Association(ThisKey=nameof(BoardSectionId), OtherKey=nameof(BoardSectionId), Relationship=Relationship.OneToOne, CanBeNull=true)]
         public BoardSection BoardSection { get; set; }
 
         #endregion

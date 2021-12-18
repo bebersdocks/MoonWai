@@ -18,16 +18,16 @@ namespace MoonWai.Dal.DataModels
 
         #region Associations
 
-        [Association(ThisKey=nameof(ParentId), OtherKey=nameof(ThreadId), CanBeNull = true)]
+        [Association(ThisKey=nameof(ParentId), OtherKey=nameof(ThreadId), Relationship=Relationship.OneToOne, CanBeNull=true)]
         public Thread ParentThread { get; set; }
 
-        [Association(ThisKey=nameof(BoardId), OtherKey=nameof(BoardId), CanBeNull=false)]
+        [Association(ThisKey=nameof(BoardId), OtherKey=nameof(BoardId), Relationship=Relationship.OneToOne, CanBeNull=false)]
         public Board Board { get; set; }
 
-        [Association(ThisKey=nameof(UserId), OtherKey=nameof(UserId), CanBeNull=true)]
+        [Association(ThisKey=nameof(UserId), OtherKey=nameof(UserId), Relationship=Relationship.OneToOne, CanBeNull=true)]
         public User User { get; set; }
 
-        [Association(ThisKey=nameof(ThreadId), OtherKey=nameof(ThreadId), CanBeNull=false)]
+        [Association(ThisKey=nameof(ThreadId), OtherKey=nameof(ThreadId), Relationship=Relationship.OneToMany)]
         public IEnumerable<Post> Posts { get; set; }
 
         #endregion
