@@ -6,11 +6,11 @@ using Microsoft.AspNetCore.Mvc;
 
 using LinqToDB;
 
+using MoonWai.Api.Definitions;
+using MoonWai.Api.Models.Thread;
 using MoonWai.Api.Services;
+using MoonWai.Api.Utils;
 using MoonWai.Dal;
-using MoonWai.Shared;
-using MoonWai.Shared.Definitions;
-using MoonWai.Shared.Models.Thread;
 
 namespace MoonWai.Api.Controllers
 {

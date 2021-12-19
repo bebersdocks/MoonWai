@@ -2,10 +2,14 @@ using System;
 
 using LinqToDB.Mapping;
 
-using MoonWai.Shared.Definitions;
-
 namespace MoonWai.Dal.DataModels
 {
+    public enum LanguageId 
+    {
+        English,
+        Russian
+    }
+
     public class UserSettings
     {
         [PrimaryKey, NotNull] public int        UserId         { get; set; }

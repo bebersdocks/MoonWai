@@ -4,12 +4,12 @@ using System.Threading.Tasks;
 
 using LinqToDB;
 
+using MoonWai.Api.Models;
+using MoonWai.Api.Models.Post;
+using MoonWai.Api.Models.Thread;
+using MoonWai.Api.Utils;
 using MoonWai.Dal;
 using MoonWai.Dal.DataModels;
-using MoonWai.Shared;
-using MoonWai.Shared.Models;
-using MoonWai.Shared.Models.Post;
-using MoonWai.Shared.Models.Thread;
 
 namespace MoonWai.Api.Services
 {

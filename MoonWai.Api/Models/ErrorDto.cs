@@ -1,6 +1,6 @@
-using MoonWai.Shared.Definitions;
+using MoonWai.Api.Definitions;
 
-namespace MoonWai.Shared.Models
+namespace MoonWai.Api.Models
 {
     public class ErrorDto
     {        

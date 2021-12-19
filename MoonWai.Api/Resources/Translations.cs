@@ -2,7 +2,8 @@ using System;
 using System.Collections.Immutable;
 using System.Linq;
 
-using MoonWai.Shared.Definitions;
+using MoonWai.Api.Definitions;
+using MoonWai.Dal.DataModels;
 
 using Newtonsoft.Json;
 

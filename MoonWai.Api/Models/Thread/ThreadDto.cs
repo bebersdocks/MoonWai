@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 
-using MoonWai.Shared.Models.Post;
+using MoonWai.Api.Models.Post;
 
-namespace MoonWai.Shared.Models.Thread 
+namespace MoonWai.Api.Models.Thread 
 {
     public class ThreadDto
     {

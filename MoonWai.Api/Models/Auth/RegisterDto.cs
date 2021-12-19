@@ -1,4 +1,4 @@
-namespace MoonWai.Shared.Models.Auth
+namespace MoonWai.Api.Models.Auth
 {
     public class RegisterDto
     {        

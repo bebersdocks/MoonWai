@@ -1,4 +1,4 @@
-namespace MoonWai.Shared.Definitions
+namespace MoonWai.Api.Definitions
 {
     public enum ErrorId 
     {

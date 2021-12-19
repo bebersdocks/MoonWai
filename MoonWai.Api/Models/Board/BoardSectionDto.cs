@@ -1,4 +1,4 @@
-namespace MoonWai.Shared.Models.Board
+namespace MoonWai.Api.Models.Board
 {
     public class BoardSectionDto
     {

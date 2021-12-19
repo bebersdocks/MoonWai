@@ -7,11 +7,12 @@ using Microsoft.AspNetCore.Mvc;
 
 using LinqToDB;
 
+using MoonWai.Api.Definitions;
+using MoonWai.Api.Models.Post;
+using MoonWai.Api.Models.Thread;
+using MoonWai.Api.Models.User;
 using MoonWai.Dal;
-using MoonWai.Shared.Definitions;
-using MoonWai.Shared.Models.Post;
-using MoonWai.Shared.Models.Thread;
-using MoonWai.Shared.Models.User;
+using MoonWai.Dal.DataModels;
 
 namespace MoonWai.Api.Controllers
 {

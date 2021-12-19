@@ -1,6 +1,6 @@
 using System;
 
-namespace MoonWai.Shared 
+namespace MoonWai.Api.Utils
 {
     public static class Constants
     {

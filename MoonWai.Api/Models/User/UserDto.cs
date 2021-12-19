@@ -1,4 +1,4 @@
-namespace MoonWai.Shared.Models.User
+namespace MoonWai.Api.Models.User
 {
     public class UserDto 
     {

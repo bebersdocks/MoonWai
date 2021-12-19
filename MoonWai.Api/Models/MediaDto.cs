@@ -1,4 +1,4 @@
-namespace MoonWai.Shared.Models
+namespace MoonWai.Api.Models
 {
     public class MediaDto
     {

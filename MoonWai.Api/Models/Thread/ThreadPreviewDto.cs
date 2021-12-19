@@ -1,6 +1,6 @@
 using System;
 
-namespace MoonWai.Shared.Models.Thread
+namespace MoonWai.Api.Models.Thread
 {
     public class ThreadPreviewDto
     {

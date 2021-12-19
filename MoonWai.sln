@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30114.105
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoonWai.Shared", "MoonWai.Shared\MoonWai.Shared.csproj", "{6E12A89E-7992-4AD3-A598-45580CF36749}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoonWai.Dal", "MoonWai.Dal\MoonWai.Dal.csproj", "{2826CD08-D7A4-4FF9-8909-3274F8106B08}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoonWai.Api", "MoonWai.Api\MoonWai.Api.csproj", "{1B60461B-6759-43DC-844E-F46482B285D2}"
@@ -26,18 +24,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-        {6E12A89E-7992-4AD3-A598-45580CF36749}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6E12A89E-7992-4AD3-A598-45580CF36749}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6E12A89E-7992-4AD3-A598-45580CF36749}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{6E12A89E-7992-4AD3-A598-45580CF36749}.Debug|x64.Build.0 = Debug|Any CPU
-		{6E12A89E-7992-4AD3-A598-45580CF36749}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{6E12A89E-7992-4AD3-A598-45580CF36749}.Debug|x86.Build.0 = Debug|Any CPU
-		{6E12A89E-7992-4AD3-A598-45580CF36749}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6E12A89E-7992-4AD3-A598-45580CF36749}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6E12A89E-7992-4AD3-A598-45580CF36749}.Release|x64.ActiveCfg = Release|Any CPU
-		{6E12A89E-7992-4AD3-A598-45580CF36749}.Release|x64.Build.0 = Release|Any CPU
-		{6E12A89E-7992-4AD3-A598-45580CF36749}.Release|x86.ActiveCfg = Release|Any CPU
-		{6E12A89E-7992-4AD3-A598-45580CF36749}.Release|x86.Build.0 = Release|Any CPU
 		{2826CD08-D7A4-4FF9-8909-3274F8106B08}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2826CD08-D7A4-4FF9-8909-3274F8106B08}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2826CD08-D7A4-4FF9-8909-3274F8106B08}.Debug|x64.ActiveCfg = Debug|Any CPU

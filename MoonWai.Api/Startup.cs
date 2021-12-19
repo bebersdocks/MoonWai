@@ -9,7 +9,7 @@ using MoonWai.Api.Resources;
 using MoonWai.Api.Services;
 using MoonWai.Api.Utils;
 using MoonWai.Dal;
-using MoonWai.Shared.Definitions;
+using MoonWai.Dal.DataModels;
 
 using Serilog;
 

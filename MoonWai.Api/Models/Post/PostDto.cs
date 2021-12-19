@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace MoonWai.Shared.Models.Post
+namespace MoonWai.Api.Models.Post
 {
     public class PostDto
     {

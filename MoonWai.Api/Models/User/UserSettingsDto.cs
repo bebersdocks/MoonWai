@@ -1,6 +1,6 @@
-using MoonWai.Shared.Definitions;
+using MoonWai.Dal.DataModels;
 
-namespace MoonWai.Shared.Models.User
+namespace MoonWai.Api.Models.User
 {
     public class UserSettingsDto
     {
