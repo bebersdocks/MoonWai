@@ -20,16 +20,19 @@ namespace MoonWai.Api.Controllers
     public class UserController : BaseController
     {
         [NonAction]
-        private Task<List<ThreadDto>> GetUserThreads(Dc dc, int userId)
+        private Task<List<ThreadPreviewDto>> GetUserThreads(Dc dc, int userId)
         {   
             var query = dc.Threads
+                .LoadWith(i => i.Post)
                 .Where(i => i.UserId == userId)
-                .Select(i => new ThreadDto
+                .Select(i => new ThreadPreviewDto
                 {
                     ThreadId = i.ThreadId,
+                    ParentId = i.ParentId,
                     Title = i.Title,
-                    Message = i.Message,
-                    CreateDt = i.CreateDt
+                    Message = i.Post.Message,
+                    CreateDt = i.CreateDt,
+                    LastEditDt = i.LastEditDt
                 });
 
             return query.ToListAsync(); 
@@ -59,7 +62,7 @@ namespace MoonWai.Api.Controllers
                     CreateDt = i.CreateDt
                 });
 
-            return query.ToListAsync(); 
+            return query.ToListAsync();
         }
 
         [HttpGet]

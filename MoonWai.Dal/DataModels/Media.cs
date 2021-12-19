@@ -7,8 +7,7 @@ namespace MoonWai.Dal.DataModels
     public enum MediaSourceType
     {
         System = 0,
-        Thread = 1,
-        Post = 2
+        Post = 1
     }
 
     public class Media

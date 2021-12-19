@@ -70,7 +70,9 @@ namespace MoonWai.Api.Controllers
         {
             using var dc = new Dc();
 
-            var thread = await dc.Threads.FirstOrDefaultAsync(i => i.ThreadId == updateThreadDto.ThreadId);
+            var thread = await dc.Threads
+                .LoadWith(i => i.Post)
+                .FirstOrDefaultAsync(i => i.ThreadId == updateThreadDto.ThreadId);
 
             if (thread == null)
                 return NotFound(ErrorId.ThreadNotFound);
@@ -78,7 +80,7 @@ namespace MoonWai.Api.Controllers
             if (thread.CreateDt.Add(Constants.AllowedEditTime) > DateTime.UtcNow)
                 return Forbidden(ErrorId.AllowedEditTime, Constants.AllowedEditTime.Minutes);
 
-            if (await threadService.UpdateThread(dc, thread, updateThreadDto) < 1)
+            if (await threadService.UpdateThread(dc, thread, thread.Post, updateThreadDto) < 2)
                 return ServerError(ErrorId.FailedToUpdateThread);
 
             return Ok();

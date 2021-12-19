@@ -20,22 +20,12 @@ namespace MoonWai.Api.Services
             var postsCount = preview ? Constants.PostsInPreview : Constants.MaxPostsPerThread;
 
             var query = dc.Threads
-                .LoadWith(i => i.Media)
-                .LoadWith(i => i.Posts.Take(postsCount))
+                .LoadWith(i => i.Posts.Take(postsCount + 1))
                 .Select(i => new ThreadDto
                 {
                     ThreadId = i.ThreadId,
                     ParentId = i.ParentId,
                     Title = i.Title,
-                    Message = i.Message,
-                    Media = i.Media 
-                        .Select(j => new MediaDto
-                        {
-                            Name = j.Name,
-                            Path = j.Path,
-                            Thumbnail = j.Thumbnail
-                        })
-                        .ToList(),
                     Posts = i.Posts
                         .Select(j => new PostDto
                         {
@@ -73,25 +63,59 @@ namespace MoonWai.Api.Services
             return query;
         }
 
-        public Task<int> InsertThread(Dc dc, InsertThreadDto insertThreadDto)
+        public async Task<int> InsertThread(Dc dc, InsertThreadDto insertThreadDto)
         {
+            var utcNow = DateTime.UtcNow;
+
             var newThread = new Thread();
 
             newThread.Title    = insertThreadDto.Title;
-            newThread.Message  = insertThreadDto.Message;
             newThread.BoardId  = insertThreadDto.BoardId;
             newThread.UserId   = insertThreadDto.UserId;
-            newThread.CreateDt = DateTime.UtcNow;
+            newThread.CreateDt = utcNow;
 
-            return dc.InsertWithInt32IdentityAsync(newThread);
+            using var tr = await dc.BeginTransactionAsync();
+            var newThreadId = await dc.InsertWithInt32IdentityAsync(newThread);
+
+            if (newThreadId < 0)
+            {
+                await tr.RollbackAsync();
+                return newThreadId;
+            }
+
+            var newPost = new Post();
+
+            newPost.ThreadId = newThreadId;
+            newPost.Message  = insertThreadDto.Message;
+            newPost.UserId   = insertThreadDto.UserId;
+            newPost.CreateDt = utcNow;
+
+            await dc
+                .InsertWithInt32IdentityAsync(newPost)
+                .ContinueWith(i => tr.Commit());
+
+            return newThreadId;
         }
 
-        public Task<int> UpdateThread(Dc dc, Thread thread, UpdateThreadDto updateThreadDto)
+        public async Task<int> UpdateThread(Dc dc, Thread thread, Post post, UpdateThreadDto updateThreadDto)
         {
-            thread.Title   = updateThreadDto.Title;
-            thread.Message = updateThreadDto.Message;
+            var utcNow = DateTime.UtcNow;
 
-            return dc.UpdateAsync(thread);
+            thread.Title      = updateThreadDto.Title;
+            thread.LastEditDt = utcNow;
+
+            post.Message    = updateThreadDto.Message;
+            post.LastEditDt = utcNow;
+
+            using var tr = await dc.BeginTransactionAsync();
+            
+            var updatedCount = await dc
+                .UpdateAsync(thread)
+                .ContinueWith(i => i.Result + dc.Update(post));
+
+            await tr.CommitAsync();
+
+            return updatedCount;
         }
     }
 }
