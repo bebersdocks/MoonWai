@@ -34,6 +34,9 @@ namespace MoonWai.Dal.DataModels
         [Association(QueryExpressionMethod=nameof(MediaJoin), Relationship=Relationship.OneToMany)]
         public IEnumerable<Media> Media { get; set; }
 
+        [Association(ThisKey=nameof(PostId), OtherKey=nameof(PostId), Relationship=Relationship.OneToMany)]
+        public IEnumerable<PostResponse> Responses { get; set; }
+
         #endregion
     }
 }

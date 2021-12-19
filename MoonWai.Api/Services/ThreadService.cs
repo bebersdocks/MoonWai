@@ -39,7 +39,8 @@ namespace MoonWai.Api.Services
                                     Thumbnail = k.Thumbnail
                                 })
                                 .ToList(),
-                            CreateDt = j.CreateDt
+                            RespondentPostIds = j.Responses.Select(i => i.RespondentPostId).ToList(),
+                            CreateDt = j.CreateDt,
                         })
                         .ToList(),
                     PostsCount = i.Posts.Count(),
