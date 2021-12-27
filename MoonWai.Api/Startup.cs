@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -42,7 +43,7 @@ namespace MoonWai.Api
             dc.CreateTables();
 
             var languageId = configuration.GetValue<LanguageId>(nameof(LanguageId));
-
+            
             Program.Translations = Translations.Load(languageId);
         }
 
@@ -67,7 +68,6 @@ namespace MoonWai.Api
             {
                 configuration.RootPath = "wwwroot/dist";
             });
-
             services.AddSingleton<ThreadService, ThreadService>();
         }
 
@@ -93,6 +93,16 @@ namespace MoonWai.Api
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+            });
+
+            app.UseSpa(spa =>
+            {
+                spa.Options.SourcePath = "../MoonWai.Ui";
+
+                if (env.IsDevelopment())
+                {
+                    spa.UseReactDevelopmentServer(npmScript: "start");
+                }
             });
         }
     }

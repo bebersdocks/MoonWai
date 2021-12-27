@@ -13,10 +13,23 @@
         "PageSizeCantZeroOrNegative": "Page size can't be zero or negative",
         "PasswordCantBeEmpty": "Password can't be empty",
         "PasswordlengthCantBeLessThan": "Password length can't be less than {0} symbols",
+        "PasswordsDontMatch": "Passwords don't match.",
         "ThreadNotFound": "Thread is not found",
         "UserIsAlreadyRegistered": "User is already registered",
         "UserNotFound": "User not found",
         "UsernameCantBeEmpty": "Username can't be empty",
         "WrongPassword": "Wrong password"
+    },
+    "Ui": {
+        "AlreadyHaveAccount": "Already have an account?",
+        "DontHaveAccount": "Don't have account? Register here.",
+        "Login": "Login",
+        "Password": "Password",
+        "Register": "Register",
+        "RepeatPassword": "Repeat Password",
+        "Trusted": "Trusted",
+        "Username": "Username",
+        "WelcomeAnon": "Welcome, anon!",
+        "WelcomeBack": "Welcome back!"
     }
 }

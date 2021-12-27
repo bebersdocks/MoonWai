@@ -1,0 +1,44 @@
+.thread {
+    border-bottom: $border;
+    display: flex;
+    flex-direction: column;
+    margin-top: 12px;
+    padding-left: 15px;
+}
+
+.thread__body {
+    margin-bottom: 15px;
+    margin-top: 15px;
+}
+
+.new-thread {
+    align-items: center;
+    border-bottom: $border;
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    width: 98%;
+}
+
+.new-thread__edit {
+    width: 35%;
+}
+
+.new-thread__bar {
+    border: $button-border;
+    border-bottom: none;
+    height: 15px;
+    width: 100%;
+}
+
+.new-thread__message {
+    height: 110px;
+    border: $button-border;
+    resize: none;
+    width: 100%;
+}
+
+    .new-thread__message:focus {
+        border: thin solid #7889c2;
+        outline: none !important;
+    }

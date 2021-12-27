@@ -1,0 +1,21 @@
+.post {
+    border: $border;
+    display: inline-block;
+    margin-bottom: 5px;
+    width: fit-content;
+    padding: 7.5px;
+    padding-right: 20px;
+}
+
+    .post:hover {
+        background-color: aliceblue;
+        cursor: auto;
+    }
+
+.post__header {
+    margin-bottom: 12.5px;
+}
+
+.post__body {
+    margin-bottom: 5px;
+}

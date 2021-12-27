@@ -1,0 +1,35 @@
+{
+    "LanguageId": "Russian",
+    "Errors": {
+        "AllowedEditTime": "Максимальное время для редактирования: {0} минут.",
+        "BoardNotFound": "Доска не найдена.",
+        "FailedToCreateNewThread": "Не получилось создать новый тред.",
+        "FailedToCreateNewUser": "Не получилось создать пользователя.",
+        "FailedToCreateUserSettings": "Не получилось создать настройки пользователя.",
+        "FailedToUpdateSettings": "Не получилось обновить настройки.",
+        "FailedToUpdateThread": "Не получилось изменить тред.",
+        "NotAllowedToPostInThisBoard": "Вы не можете постить на этой борде.",
+        "PageCantBeSmallerThanOne": "Номер страницы не может быть меньше единицы.",
+        "PageSizeCantZeroOrNegative": "Размер страницы не может быть нулем или отрицательным значением.",
+        "PasswordCantBeEmpty": "Пароль не может быть пустым.",
+        "PasswordlengthCantBeLessThan": "Длина пароля не может быть меньше {0} символов.",
+        "PasswordsDontMatch": "Пароли не совпадают.",
+        "ThreadNotFound": "Тред не найден.",
+        "UserIsAlreadyRegistered": "Пользователь уже зарегистрирован.",
+        "UserNotFound": "Пользователь не найден.",
+        "UsernameCantBeEmpty": "Никнейм не может быть пустым.",
+        "WrongPassword": "Неправильный пароль."
+    },
+    "Ui": {
+        "AlreadyHaveAccount": "У меня уже есть аккаунт.",
+        "DontHaveAccount": "Нет аккаунта? Зарегистрироваться.",
+        "Login": "Логин",
+        "Password": "Пароль",
+        "Register": "Зарегистрироваться",
+        "RepeatPassword": "Повторите пароль",
+        "Trusted": "Не разлогинивать",
+        "Username": "Никнейм",
+        "WelcomeAnon": "Добро пожаловать, анон!",
+        "WelcomeBack": "С возвращением!"
+    }
+}

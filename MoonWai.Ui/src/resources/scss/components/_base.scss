@@ -1,0 +1,13 @@
+body {
+    background: $background-color;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0; 
+    padding: 0;
+    font-size: 12px;
+}
+
+.app {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+  }

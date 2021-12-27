@@ -48,10 +48,9 @@ namespace MoonWai.Api.Controllers
 
             using var dc = new Dc();
 
-            var user = await
-                dc.Users
-                    .LoadWith(i => i.Settings.DefaultBoard)
-                    .FirstOrDefaultAsync(i => i.Username == loginDto.Username);
+            var user = await dc.Users
+                .LoadWith(i => i.Settings.DefaultBoard)
+                .FirstOrDefaultAsync(i => i.Username == loginDto.Username);
 
             if (user == null)
                 return NotFound(ErrorId.UserNotFound);

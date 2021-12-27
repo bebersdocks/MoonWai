@@ -1,0 +1,26 @@
+.nav {
+    border-bottom: $border;
+    height: 3%;
+}
+
+.nav-link {
+    color: $nav-link-color;
+    padding: 5px;
+    text-decoration: none;
+}
+
+.nav-link:hover {
+    color: $nav-link-hover-color;
+}
+
+.nav__auth {
+    align-items: center;
+    border-left: $border;
+    display: flex;
+    float: right;
+    height: 100%;
+}
+    
+    .nav__auth .nav-link {
+        padding: 8.5px;
+    }
