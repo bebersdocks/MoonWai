@@ -14,6 +14,7 @@ namespace MoonWai.Api.Definitions
         PageSizeCantZeroOrNegative,
         PasswordCantBeEmpty,
         PasswordLengthCantBeLessThan,
+        PasswordsDontMatch,
         ThreadNotFound,
         UserIsAlreadyRegistered,
         UserNotFound,

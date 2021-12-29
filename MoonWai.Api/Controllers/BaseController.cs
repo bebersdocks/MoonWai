@@ -39,7 +39,7 @@ namespace MoonWai.Api.Controllers
         protected IActionResult Failed(int statusCode, ErrorId errorId, params object[] args)
         {
             var errorMsg = Program.Translations.GetErrorMsg(errorId, args);
-            var error = new ErrorDto { ErrorId = errorId, Message = errorMsg };
+            var error = new ErrorDto { ErrorId = errorId, ErrorIdStr = errorId.ToString(), Message = errorMsg };
 
             return StatusCode(statusCode, error);
         }

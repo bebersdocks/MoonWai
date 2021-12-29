@@ -1,83 +1,86 @@
+import axios from 'axios';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import { useAppSelector, useAppDispatch } from '../app/hooks';
-import { registerAsync } from '../slices/authSlice';
-import { selectMessage } from '../slices/messageSlice';
+
+import { useAppDispatch } from '../app/hooks';
+import { authSuccess } from '../slices/authSlice';
 
 export function Register() {
   const dispatch = useAppDispatch();
 
   const { t, i18n } = useTranslation();
 
-  const message = useAppSelector(selectMessage);
-  
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [passwordAgain, setPasswordAgain] = useState('');
   const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState('');
   const [valid, setValid] = useState(false);
 
-  const [validationMessage, setValidationMessage] = useState('');
+  async function registerAsync() {
+    setLoading(true);
   
-  function onChangeUsername(e: any) {
+    const data = {
+      username: username,
+      password: password,
+    };
+
+    await axios.post('api/auth/register', data)
+      .then(response => {
+        alert('suckess');
+        localStorage.setItem('user', JSON.stringify(response.data));
+        dispatch(authSuccess(response.data));
+      })
+      .catch((err) => {
+        if (err.response && err.response.data && err.response.data.errorIdStr)
+          setMessage(t(err.response.data.errorIdStr));
+        else
+          setMessage(err.message || err.toString());
+      });
+  
+    setLoading(false);
+  };
+
+  const minPasswordLength = 8;
+  const isValid = (username: string, password: string, passwordAgain: string) =>
+    !(!username || !password || password.length < minPasswordLength || !passwordAgain || password != passwordAgain);
+
+  function onChangeUsername(e: React.ChangeEvent<HTMLInputElement>) {
     const username = e.target.value;
     setUsername(username);
+    setValid(isValid(username, password, passwordAgain));
 
-    if (!username) {
-      setValidationMessage(t('Errors.UsernameCantBeEmpty'));
-      setValid(false);
-    }
-    else {
-      setValidationMessage('');
-      setValid(true);
-    }
+    if (!username)
+      setMessage(t('Errors.UsernameCantBeEmpty'));
+    else
+      setMessage('');
   };
 
-  function onChangePassword(e: any) {
+  function onChangePassword(e: React.ChangeEvent<HTMLInputElement>) {
     const password = e.target.value;
     setPassword(password);
+    setValid(isValid(username, password, passwordAgain));
 
-    let minPasswordLength = 8;
-
-    if (!password) {
-      setValidationMessage(t('Errors.PasswordCantBeEmpty'));
-      setValid(false);
-    }
-    else if (password.length < minPasswordLength) {
-      let errorMsg = t('Errors.PasswordlengthCantBeLessThan')
-      errorMsg = errorMsg.replace('{0}', minPasswordLength.toString());
-      setValidationMessage(errorMsg);
-      setValid(false);
-    }
-    else if (password != passwordAgain) {
-      setValidationMessage(t('Errors.PasswordsDontMatch'));
-      setValid(false);
-    }
-    else {
-      setValidationMessage('');
-      setValid(true);
-    }
+    if (!password)
+      setMessage(t('Errors.PasswordCantBeEmpty'));
+    else if (password.length < minPasswordLength)
+      setMessage(t('Errors.PasswordlengthCantBeLessThan').replace('{0}', minPasswordLength.toString()));
+    else if (password != passwordAgain)
+      setMessage(t('Errors.PasswordsDontMatch'));
+    else
+      setMessage('');
   };
 
-  function onChangePasswordAgain(e: any) {
+  function onChangePasswordAgain(e: React.ChangeEvent<HTMLInputElement>) {
     const passwordAgain = e.target.value;
     setPasswordAgain(passwordAgain);
+    setValid(isValid(username, password, passwordAgain));
 
-    if (password != passwordAgain) {
-      setValidationMessage(t('Errors.PasswordsDontMatch'));
-      setValid(false);
-    }
-    else {
-      setValidationMessage('');
-      setValid(true);
-    }
-  };
-
-  function handleRegister(e: any) {
-    e.preventDefault();
-    setLoading(true);
-    dispatch(registerAsync(username, password));
+    if (password != passwordAgain)
+      setMessage(t('Errors.PasswordsDontMatch'));
+    else
+      setMessage('');
   };
 
   return (
@@ -88,9 +91,9 @@ export function Register() {
       </div>
 
       <div className="form--register">
-        {(validationMessage || message) && (
+        {message && (
           <div className="form__message">
-              {validationMessage || message}
+              {message}
           </div>
         )}
 
@@ -106,7 +109,7 @@ export function Register() {
           <input type="password" name="passwordAgain" placeholder={t('Ui.RepeatPassword')} value={passwordAgain} onChange={onChangePasswordAgain} />
         </div>
 
-        <button className="btn btn-primary btn-block" disabled={!valid || loading} onClick={handleRegister}>
+        <button className="btn btn-primary btn-block" disabled={!valid || loading} onClick={registerAsync}>
           <span>{t('Ui.Register')}</span>
         </button>
 
