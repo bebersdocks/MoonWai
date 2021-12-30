@@ -1,23 +1,28 @@
-import React from 'react';
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Login } from './Login';
-import { Register } from './Register';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+
+import { Board } from '../pages/Board'
+import { Login } from '../pages/Login';
+import { Register } from '../pages/Register';;
+
+import Navigation from './Navigation';
+
 import '../resources/scss/main.scss';
 
-let router =
-  <BrowserRouter>
+let routes =
   <Routes>
     <Route index element={<Login />} />
     <Route path="login" element={<Login />} />
     <Route path="register" element={<Register />} />
   </Routes>
-  </BrowserRouter>
 
 function App() {
   return (
-    <div className='app'>
-      {router}
-    </div>
+    <BrowserRouter>
+      <div className='app'>
+        <Navigation />
+        {routes}
+      </div>
+    </BrowserRouter>
   );
 };
 

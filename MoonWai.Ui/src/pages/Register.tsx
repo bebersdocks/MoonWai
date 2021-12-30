@@ -1,15 +1,18 @@
 import axios from 'axios';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
-import { useAppDispatch } from '../app/hooks';
-import { authSuccess } from '../slices/authSlice';
+import { useAppDispatch, useAppSelector } from '../app/hooks';
+import { authSuccess, selectUser } from '../slices/authSlice';
 
 export function Register() {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const { t, i18n } = useTranslation();
+
+  const user = useAppSelector(selectUser);
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -26,15 +29,17 @@ export function Register() {
       password: password,
     };
 
-    await axios.post('api/auth/register', data)
+    await axios
+      .post('api/auth/register', data)
       .then(response => {
-        alert('suckess');
         localStorage.setItem('user', JSON.stringify(response.data));
         dispatch(authSuccess(response.data));
+        if (user)
+          navigate(user.defaultBoardPath);
       })
       .catch((err) => {
         if (err.response && err.response.data && err.response.data.errorIdStr)
-          setMessage(t(err.response.data.errorIdStr));
+          setMessage(t('Errors.' + err.response.data.errorIdStr));
         else
           setMessage(err.message || err.toString());
       });
@@ -116,6 +121,7 @@ export function Register() {
       </div>
 
       <Link className="nav-link" to="/login">{t('Ui.AlreadyHaveAccount')}</Link>
+      
     </div>
   );
 }

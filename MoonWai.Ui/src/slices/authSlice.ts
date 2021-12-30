@@ -5,12 +5,7 @@ import { RootState, AppThunk } from '../app/store';
 
 export class User {
   public username: string;
-  public defaultBoardId: number;
-
-  constructor(username: string, defaultBoardId: number) {
-    this.username = username;
-    this.defaultBoardId = defaultBoardId;
-  }
+  public defaultBoardPath: string;
 }
 
 export interface IAuthState {
@@ -38,7 +33,8 @@ export const authSlice = createSlice({
 });
 
 export const logoutAsync = (): AppThunk => async (dispatch) => {
-  axios.post('api/auth/logout')
+  axios
+    .post('api/auth/logout')
     .then(_ => {
       localStorage.removeItem('user');;
       dispatch(logout);

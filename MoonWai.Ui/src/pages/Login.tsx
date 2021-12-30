@@ -1,14 +1,18 @@
 import axios from 'axios';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
-import { useAppDispatch } from '../app/hooks';
-import { authSuccess } from '../slices/authSlice';
+import { useAppDispatch, useAppSelector } from '../app/hooks';
+import { authSuccess, selectUser } from '../slices/authSlice';
 
 export function Login() {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
   const { t, i18n } = useTranslation();
+
+  const user = useAppSelector(selectUser);
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -26,15 +30,17 @@ export function Login() {
       trusted: trusted,
     };
 
-    await axios.post('api/auth/login', data)
+    await axios
+      .post('api/auth/login', data)
       .then(response => {
-        alert('suckess');
         localStorage.setItem('user', JSON.stringify(response.data));
         dispatch(authSuccess(response.data));
+        if (user)
+          navigate(user.defaultBoardPath);
       })
       .catch((err) => {
         if (err.response && err.response.data && err.response.data.errorIdStr)
-          setMessage(t(err.response.data.errorIdStr));
+          setMessage(t('Errors.' + err.response.data.errorIdStr));
         else
           setMessage(err.message || err.toString());
       });
@@ -42,8 +48,7 @@ export function Login() {
     setLoading(false);
   };
 
-  const minPasswordLength = 8;
-  const isValid = (username: string, password: string) => !(!username || !password || password.length < minPasswordLength);
+  const isValid = (username: string, password: string) => !(!username || !password);
 
   function onChangeUsername(e: React.ChangeEvent<HTMLInputElement>) {
     const username = e.target.value;
@@ -63,8 +68,6 @@ export function Login() {
 
     if (!password)
       setMessage(t('Errors.PasswordCantBeEmpty'));
-    else if (password.length < minPasswordLength)
-      setMessage(t('Errors.PasswordlengthCantBeLessThan').replace('{0}', minPasswordLength.toString()));
     else
       setMessage('');
   };
