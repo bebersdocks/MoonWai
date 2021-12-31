@@ -13,7 +13,7 @@ namespace MoonWai.Api.Resources
             
             var name = assembly
                 .GetManifestResourceNames()
-                .FirstOrDefault(i => i.EndsWith(resourceName, StringComparison.InvariantCultureIgnoreCase))
+                .FirstOrDefault(s => s.EndsWith(resourceName, StringComparison.InvariantCultureIgnoreCase))
                 ?? throw new FileNotFoundException($"Embedded resource {resourceName} not found in assembly {assembly.FullName}.", resourceName);
 
             using (Stream stream = assembly.GetManifestResourceStream(name))

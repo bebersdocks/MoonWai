@@ -49,8 +49,8 @@ namespace MoonWai.Api.Controllers
             using var dc = new Dc();
 
             var user = await dc.Users
-                .LoadWith(i => i.Settings.DefaultBoard)
-                .FirstOrDefaultAsync(i => i.Username == loginDto.Username);
+                .LoadWith(u => u.Settings.DefaultBoard)
+                .FirstOrDefaultAsync(u => u.Username == loginDto.Username);
 
             if (user == null)
                 return NotFound(ErrorId.UserNotFound);
@@ -77,7 +77,7 @@ namespace MoonWai.Api.Controllers
 
             using var dc = new Dc();
             
-            if (await dc.Users.AnyAsync(i => i.Username == registerDto.Username))
+            if (await dc.Users.AnyAsync(u => u.Username == registerDto.Username))
                 return Conflict(ErrorId.UserIsAlreadyRegistered);
 
             if (string.IsNullOrEmpty(registerDto.Password))
@@ -122,7 +122,7 @@ namespace MoonWai.Api.Controllers
 
             await Login(newUser);
 
-            var defaultBoard = await dc.Boards.FirstAsync(i => i.BoardId == Constants.DefaultBoardId);
+            var defaultBoard = await dc.Boards.FirstAsync(b => b.BoardId == Constants.DefaultBoardId);
 
             return Ok(new UserDto { Username = newUser.Username, DefaultBoardPath = defaultBoard.Path });
         }

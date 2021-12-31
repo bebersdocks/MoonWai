@@ -27,17 +27,17 @@ namespace MoonWai.Api.Controllers
         private Task<List<BoardDto>> GetBoards(Dc dc)
         {
             var query = dc.Boards 
-                .LoadWith(i => i.BoardSection)
-                .Select(i => new BoardDto
+                .LoadWith(b => b.BoardSection)
+                .Select(b => new BoardDto
                 {
-                    BoardId = i.BoardId,
+                    BoardId = b.BoardId,
                     BoardSection = new BoardSectionDto
                     {
-                        BoardSectionId = i.BoardSectionId,
-                        Name = i.BoardSection.Name
+                        BoardSectionId = b.BoardSectionId,
+                        Name = b.BoardSection.Name
                     },
-                    Path = i.Path,
-                    Name = i.Name
+                    Path = b.Path,
+                    Name = b.Name
                 });
             
             return query.ToListAsync();
@@ -60,7 +60,7 @@ namespace MoonWai.Api.Controllers
         {
             using var dc = new Dc();
 
-            var board = await dc.Boards.FirstOrDefaultAsync(i => i.Path.Equals(boardPath));
+            var board = await dc.Boards.FirstOrDefaultAsync(b => b.Path.Equals(boardPath));
 
             if (board == null)
                 return NotFound(ErrorId.BoardNotFound);

@@ -20,31 +20,31 @@ namespace MoonWai.Api.Services
             var postsCount = preview ? Constants.PostsInPreview : Constants.MaxPostsPerThread;
 
             var query = dc.Threads
-                .LoadWith(i => i.Posts.Take(postsCount + 1))
-                .Select(i => new ThreadDto
+                .LoadWith(t => t.Posts.Take(postsCount + 1))
+                .Select(t => new ThreadDto
                 {
-                    ThreadId = i.ThreadId,
-                    ParentId = i.ParentId,
-                    Title = i.Title,
-                    Posts = i.Posts
-                        .Select(j => new PostDto
+                    ThreadId = t.ThreadId,
+                    ParentId = t.ParentId,
+                    Title = t.Title,
+                    Posts = t.Posts
+                        .Select(p => new PostDto
                         {
-                            PostId = j.PostId,
-                            Message = j.Message,
-                            Media = j.Media 
-                                .Select(k => new MediaDto
+                            PostId = p.PostId,
+                            Message = p.Message,
+                            Media = p.Media 
+                                .Select(m => new MediaDto
                                 {
-                                    Name = k.Name,
-                                    Path = k.Path,
-                                    Thumbnail = k.Thumbnail
+                                    Name = m.Name,
+                                    Path = m.Path,
+                                    Thumbnail = m.Thumbnail
                                 })
                                 .ToList(),
-                            RespondentPostIds = j.Responses.Select(i => i.RespondentPostId).ToList(),
-                            CreateDt = j.CreateDt,
+                            RespondentPostIds = p.Responses.Select(r => r.RespondentPostId).ToList(),
+                            CreateDt = p.CreateDt,
                         })
                         .ToList(),
-                    PostsCount = i.Posts.Count(),
-                    CreateDt = i.CreateDt
+                    PostsCount = t.Posts.Count(),
+                    CreateDt = t.CreateDt
                 });
 
             return query;
@@ -54,7 +54,7 @@ namespace MoonWai.Api.Services
         {   
             var query = GetThreads(dc, false);
 
-            return query.FirstOrDefaultAsync(i => i.ThreadId == threadId);
+            return query.FirstOrDefaultAsync(t => t.ThreadId == threadId);
         }
 
         public IQueryable<ThreadDto> GetThreads(Dc dc, int boardId, bool preview = true)
@@ -93,7 +93,7 @@ namespace MoonWai.Api.Services
 
             await dc
                 .InsertWithInt32IdentityAsync(newPost)
-                .ContinueWith(i => tr.Commit());
+                .ContinueWith(t => tr.Commit());
 
             return newThreadId;
         }
@@ -112,7 +112,7 @@ namespace MoonWai.Api.Services
             
             var updatedCount = await dc
                 .UpdateAsync(thread)
-                .ContinueWith(i => i.Result + dc.Update(post));
+                .ContinueWith(t => t.Result + dc.Update(post));
 
             await tr.CommitAsync();
 

@@ -26,14 +26,14 @@ namespace MoonWai.Api.Utils
                 .MinimumLevel.Is(loggingSettings.Level)
                 .MinimumLevel.Override("System", loggingSettings.OverrideLevel)
                 .MinimumLevel.Override("Microsoft", loggingSettings.OverrideLevel)
-                .WriteTo.Async(i =>
+                .WriteTo.Async(c =>
                 {
                     if (loggingSettings.UseConsole)
-                        i.Console(loggingSettings.Level, outputTemplate: defaultTemplate);
+                        c.Console(loggingSettings.Level, outputTemplate: defaultTemplate);
 
                     var logPath = loggingSettings.Path + "/" + DateTime.Now.ToString("dd_MM_yyyy") + ".log";
 
-                    i.File(logPath, outputTemplate: defaultTemplate, shared: true);
+                    c.File(logPath, outputTemplate: defaultTemplate, shared: true);
                 })
                 .CreateLogger();
         }
