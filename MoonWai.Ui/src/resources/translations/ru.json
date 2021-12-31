@@ -14,6 +14,7 @@
         "PasswordCantBeEmpty": "Пароль не может быть пустым.",
         "PasswordlengthCantBeLessThan": "Длина пароля не может быть меньше {0} символов.",
         "PasswordsDontMatch": "Пароли не совпадают.",
+        "PostNotFound": "Пост не найден.",
         "ThreadNotFound": "Тред не найден.",
         "UserIsAlreadyRegistered": "Пользователь уже зарегистрирован.",
         "UserNotFound": "Пользователь не найден.",
