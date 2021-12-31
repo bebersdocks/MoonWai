@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { IThread, Thread } from '../components/Thread';
 
-export function Board(props: {path: string}) {
+export function Board(props: {boardPath: string}) {
   const dispatch = useAppDispatch();
   
   const { t, i18n } = useTranslation();
@@ -16,7 +16,7 @@ export function Board(props: {path: string}) {
 
   function getThreadsAsync() {  
     axios
-      .get('api/boards/' + props.path)
+      .get('api/boards/' + props.boardPath)
       .then(response => { 
         setThreads(response.data.items);
         setTotalPages(response.data.pages); 

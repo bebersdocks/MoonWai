@@ -35,7 +35,7 @@ export function Register() {
         localStorage.setItem('user', JSON.stringify(response.data));
         dispatch(authSuccess(response.data));
         if (user)
-          navigate(user.defaultBoardPath);
+          navigate('/' + user.defaultBoardPath);
       })
       .catch((err) => {
         if (err.response && err.response.data && err.response.data.errorIdStr)

@@ -1,21 +1,35 @@
 .post {
     border: $border;
     display: inline-block;
+    font-size: 13px;
     margin-bottom: 5px;
     width: fit-content;
-    padding: 7.5px;
-    padding-right: 20px;
+    min-width: 350px;
 }
 
     .post:hover {
-        background-color: aliceblue;
+        background-color: $post-hover-color;
         cursor: auto;
     }
 
 .post__header {
-    margin-bottom: 12.5px;
+    background-color: $post__header-color;
+    border-bottom: $border;
+    margin-bottom: 7.5px;
+    padding: 5px;
+}
+
+.post__id {
+    cursor: pointer;
+}
+
+.post__id--right {
+    cursor: pointer;
+    float: right;
 }
 
 .post__body {
-    margin-bottom: 5px;
+    margin-bottom: 8px;
+    padding: 7.5px;
+    padding-right: 12px;
 }

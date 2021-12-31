@@ -23,6 +23,7 @@ namespace MoonWai.Api.Controllers
 
             var post = await dc.Posts
                 .LoadWith(p => p.Media)
+                .LoadWith(p => p.Responses)
                 .FirstOrDefaultAsync(p => p.PostId == postId);
 
             if (post == null)

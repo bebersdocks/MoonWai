@@ -1,21 +1,26 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-import { Board } from '../pages/Board'
-import { Login } from '../pages/Login';
-import { Register } from '../pages/Register';;
+import { useAppSelector } from '../app/hooks';
+import { selectUser } from '../slices/authSlice';
 
 import Navigation from './Navigation';
 
+import { Board } from '../pages/Board'
+import { Login } from '../pages/Login';
+import { Register } from '../pages/Register';
+
 import '../resources/scss/main.scss';
 
-let routes =
-  <Routes>
-    <Route index element={<Login />} />
-    <Route path="login" element={<Login />} />
-    <Route path="register" element={<Register />} />
-  </Routes>
-
 function App() {
+  const user = useAppSelector(selectUser);
+
+  const routes =
+    <Routes>
+      <Route index element={<Board boardPath={user?.defaultBoardPath ?? 'b'} />} />
+      <Route path="login" element={<Login />} />
+      <Route path="register" element={<Register />} />
+    </Routes>
+
   return (
     <BrowserRouter>
       <div className='app'>

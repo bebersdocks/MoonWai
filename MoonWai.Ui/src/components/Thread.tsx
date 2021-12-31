@@ -17,7 +17,8 @@ export function Thread(props: {thread: IThread}) {
     <div className="thread">
 
       <div className="thread__header">
-        &gt;&gt;{thread.threadId}
+        {new Date(thread.createDt).toLocaleString('ru-RU')}&nbsp;&nbsp;
+        <span className="post__id">#{thread.threadId}</span>
       </div>
 
       <div className="thread__body">
