@@ -3,20 +3,20 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { RootState, AppThunk } from '../app/store';
 
-export class BoardSection {
-  public boardSectionId: number;
-  public name: string;
+export interface IBoardSection {
+  boardSectionId: number;
+  name: string;
 }
 
-export class Board {
-  public boardId: number;
-  public boardSection: BoardSection;
-  public path: string;
-  public name: string;
+export interface IBoard {
+  boardId: number;
+  boardSection: IBoardSection;
+  path: string;
+  name: string;
 }
 
 export interface ICatalogState {
-  boards: Array<Board>;
+  boards: Array<IBoard>;
 }
 
 const initialState: ICatalogState = {
@@ -29,7 +29,7 @@ export const catalogSlice = createSlice({
   name: 'catalog',
   initialState,
   reducers: {
-    boardsRetrieved: (state, action: PayloadAction<Array<Board>>) => {
+    boardsRetrieved: (state, action: PayloadAction<Array<IBoard>>) => {
       state.boards = action.payload;
     },
   },
