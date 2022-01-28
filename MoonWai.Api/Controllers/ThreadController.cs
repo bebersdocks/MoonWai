@@ -17,20 +17,18 @@ namespace MoonWai.Api.Controllers
     [ApiController]
     public class ThreadController : BaseController
     {
-        private readonly ThreadService threadService;
+        private readonly ThreadService _threadService;
 
-        public ThreadController(ThreadService threadService)
+        public ThreadController(Dc dc, ThreadService threadService) : base(dc)
         {
-            this.threadService = threadService;
+            _threadService = threadService;
         }
 
         [HttpGet]
         [Route("api/threads/{threadId:int}")]
         public async Task<IActionResult> GetThread(int threadId)
         {
-            using var dc = new Dc();
-
-            var thread = await threadService.GetThread(dc, threadId);
+            var thread = await _threadService.GetThread(_dc, threadId);
 
             if (thread == null)
                 return NotFound(ErrorId.ThreadNotFound);
@@ -42,23 +40,21 @@ namespace MoonWai.Api.Controllers
         [Route("api/threads")]
         public async Task<IActionResult> InsertThread(InsertThreadDto insertThreadDto)
         {
-            using var dc = new Dc();
-
-            var allowedUserIds = await dc.BoardAllowedUsers
+            var allowedUserIds = await _dc.BoardAllowedUsers
                 .Where(i => i.BoardId == insertThreadDto.BoardId)
                 .Select(i => i.UserId)
                 .ToListAsync();
 
             if (allowedUserIds.Any())
             {
-                var user = await GetUser(dc);
+                var user = await GetUser();
                 if (user == null || !allowedUserIds.Contains(user.UserId))
                 {
                     return Forbidden(ErrorId.NotAllowedToPostInThisBoard);
                 }
             }
 
-            if (await threadService.InsertThread(dc, insertThreadDto) <= 0)
+            if (await _threadService.InsertThread(_dc, insertThreadDto) <= 0)
                 return ServerError(ErrorId.FailedToCreateNewThread);
 
             return Ok();
@@ -68,9 +64,7 @@ namespace MoonWai.Api.Controllers
         [Route("api/threads")]
         public async Task<IActionResult> UpdateThread(UpdateThreadDto updateThreadDto)
         {
-            using var dc = new Dc();
-
-            var thread = await dc.Threads
+            var thread = await _dc.Threads
                 .LoadWith(i => i.Post)
                 .FirstOrDefaultAsync(i => i.ThreadId == updateThreadDto.ThreadId);
 
@@ -80,7 +74,7 @@ namespace MoonWai.Api.Controllers
             if (thread.CreateDt.Add(Constants.AllowedEditTime) > DateTime.UtcNow)
                 return Forbidden(ErrorId.AllowedEditTime, Constants.AllowedEditTime.Minutes);
 
-            if (await threadService.UpdateThread(dc, thread, thread.Post, updateThreadDto) < 2)
+            if (await _threadService.UpdateThread(_dc, thread, thread.Post, updateThreadDto) < 2)
                 return ServerError(ErrorId.FailedToUpdateThread);
 
             return Ok();

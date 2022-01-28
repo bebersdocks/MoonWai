@@ -18,15 +18,15 @@ namespace MoonWai.Api.Controllers
     {
         private readonly ThreadService threadService;
 
-        public BoardController(ThreadService threadService)
+        public BoardController(Dc dc, ThreadService threadService) : base(dc)
         {
             this.threadService = threadService;
         }
 
         [NonAction]
-        private Task<List<BoardDto>> GetBoards(Dc dc)
+        private Task<List<BoardDto>> GetBoardsTask()
         {
-            var query = dc.Boards 
+            var query = _dc.Boards
                 .LoadWith(b => b.BoardSection)
                 .Select(b => new BoardDto
                 {
@@ -47,9 +47,7 @@ namespace MoonWai.Api.Controllers
         [Route("api/boards")]
         public async Task<IActionResult> GetBoards()
         {
-            using var dc = new Dc();
-
-            var boards = await GetBoards(dc);
+            var boards = await GetBoardsTask();
 
             return Ok(boards);
         }
@@ -58,14 +56,12 @@ namespace MoonWai.Api.Controllers
         [Route("api/boards/{boardPath}")]
         public async Task<IActionResult> GetBoardThreads(string boardPath, bool preview = true, int? page = null, int? pageSize = null)
         {
-            using var dc = new Dc();
-
-            var board = await dc.Boards.FirstOrDefaultAsync(b => b.Path.Equals(boardPath));
+            var board = await _dc.Boards.FirstOrDefaultAsync(b => b.Path.Equals(boardPath));
 
             if (board == null)
                 return NotFound(ErrorId.BoardNotFound);
 
-            var query = threadService.GetThreads(dc, board.BoardId, preview);
+            var query = threadService.GetThreads(_dc, board.BoardId, preview);
             
             return await PagedQueryResult(query, page, pageSize);
         }

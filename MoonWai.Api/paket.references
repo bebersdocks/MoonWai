@@ -1,4 +1,5 @@
 linq2db
+linq2db.AspNet
 Microsoft.AspNetCore.SpaServices.Extensions
 Newtonsoft.Json
 Serilog.AspNetCore

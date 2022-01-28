@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 
 using LinqToDB;
+using LinqToDB.Configuration;
 
 using MoonWai.Dal.DataModels;
 
@@ -28,14 +29,19 @@ namespace MoonWai.Dal
             var dataProvider = GetDataProvider(ProviderName.PostgreSQL, connStr);
             
             if (dataProvider == null) 
-                throw new Exception("Unable to get data provider");
+                throw new Exception("Unable to get data provider.");
 
             AddConfiguration(defaultConfigurationStr, connStr, dataProvider);
         }
 
-        public Dc() : base(defaultConfigurationStr) { }
+        public Dc() : base(defaultConfigurationStr) {}
 
-        public Dc(string configurationStr) : base(configurationStr) { }
+        public Dc(string configurationStr) : base(configurationStr) {}
+
+        public Dc(LinqToDbConnectionOptions<Dc> options)
+            : base(options)
+        {
+        }
 
         public void CreateTables()
         {

@@ -20,10 +20,12 @@ namespace MoonWai.Api.Controllers
     [ApiController]
     public class UserController : BaseController
     {
+        public UserController(Dc dc) : base(dc) {}
+
         [NonAction]
-        private Task<List<ThreadPreviewDto>> GetUserThreads(Dc dc, int userId)
+        private Task<List<ThreadPreviewDto>> GetUserThreads(int userId)
         {   
-            var query = dc.Threads
+            var query = _dc.Threads
                 .LoadWith(t => t.Post)
                 .Where(t => t.UserId == userId)
                 .Select(t => new ThreadPreviewDto
@@ -43,18 +45,16 @@ namespace MoonWai.Api.Controllers
         [Route("user/threads")]
         public async Task<IActionResult> GetUserThreads()
         {
-            using var dc = new Dc();
-
-            var user = await GetUser(dc);    
-            var threads = await GetUserThreads(dc, user.UserId);
+            var user = await GetUser();    
+            var threads = await GetUserThreads(user.UserId);
 
             return Ok(threads);
         }
 
         [NonAction]
-        private Task<List<PostDto>> GetUserPosts(Dc dc, int userId)
+        private Task<List<PostDto>> GetUserPosts(int userId)
         {   
-            var query = dc.Posts
+            var query = _dc.Posts
                 .Where(p => p.UserId == userId)
                 .Select(p => new PostDto
                 {
@@ -70,10 +70,8 @@ namespace MoonWai.Api.Controllers
         [Route("user/posts")]
         public async Task<IActionResult> GetUserPosts()
         {
-            using var dc = new Dc();
-
-            var user = await GetUser(dc);     
-            var posts = await GetUserPosts(dc, user.UserId);
+            var user = await GetUser();     
+            var posts = await GetUserPosts(user.UserId);
 
             return Ok(posts);
         }
@@ -82,13 +80,11 @@ namespace MoonWai.Api.Controllers
         [Route("user/language/{languageId:int}")]
         public async Task<IActionResult> UpdateLanguage(LanguageId languageId)
         {
-            using var dc = new Dc();
-
-            var user = await GetUser(dc);
+            var user = await GetUser();
             
             user.Settings.LanguageId = languageId;
 
-            if (await dc.UpdateAsync(user.Settings) < 1)
+            if (await _dc.UpdateAsync(user.Settings) < 1)
                 return ServerError(ErrorId.FailedToUpdateSettings);
 
             return Ok();
@@ -98,15 +94,13 @@ namespace MoonWai.Api.Controllers
         [Route("user/settings")]
         public async Task<IActionResult> UpdateSettings(UserSettingsDto userSettingsDto)
         {
-            using var dc = new Dc();
-
-            var user = await GetUser(dc);
+            var user = await GetUser();
             var settings = user.Settings;
 
             settings.LanguageId = userSettingsDto.LanguageId;
             settings.DefaultBoardId = userSettingsDto.DefaultBoardId;
 
-            if (await dc.UpdateAsync(settings) < 1)
+            if (await _dc.UpdateAsync(settings) < 1)
                 return ServerError(ErrorId.FailedToUpdateSettings);
 
             return Ok();

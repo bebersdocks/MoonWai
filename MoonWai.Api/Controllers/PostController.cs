@@ -15,13 +15,13 @@ namespace MoonWai.Api.Controllers
     [ApiController]
     public class PostController : BaseController
     {
+        public PostController(Dc dc) : base(dc) {}
+
         [HttpGet]
         [Route("api/posts/{postId:int}")]
         public async Task<IActionResult> GetPost(int postId)
         {
-            using var dc = new Dc();
-
-            var post = await dc.Posts
+            var post = await _dc.Posts
                 .LoadWith(p => p.Media)
                 .LoadWith(p => p.Responses)
                 .FirstOrDefaultAsync(p => p.PostId == postId);

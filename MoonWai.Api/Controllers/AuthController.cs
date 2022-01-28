@@ -20,6 +20,8 @@ namespace MoonWai.Api.Controllers
     [Route("api/[controller]/[action]")]
     public class AuthController : BaseController
     {
+        public AuthController(Dc dc) : base(dc) {}
+
         [NonAction]
         public Task Login(User user, bool trusted = false)
         {
@@ -29,12 +31,12 @@ namespace MoonWai.Api.Controllers
                 new(ClaimTypes.NameIdentifier, user.UserId.ToString())
             };
 
-            var claimsIdentity = new ClaimsIdentity(claims, Program.defaultAuthenticationScheme);
+            var claimsIdentity  = new ClaimsIdentity(claims, Program.defaultAuthenticationScheme);
             var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
-            var authProperties = new AuthenticationProperties
+            var authProperties  = new AuthenticationProperties
             {
                 IsPersistent = true,
-                ExpiresUtc = DateTimeOffset.UtcNow.Add(trusted ? TimeSpan.FromDays(30) : TimeSpan.FromHours(72)),
+                ExpiresUtc   = DateTimeOffset.UtcNow.Add(trusted ? TimeSpan.FromDays(30) : TimeSpan.FromHours(72)),
             };
 
             return HttpContext.SignInAsync(Program.defaultAuthenticationScheme, claimsPrincipal, authProperties);
@@ -46,9 +48,7 @@ namespace MoonWai.Api.Controllers
             if (string.IsNullOrEmpty(loginDto.Username))
                 return BadRequest(ErrorId.UsernameCantBeEmpty);
 
-            using var dc = new Dc();
-
-            var user = await dc.Users
+            var user = await _dc.Users
                 .LoadWith(u => u.Settings.DefaultBoard)
                 .FirstOrDefaultAsync(u => u.Username == loginDto.Username);
 
@@ -60,7 +60,7 @@ namespace MoonWai.Api.Controllers
 
             user.LastAccessDt = DateTime.UtcNow;
 
-            await dc.UpdateAsync(user);
+            await _dc.UpdateAsync(user);
 
             await Login(user, trusted: loginDto.Trusted);
 
@@ -75,9 +75,7 @@ namespace MoonWai.Api.Controllers
             if (string.IsNullOrEmpty(registerDto.Username))
                 return BadRequest(ErrorId.UsernameCantBeEmpty);
 
-            using var dc = new Dc();
-            
-            if (await dc.Users.AnyAsync(u => u.Username == registerDto.Username))
+            if (await _dc.Users.AnyAsync(u => u.Username == registerDto.Username))
                 return Conflict(ErrorId.UserIsAlreadyRegistered);
 
             if (string.IsNullOrEmpty(registerDto.Password))
@@ -105,9 +103,9 @@ namespace MoonWai.Api.Controllers
 
             userSettings.LanguageId = LanguageId.English;
 
-            using var tr = await dc.BeginTransactionAsync();
+            using var tr = await _dc.BeginTransactionAsync();
 
-            var userId = await dc.InsertWithInt32IdentityAsync(newUser);
+            var userId = await _dc.InsertWithInt32IdentityAsync(newUser);
 
             if (userId <= 0)
                 return ServerError(ErrorId.FailedToCreateNewUser);
@@ -115,14 +113,14 @@ namespace MoonWai.Api.Controllers
             userSettings.UserId = userId;
             userSettings.DefaultBoardId = Constants.DefaultBoardId;
 
-            if (await dc.InsertAsync(userSettings) <= 0)
+            if (await _dc.InsertAsync(userSettings) <= 0)
                 return ServerError(ErrorId.FailedToCreateUserSettings);
    
             await tr.CommitAsync();
 
             await Login(newUser);
 
-            var defaultBoard = await dc.Boards.FirstAsync(b => b.BoardId == Constants.DefaultBoardId);
+            var defaultBoard = await _dc.Boards.FirstAsync(b => b.BoardId == Constants.DefaultBoardId);
 
             return Ok(new UserDto { Username = newUser.Username, DefaultBoardPath = defaultBoard.Path });
         }

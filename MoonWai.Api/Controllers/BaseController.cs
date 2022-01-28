@@ -16,7 +16,14 @@ namespace MoonWai.Api.Controllers
 {
     public class BaseController : Controller
     {
-        protected Task<User> GetUser(Dc dc)
+        protected readonly Dc _dc;
+
+        public BaseController(Dc dc)
+        {
+            _dc = dc;
+        }
+
+        protected Task<User> GetUser()
         {
             if (HttpContext.User.Identity.IsAuthenticated && HttpContext.User.Identity is ClaimsIdentity claimsIdentity)
             {
@@ -24,7 +31,7 @@ namespace MoonWai.Api.Controllers
 
                 if (int.TryParse(userIdStr, out var userId))
                 {
-                    return dc.Users
+                    return _dc.Users
                         .LoadWith(i => i.Settings)
                         .FirstOrDefaultAsync(i => i.UserId == userId);
                 }

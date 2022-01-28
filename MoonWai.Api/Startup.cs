@@ -6,6 +6,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Configuration;
 
+using LinqToDB.AspNet;
+using LinqToDB.Configuration;
+
 using MoonWai.Api.Resources;
 using MoonWai.Api.Services;
 using MoonWai.Api.Utils;
@@ -50,7 +53,8 @@ namespace MoonWai.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddCors(options => 
+
+            services.AddCors(options =>
             {
                 options.AddPolicy(name: devPolicy, builder => 
                 {
@@ -60,14 +64,24 @@ namespace MoonWai.Api
                         .AllowAnyOrigin();
                 });
             });
+
             services
                 .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie();
+
             services.AddAuthorization();
+
             services.AddSpaStaticFiles(configuration =>
             {
                 configuration.RootPath = "wwwroot/dist";
             });
+            
+            using var dc = new Dc();
+
+            var connStr = dc.ConnectionString;
+                
+            services.AddLinqToDbContext<Dc>((provider, options) => options.UsePostgreSQL(connStr));
+
             services.AddSingleton<ThreadService, ThreadService>();
         }
 
