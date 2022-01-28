@@ -26,21 +26,9 @@ namespace MoonWai.Api.Controllers
         [NonAction]
         private Task<List<BoardDto>> GetBoardsTask()
         {
-            var query = _dc.Boards
-                .LoadWith(b => b.BoardSection)
-                .Select(b => new BoardDto
-                {
-                    BoardId = b.BoardId,
-                    BoardSection = new BoardSectionDto
-                    {
-                        BoardSectionId = b.BoardSectionId,
-                        Name = b.BoardSection.Name
-                    },
-                    Path = b.Path,
-                    Name = b.Name
-                });
-            
-            return query.ToListAsync();
+            return _dc.Boards
+                .Select(b => new BoardDto(b, b.BoardSection))
+                .ToListAsync();
         }
 
         [HttpGet]

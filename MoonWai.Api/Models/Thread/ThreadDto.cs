@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 using MoonWai.Api.Models.Post;
 
-namespace MoonWai.Api.Models.Thread 
+namespace MoonWai.Api.Models.Thread
 {
     public class ThreadDto
     {
@@ -13,5 +13,7 @@ namespace MoonWai.Api.Models.Thread
         public List<PostDto>  Posts      { get; set; }
         public int            PostsCount { get; set; }
         public DateTime       CreateDt   { get; set; }
+
+        public ThreadDto() {}
     }
 }

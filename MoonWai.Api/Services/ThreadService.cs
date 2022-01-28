@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 
 using LinqToDB;
 
-using MoonWai.Api.Models;
 using MoonWai.Api.Models.Post;
 using MoonWai.Api.Models.Thread;
 using MoonWai.Api.Utils;
@@ -19,49 +18,29 @@ namespace MoonWai.Api.Services
         {
             var postsCount = preview ? Constants.PostsInPreview : Constants.MaxPostsPerThread;
 
-            var query = dc.Threads
-                .LoadWith(t => t.Posts.Take(postsCount + 1))
+            return dc.Threads
                 .Select(t => new ThreadDto
                 {
                     ThreadId = t.ThreadId,
                     ParentId = t.ParentId,
                     Title = t.Title,
                     Posts = t.Posts
-                        .Select(p => new PostDto
-                        {
-                            PostId = p.PostId,
-                            Message = p.Message,
-                            Media = p.Media 
-                                .Select(m => new MediaDto
-                                {
-                                    Name = m.Name,
-                                    Path = m.Path,
-                                    Thumbnail = m.Thumbnail
-                                })
-                                .ToList(),
-                            RespondentPostIds = p.Responses.Select(r => r.RespondentPostId).ToList(),
-                            CreateDt = p.CreateDt,
-                        })
+                        .Select(p => new PostDto(p, p.Media, p.Responses))
+                        .Take(postsCount + 1)
                         .ToList(),
                     PostsCount = t.Posts.Count(),
                     CreateDt = t.CreateDt
                 });
-
-            return query;
         }
         
         public Task<ThreadDto> GetThread(Dc dc, int threadId)
         {   
-            var query = GetThreads(dc, false);
-
-            return query.FirstOrDefaultAsync(t => t.ThreadId == threadId);
+            return GetThreads(dc, false).FirstOrDefaultAsync(t => t.ThreadId == threadId);
         }
 
         public IQueryable<ThreadDto> GetThreads(Dc dc, int boardId, bool preview = true)
         {   
-            var query = GetThreads(dc, preview);
-
-            return query;
+            return GetThreads(dc, preview);
         }
 
         public async Task<int> InsertThread(Dc dc, InsertThreadDto insertThreadDto)
@@ -76,6 +55,7 @@ namespace MoonWai.Api.Services
             newThread.CreateDt = utcNow;
 
             using var tr = await dc.BeginTransactionAsync();
+
             var newThreadId = await dc.InsertWithInt32IdentityAsync(newThread);
 
             if (newThreadId < 0)

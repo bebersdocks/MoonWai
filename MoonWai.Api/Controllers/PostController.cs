@@ -29,21 +29,7 @@ namespace MoonWai.Api.Controllers
             if (post == null)
                 return NotFound(ErrorId.PostNotFound);
 
-            var postDto = new PostDto
-            {
-                PostId = post.PostId,
-                Message = post.Message,
-                Media = post.Media 
-                    .Select(m => new MediaDto
-                    {
-                        Name = m.Name,
-                        Path = m.Path,
-                        Thumbnail = m.Thumbnail
-                    })
-                    .ToList(),
-                RespondentPostIds = post.Responses.Select(r => r.RespondentPostId).ToList(),
-                CreateDt = post.CreateDt,
-            };
+            var postDto = new PostDto(post);
 
             return Ok(postDto);
         }

@@ -25,20 +25,10 @@ namespace MoonWai.Api.Controllers
         [NonAction]
         private Task<List<ThreadPreviewDto>> GetUserThreads(int userId)
         {   
-            var query = _dc.Threads
-                .LoadWith(t => t.Post)
+            return _dc.Threads
                 .Where(t => t.UserId == userId)
-                .Select(t => new ThreadPreviewDto
-                {
-                    ThreadId = t.ThreadId,
-                    ParentId = t.ParentId,
-                    Title = t.Title,
-                    Message = t.Post.Message,
-                    CreateDt = t.CreateDt,
-                    LastEditDt = t.LastEditDt
-                });
-
-            return query.ToListAsync(); 
+                .Select(t => new ThreadPreviewDto(t))
+                .ToListAsync();
         }
 
         [HttpGet]
@@ -54,23 +44,17 @@ namespace MoonWai.Api.Controllers
         [NonAction]
         private Task<List<PostDto>> GetUserPosts(int userId)
         {   
-            var query = _dc.Posts
+            return _dc.Posts
                 .Where(p => p.UserId == userId)
-                .Select(p => new PostDto
-                {
-                    PostId = p.PostId,
-                    Message = p.Message,
-                    CreateDt = p.CreateDt
-                });
-
-            return query.ToListAsync();
+                .Select(p => new PostDto(p, null, null))
+                .ToListAsync();
         }
 
         [HttpGet]
         [Route("user/posts")]
         public async Task<IActionResult> GetUserPosts()
         {
-            var user = await GetUser();     
+            var user = await GetUser();
             var posts = await GetUserPosts(user.UserId);
 
             return Ok(posts);
